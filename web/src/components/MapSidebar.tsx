@@ -75,7 +75,7 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
             <span>{pandalStats.total}</span>
           </li>
           <li className="flex justify-between">
-            <span>High</span>
+            <span>Big</span>
             <span>{pandalStats.highCrowd}</span>
           </li>
           <li className="flex justify-between">
@@ -83,12 +83,8 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
             <span>{pandalStats.mediumCrowd}</span>
           </li>
           <li className="flex justify-between">
-            <span>Low</span>
+            <span>Small</span>
             <span>{pandalStats.lowCrowd}</span>
-          </li>
-          <li className="flex justify-between">
-            <span>Metro</span>
-            <span>{pandalStats.metroConnected}</span>
           </li>
         </ul>
       </div>

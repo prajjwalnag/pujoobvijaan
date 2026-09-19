@@ -60,7 +60,8 @@ export function MapView({
               <p className="font-bold">{pandal.name}</p>
               <p className="text-xs text-gray-600">{pandal.region}</p>
               <p className="text-xs">
-                Crowd: {pandal.crowdLevel} · ⭐ {pandal.rating}
+                Size: {pandal.crowdLevel}
+                {pandal.rating !== undefined ? ` · ⭐ ${pandal.rating}` : ""}
               </p>
               <button
                 onClick={() => onCheckIn(pandal.id)}

@@ -16,7 +16,11 @@ interface FilterBarProps {
   onSearchChange: (value: string) => void;
 }
 
-const crowdLevels: CrowdLevel[] = ["high", "medium", "low"];
+const crowdLevels: { value: CrowdLevel; label: string }[] = [
+  { value: "high", label: "Big" },
+  { value: "medium", label: "Medium" },
+  { value: "low", label: "Small" },
+];
 
 export function FilterBar({
   regions,
@@ -58,10 +62,10 @@ export function FilterBar({
           onChange={(e) => onCrowdChange(e.target.value)}
           className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-red)] focus:border-2"
         >
-          <option value="all">All Crowd Levels</option>
+          <option value="all">All Sizes</option>
           {crowdLevels.map((c) => (
-            <option key={c} value={c}>
-              {c[0].toUpperCase() + c.slice(1)}
+            <option key={c.value} value={c.value}>
+              {c.label}
             </option>
           ))}
         </select>

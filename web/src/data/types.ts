@@ -11,15 +11,17 @@ export interface Pandal {
   id: string;
   name: string;
   region: Region;
+  /** Approximate — jittered around the region's centroid, not a geocoded address. */
   coordinates: { lat: number; lng: number };
-  rating: number;
-  theme: string;
+  /** Size/prominence tier (budget & footfall), not live crowd data. */
   crowdLevel: CrowdLevel;
-  visitingHours: { open: string; close: string };
-  nearestMetro: { station: string; line: string } | null;
-  accessPoints: string[];
-  description: string;
-  tags: string[];
+  rating?: number;
+  theme?: string;
+  visitingHours?: { open: string; close: string };
+  nearestMetro?: { station: string; line: string } | null;
+  accessPoints?: string[];
+  description?: string;
+  tags?: string[];
 }
 
 export interface LeaderboardEntry {

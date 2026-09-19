@@ -6,6 +6,8 @@ import { Badge, crowdVariant } from "./Badge";
 import { RatingDisplay } from "./RatingDisplay";
 import type { Pandal } from "@/data/types";
 
+const sizeLabel = { high: "Big", medium: "Medium", low: "Small" } as const;
+
 export function PandalCard({
   pandal,
   isWishlisted = false,
@@ -18,10 +20,14 @@ export function PandalCard({
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${pandal.coordinates.lat},${pandal.coordinates.lng}`;
 
   return (
-    <div className="group relative flex min-h-[280px] flex-col overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 pt-5 shadow-[var(--shadow-light)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
+    <div className="group relative flex min-h-[220px] flex-col overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 pt-5 shadow-[var(--shadow-light)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
       <div className="absolute inset-x-0 top-0 h-1 bg-[var(--color-gold)]" />
       <div className="flex items-start justify-between">
-        <RatingDisplay rating={pandal.rating} />
+        {pandal.rating !== undefined ? (
+          <RatingDisplay rating={pandal.rating} />
+        ) : (
+          <span />
+        )}
         <button
           aria-label="Toggle wishlist"
           onClick={() => onWishlist?.(pandal.id)}
@@ -40,32 +46,36 @@ export function PandalCard({
       <p className="text-sm text-[var(--color-text-secondary)]">{pandal.region}</p>
 
       <div className="mt-2 flex flex-wrap gap-2">
-        <Badge variant="theme">{pandal.theme}</Badge>
-        <Badge variant={crowdVariant(pandal.crowdLevel)}>
-          {pandal.crowdLevel[0].toUpperCase() + pandal.crowdLevel.slice(1)}
-        </Badge>
+        {pandal.theme && <Badge variant="theme">{pandal.theme}</Badge>}
+        <Badge variant={crowdVariant(pandal.crowdLevel)}>{sizeLabel[pandal.crowdLevel]}</Badge>
       </div>
 
       <div className="mt-3 space-y-1.5 text-sm text-[var(--color-text-secondary)]">
-        <div className="flex items-center gap-2">
-          <Clock size={14} />
-          {pandal.visitingHours.open} - {pandal.visitingHours.close}
-        </div>
+        {pandal.visitingHours && (
+          <div className="flex items-center gap-2">
+            <Clock size={14} />
+            {pandal.visitingHours.open} - {pandal.visitingHours.close}
+          </div>
+        )}
         {pandal.nearestMetro && (
           <div className="flex items-center gap-2">
             <TrainFront size={14} />
             {pandal.nearestMetro.station} ({pandal.nearestMetro.line})
           </div>
         )}
-        <div className="flex items-center gap-2">
-          <MapPinned size={14} />
-          {pandal.accessPoints[0]}
-        </div>
+        {pandal.accessPoints?.[0] && (
+          <div className="flex items-center gap-2">
+            <MapPinned size={14} />
+            {pandal.accessPoints[0]}
+          </div>
+        )}
       </div>
 
-      <p className="mt-3 flex-1 text-sm text-[var(--color-text-secondary)] line-clamp-2">
-        {pandal.description}
-      </p>
+      {pandal.description && (
+        <p className="mt-3 flex-1 text-sm text-[var(--color-text-secondary)] line-clamp-2">
+          {pandal.description}
+        </p>
+      )}
 
       <a
         href={mapsUrl}
