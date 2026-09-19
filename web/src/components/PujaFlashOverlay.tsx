@@ -49,7 +49,7 @@ export function PujaFlashOverlay() {
 
   if (phase !== "showing" && phase !== "leaving") return null;
 
-  const words = ["Let", "your", "Pujo", "Obhijaan", "begin."];
+  const words = ["Let", "your", "Pujo", "Obhijaan", "begin!!"];
 
   return (
     <div
