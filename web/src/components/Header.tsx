@@ -8,14 +8,13 @@ import {
   Map,
   MessageCircle,
   CalendarDays,
-  CloudSun,
   Trophy,
   Menu,
   X,
+  Flame,
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "./Button";
-import { Flame } from "lucide-react";
 
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
@@ -23,7 +22,6 @@ const navItems = [
   { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { label: "Chat", href: "/chat", icon: MessageCircle },
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },
-  { label: "Weather", href: "/weather", icon: CloudSun },
 ];
 
 // Mocked for Phase 1 UI — real auth/points land with the backend.
