@@ -49,6 +49,8 @@ export function PujaFlashOverlay() {
 
   if (phase !== "showing" && phase !== "leaving") return null;
 
+  const words = ["Let", "your", "Puja", "be", "the", "best", "Puja."];
+
   return (
     <div
       onClick={() => setPhase("leaving")}
@@ -56,7 +58,16 @@ export function PujaFlashOverlay() {
     >
       <div className="puja-flash-glow" />
       <p className="puja-flash-text">
-        Let your <span>Puja</span> be the best <span>Puja</span>.
+        {words.map((word, i) => (
+          <span
+            key={i}
+            className="puja-flash-word"
+            style={{ "--i": i } as React.CSSProperties}
+            data-gold={word.startsWith("Puja") || undefined}
+          >
+            {word}
+          </span>
+        ))}
       </p>
       <p className="puja-flash-hint">tap anywhere to continue</p>
     </div>
