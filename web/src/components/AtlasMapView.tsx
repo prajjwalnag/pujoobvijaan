@@ -44,18 +44,55 @@ function pandalIcon(pandal: Pandal) {
   });
 }
 
+// No real address for cafes/restaurants — scatter them deterministically
+// around their area's centre, inside the territory circle, using the
+// golden angle so points spread evenly instead of radiating in a line.
+function offsetLatLng(center: { lat: number; lng: number }, index: number) {
+  const angle = index * 137.5 * (Math.PI / 180);
+  const distanceM = 350 + index * 160;
+  const dLat = (distanceM * Math.cos(angle)) / 111320;
+  const dLng = (distanceM * Math.sin(angle)) / (111320 * Math.cos((center.lat * Math.PI) / 180));
+  return { lat: center.lat + dLat, lng: center.lng + dLng };
+}
+
+function poiIcon(kind: "cafe" | "restaurant") {
+  const bg = kind === "cafe" ? "#A9762F" : "#7A1F1F";
+  const emoji = kind === "cafe" ? "☕" : "🍽️";
+  const html = renderToStaticMarkup(
+    <div
+      style={{
+        width: 24,
+        height: 24,
+        borderRadius: "50%",
+        background: bg,
+        border: "2px solid white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 12,
+        boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
+      }}
+    >
+      {emoji}
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [24, 24], iconAnchor: [12, 12], popupAnchor: [0, -12] });
+}
+
 export function AtlasMapView({
   pandalsList,
   areasList,
   selectedAreaId,
   onSelectPandal,
   onSelectArea,
+  showFood = true,
 }: {
   pandalsList: Pandal[];
   areasList: Area[];
   selectedAreaId: string | null;
   onSelectPandal: (p: Pandal) => void;
   onSelectArea: (id: string) => void;
+  showFood?: boolean;
 }) {
   const areaById = areaByIdMap(areasList);
 
@@ -94,6 +131,49 @@ export function AtlasMapView({
           </Circle>
         );
       })}
+
+      {showFood &&
+        areasList.flatMap((area) => {
+          const cafeMarkers = area.cafes.map((place, i) => {
+            const pos = offsetLatLng(area.center, i * 2);
+            return (
+              <Marker key={area.id + "-cafe-" + i} position={[pos.lat, pos.lng]} icon={poiIcon("cafe")}>
+                <Tooltip direction="top" opacity={0.95} className="pandal-tooltip">
+                  ☕ {place.name}
+                </Tooltip>
+                <Popup>
+                  <div className="min-w-[180px]">
+                    <p className="font-bold">☕ {place.name}</p>
+                    {place.note && <p className="text-xs text-gray-600">{place.note}</p>}
+                    <p className="mt-1 text-xs italic text-gray-500">
+                      Approximate spot within {area.name} — not a geocoded address.
+                    </p>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          });
+          const foodMarkers = area.restaurants.map((place, i) => {
+            const pos = offsetLatLng(area.center, i * 2 + 1);
+            return (
+              <Marker key={area.id + "-food-" + i} position={[pos.lat, pos.lng]} icon={poiIcon("restaurant")}>
+                <Tooltip direction="top" opacity={0.95} className="pandal-tooltip">
+                  🍽️ {place.name}
+                </Tooltip>
+                <Popup>
+                  <div className="min-w-[180px]">
+                    <p className="font-bold">🍽️ {place.name}</p>
+                    {place.note && <p className="text-xs text-gray-600">{place.note}</p>}
+                    <p className="mt-1 text-xs italic text-gray-500">
+                      Approximate spot within {area.name} — not a geocoded address.
+                    </p>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          });
+          return [...cafeMarkers, ...foodMarkers];
+        })}
 
       {pandalsList.map((pandal) => {
         const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;

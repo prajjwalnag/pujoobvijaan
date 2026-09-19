@@ -25,6 +25,7 @@ export default function AtlasPage() {
   const [geoOnly, setGeoOnly] = useState(false);
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [selectedPandal, setSelectedPandal] = useState<Pandal | null>(null);
+  const [showFood, setShowFood] = useState(true);
 
   const filtered = useMemo(() => {
     return pandals.filter((p) => {
@@ -58,6 +59,8 @@ export default function AtlasPage() {
         onTierChange={setTier}
         geoOnly={geoOnly}
         onGeoOnlyChange={setGeoOnly}
+        showFood={showFood}
+        onShowFoodChange={setShowFood}
         stats={stats}
       />
       <div className="flex-1 p-4">
@@ -68,6 +71,7 @@ export default function AtlasPage() {
             selectedAreaId={selectedArea}
             onSelectPandal={setSelectedPandal}
             onSelectArea={handleSelectArea}
+            showFood={showFood}
           />
         </div>
       </div>

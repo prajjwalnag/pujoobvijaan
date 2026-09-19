@@ -16,6 +16,8 @@ interface AtlasSidebarProps {
   onTierChange: (v: "all" | CrowdLevel) => void;
   geoOnly: boolean;
   onGeoOnlyChange: (v: boolean) => void;
+  showFood: boolean;
+  onShowFoodChange: (v: boolean) => void;
   stats: { total: number; geocoded: number };
 }
 
@@ -30,6 +32,8 @@ export function AtlasSidebar({
   onTierChange,
   geoOnly,
   onGeoOnlyChange,
+  showFood,
+  onShowFoodChange,
   stats,
 }: AtlasSidebarProps) {
   const sorted = [...areasList].sort((a, b) => b.pandalCount - a.pandalCount);
@@ -91,6 +95,17 @@ export function AtlasSidebar({
             )}
           >
             Geocoded only
+          </button>
+          <button
+            onClick={() => onShowFoodChange(!showFood)}
+            className={clsx(
+              "rounded-full border px-3 py-1 text-xs font-semibold",
+              showFood
+                ? "border-[#7A1F1F] bg-[#7A1F1F] text-white"
+                : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
+            )}
+          >
+            ☕🍽️ Cafes & food
           </button>
         </div>
       </div>
@@ -187,9 +202,20 @@ export function AtlasSidebar({
           <span className="inline-block h-3.5 w-3.5 rounded-full border-2 border-dashed border-[var(--color-text-secondary)] bg-white" />
           <span className="text-[var(--color-text-secondary)]">Dashed = placeholder, not a real address yet</span>
         </div>
+        <div className="mt-2 flex items-center gap-4 text-xs">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-[#A9762F] text-[10px]">☕</span>
+            <span className="text-[var(--color-text-secondary)]">Cafe</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-[#7A1F1F] text-[10px]">🍽️</span>
+            <span className="text-[var(--color-text-secondary)]">Food</span>
+          </span>
+        </div>
         <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-light)]">
-          See <b>resource/pandals_missing_coordinates.csv</b> for the ones still needing a manual
-          address lookup.
+          Cafe/food pins are placed approximately within their area, not at a real geocoded
+          address. See <b>resource/pandals_missing_coordinates.csv</b> for pandals still needing a
+          manual coordinate lookup.
         </p>
       </div>
     </div>
