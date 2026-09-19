@@ -19,31 +19,52 @@ const AtlasMapView = dynamic(
   }
 );
 
+const allAreaIds = new Set(areas.map((a) => a.id));
+
 export default function AtlasPage() {
   const [search, setSearch] = useState("");
   const [tier, setTier] = useState<"all" | CrowdLevel>("all");
   const [geoOnly, setGeoOnly] = useState(false);
-  const [selectedArea, setSelectedArea] = useState<string | null>(null);
+  const [focusedArea, setFocusedArea] = useState<string | null>(null);
+  const [enabledAreas, setEnabledAreas] = useState<Set<string>>(allAreaIds);
   const [selectedPandal, setSelectedPandal] = useState<Pandal | null>(null);
   const [showFood, setShowFood] = useState(true);
+
+  const visibleAreas = useMemo(
+    () => areas.filter((a) => enabledAreas.has(a.id)),
+    [enabledAreas]
+  );
 
   const filtered = useMemo(() => {
     return pandals.filter((p) => {
       if (tier !== "all" && p.crowdLevel !== tier) return false;
       if (geoOnly && !p.geocoded) return false;
       if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
-      if (selectedArea && p.areaId !== selectedArea) return false;
+      // Pandals outside any mapped area always show; grouped ones follow their area's toggle.
+      if (p.areaId && !enabledAreas.has(p.areaId)) return false;
       return true;
     });
-  }, [tier, geoOnly, search, selectedArea]);
+  }, [tier, geoOnly, search, enabledAreas]);
 
   const stats = useMemo(
     () => ({ total: pandals.length, geocoded: pandals.filter((p) => p.geocoded).length }),
     []
   );
 
-  function handleSelectArea(id: string | null) {
-    setSelectedArea((prev) => (prev === id ? null : id));
+  function toggleAreaEnabled(id: string) {
+    setEnabledAreas((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function setAllEnabled(value: boolean) {
+    setEnabledAreas(value ? new Set(allAreaIds) : new Set());
+  }
+
+  function toggleFocus(id: string | null) {
+    setFocusedArea((prev) => (prev === id ? null : id));
   }
 
   return (
@@ -51,8 +72,11 @@ export default function AtlasPage() {
       <AtlasSidebar
         areasList={areas}
         selectedPandal={selectedPandal}
-        selectedArea={selectedArea}
-        onSelectArea={handleSelectArea}
+        enabledAreas={enabledAreas}
+        onToggleAreaEnabled={toggleAreaEnabled}
+        onSetAllEnabled={setAllEnabled}
+        focusedArea={focusedArea}
+        onToggleFocus={toggleFocus}
         search={search}
         onSearchChange={setSearch}
         tier={tier}
@@ -67,10 +91,10 @@ export default function AtlasPage() {
         <div className="h-full w-full overflow-hidden rounded-lg shadow-[var(--shadow-light)]">
           <AtlasMapView
             pandalsList={filtered}
-            areasList={areas}
-            selectedAreaId={selectedArea}
+            areasList={visibleAreas}
+            focusedAreaId={focusedArea}
             onSelectPandal={setSelectedPandal}
-            onSelectArea={handleSelectArea}
+            onSelectArea={toggleFocus}
             showFood={showFood}
           />
         </div>

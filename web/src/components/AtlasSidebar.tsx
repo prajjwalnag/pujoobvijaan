@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
 import clsx from "clsx";
 import type { Pandal, Area, CrowdLevel } from "@/data/types";
 import { tierColor, tierLabel } from "@/data/tiers";
@@ -8,8 +8,11 @@ import { tierColor, tierLabel } from "@/data/tiers";
 interface AtlasSidebarProps {
   areasList: Area[];
   selectedPandal: Pandal | null;
-  selectedArea: string | null;
-  onSelectArea: (id: string | null) => void;
+  enabledAreas: Set<string>;
+  onToggleAreaEnabled: (id: string) => void;
+  onSetAllEnabled: (value: boolean) => void;
+  focusedArea: string | null;
+  onToggleFocus: (id: string | null) => void;
   search: string;
   onSearchChange: (v: string) => void;
   tier: "all" | CrowdLevel;
@@ -24,8 +27,11 @@ interface AtlasSidebarProps {
 export function AtlasSidebar({
   areasList,
   selectedPandal,
-  selectedArea,
-  onSelectArea,
+  enabledAreas,
+  onToggleAreaEnabled,
+  onSetAllEnabled,
+  focusedArea,
+  onToggleFocus,
   search,
   onSearchChange,
   tier,
@@ -40,6 +46,8 @@ export function AtlasSidebar({
   const selectedAreaData = selectedPandal?.areaId
     ? areasList.find((a) => a.id === selectedPandal.areaId)
     : undefined;
+  const allOn = enabledAreas.size === areasList.length;
+  const allOff = enabledAreas.size === 0;
 
   return (
     <div className="flex h-full w-full flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 lg:w-[320px]">
@@ -146,30 +154,66 @@ export function AtlasSidebar({
       </div>
 
       <div>
-        <h2 className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
-          Explore by Area ({areasList.length})
-        </h2>
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
+            Explore by Area ({areasList.length})
+          </h2>
+          <button
+            onClick={() => onSetAllEnabled(allOn ? false : true)}
+            className="flex items-center gap-1 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-2.5 py-1 text-[11px] font-semibold text-[var(--color-text-secondary)] hover:border-[var(--color-red)] hover:text-[var(--color-red)]"
+          >
+            {allOff ? (
+              <>
+                <Eye size={12} /> Turn all on
+              </>
+            ) : (
+              <>
+                <EyeOff size={12} /> Turn all off
+              </>
+            )}
+          </button>
+        </div>
         <div className="space-y-1">
           {sorted.map((area) => {
-            const open = selectedArea === area.id;
+            const open = focusedArea === area.id;
+            const enabled = enabledAreas.has(area.id);
             return (
               <div
                 key={area.id}
                 className={clsx(
-                  "rounded-lg border bg-[var(--color-bg-secondary)]",
-                  open ? "border-[var(--color-gold)]" : "border-[var(--color-border)]"
+                  "rounded-lg border bg-[var(--color-bg-secondary)] transition-opacity",
+                  open ? "border-[var(--color-gold)]" : "border-[var(--color-border)]",
+                  !enabled && "opacity-50"
                 )}
               >
-                <button
-                  onClick={() => onSelectArea(open ? null : area.id)}
-                  className="flex w-full items-center justify-between px-3 py-2 text-left text-sm"
-                >
-                  <span>
-                    {area.name}
-                    <span className="ml-1 text-[var(--color-text-light)]">({area.pandalCount})</span>
-                  </span>
-                  <ChevronDown size={14} className={clsx("text-[var(--color-text-light)] transition-transform", open && "rotate-180")} />
-                </button>
+                <div className="flex items-center gap-1 px-2 py-1.5">
+                  <button
+                    onClick={() => onToggleAreaEnabled(area.id)}
+                    aria-label={enabled ? `Hide ${area.name}` : `Show ${area.name}`}
+                    aria-pressed={enabled}
+                    className={clsx(
+                      "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2",
+                      enabled
+                        ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-white"
+                        : "border-[var(--color-border)] bg-transparent text-[var(--color-text-light)]"
+                    )}
+                  >
+                    {enabled ? <Eye size={13} /> : <EyeOff size={13} />}
+                  </button>
+                  <button
+                    onClick={() => onToggleFocus(open ? null : area.id)}
+                    className="flex flex-1 items-center justify-between px-1 py-1 text-left text-sm"
+                  >
+                    <span>
+                      {area.name}
+                      <span className="ml-1 text-[var(--color-text-light)]">({area.pandalCount})</span>
+                    </span>
+                    <ChevronDown
+                      size={14}
+                      className={clsx("text-[var(--color-text-light)] transition-transform", open && "rotate-180")}
+                    />
+                  </button>
+                </div>
                 {open && (
                   <div className="space-y-1.5 border-t border-[var(--color-border)] px-3 py-2 text-xs text-[var(--color-text-secondary)]">
                     {area.thingsToDo.length > 0 && <p>🎯 {area.thingsToDo.join(" · ")}</p>}

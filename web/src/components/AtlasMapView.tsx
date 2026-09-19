@@ -82,14 +82,14 @@ function poiIcon(kind: "cafe" | "restaurant") {
 export function AtlasMapView({
   pandalsList,
   areasList,
-  selectedAreaId,
+  focusedAreaId,
   onSelectPandal,
   onSelectArea,
   showFood = true,
 }: {
   pandalsList: Pandal[];
   areasList: Area[];
-  selectedAreaId: string | null;
+  focusedAreaId: string | null;
   onSelectPandal: (p: Pandal) => void;
   onSelectArea: (id: string) => void;
   showFood?: boolean;
@@ -104,7 +104,7 @@ export function AtlasMapView({
       />
 
       {areasList.map((area) => {
-        const highlighted = area.id === selectedAreaId;
+        const highlighted = area.id === focusedAreaId;
         return (
           <Circle
             key={area.id}
