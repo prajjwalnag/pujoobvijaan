@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Network, SlidersHorizontal, X } from "lucide-react";
 import { buildGraph, buildDistanceLinks, type GraphNode } from "@/data/graph";
 import { tierColor, tierLabel } from "@/data/tiers";
+import { MapAdBanner } from "@/components/MapAdBanner";
 
 const NetworkGraph = dynamic(() => import("@/components/NetworkGraph").then((m) => m.NetworkGraph), {
   ssr: false,
@@ -45,6 +46,8 @@ export default function NetworkPage() {
             showDistance={showDistance}
             onSelect={setSelected}
           />
+
+          <MapAdBanner />
 
           {selected && (
             <div className="pointer-events-none absolute inset-x-0 top-3 z-[900] flex justify-center px-3 lg:hidden">

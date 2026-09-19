@@ -10,6 +10,7 @@ import { useTheme } from "./ThemeProvider";
 import { MetroLayer } from "./MetroLayer";
 import { RailwayLayer } from "./RailwayLayer";
 import { RoadLayer } from "./RoadLayer";
+import { MapAdBanner } from "./MapAdBanner";
 
 const areaByIdMap = (areasList: Area[]) => new Map(areasList.map((a) => [a.id, a]));
 
@@ -125,6 +126,8 @@ export function AtlasMapView({
   const { theme } = useTheme();
 
   return (
+    <div className="relative h-full w-full">
+    <MapAdBanner />
     <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom preferCanvas className="h-full w-full">
       {theme === "dark" ? (
         <>
@@ -254,5 +257,6 @@ export function AtlasMapView({
         })}
       </MarkerClusterGroup>
     </MapContainer>
+    </div>
   );
 }
