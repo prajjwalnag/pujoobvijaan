@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   LayoutGrid,
   Map,
+  Compass,
   MessageCircle,
   CalendarDays,
   Trophy,
@@ -19,6 +20,7 @@ import { Button } from "./Button";
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
   { label: "Map", href: "/map", icon: Map },
+  { label: "Atlas", href: "/atlas", icon: Compass },
   { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { label: "Chat", href: "/chat", icon: MessageCircle },
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },

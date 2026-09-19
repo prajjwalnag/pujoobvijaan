@@ -34,7 +34,8 @@ export const pandals: Pandal[] = [
       lng: 88.353298
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-3",
@@ -45,7 +46,8 @@ export const pandals: Pandal[] = [
       lng: 88.373447
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-4",
@@ -89,7 +91,8 @@ export const pandals: Pandal[] = [
       lng: 88.360743
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-8",
@@ -100,7 +103,8 @@ export const pandals: Pandal[] = [
       lng: 88.386391
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-9",
@@ -111,7 +115,8 @@ export const pandals: Pandal[] = [
       lng: 88.387404
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-10",
@@ -121,7 +126,8 @@ export const pandals: Pandal[] = [
       lat: 22.617629,
       lng: 88.412869
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-11",
@@ -131,7 +137,8 @@ export const pandals: Pandal[] = [
       lat: 22.557586,
       lng: 88.351027
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-12",
@@ -153,7 +160,8 @@ export const pandals: Pandal[] = [
       lng: 88.377534
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-14",
@@ -219,7 +227,8 @@ export const pandals: Pandal[] = [
       lng: 88.378045
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-20",
@@ -262,7 +271,8 @@ export const pandals: Pandal[] = [
       lat: 22.621114,
       lng: 88.392897
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-24",
@@ -272,7 +282,8 @@ export const pandals: Pandal[] = [
       lat: 22.620008,
       lng: 88.393910
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-25",
@@ -293,7 +304,8 @@ export const pandals: Pandal[] = [
       lat: 22.545331,
       lng: 88.343200
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-27",
@@ -314,7 +326,8 @@ export const pandals: Pandal[] = [
       lat: 22.596106,
       lng: 88.400305
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-29",
@@ -336,7 +349,8 @@ export const pandals: Pandal[] = [
       lng: 88.374682
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-31",
@@ -369,7 +383,8 @@ export const pandals: Pandal[] = [
       lng: 88.372935
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-34",
@@ -391,7 +406,8 @@ export const pandals: Pandal[] = [
       lng: 88.366647
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-8"
+    areaId: "cluster-8",
+    geocoded: true
   },
   {
     id: "north-kolkata-36",
@@ -413,7 +429,8 @@ export const pandals: Pandal[] = [
       lng: 88.369077
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-38",
@@ -423,7 +440,8 @@ export const pandals: Pandal[] = [
       lat: 22.580257,
       lng: 88.390137
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-39",
@@ -434,7 +452,8 @@ export const pandals: Pandal[] = [
       lng: 88.365247
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-40",
@@ -466,7 +485,8 @@ export const pandals: Pandal[] = [
       lat: 22.650587,
       lng: 88.397627
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-43",
@@ -487,7 +507,8 @@ export const pandals: Pandal[] = [
       lat: 22.580031,
       lng: 88.394413
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-45",
@@ -498,7 +519,8 @@ export const pandals: Pandal[] = [
       lng: 88.372751
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-8"
+    areaId: "cluster-8",
+    geocoded: true
   },
   {
     id: "north-kolkata-46",
@@ -530,7 +552,8 @@ export const pandals: Pandal[] = [
       lng: 88.373396
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-8"
+    areaId: "cluster-8",
+    geocoded: true
   },
   {
     id: "north-kolkata-49",
@@ -552,7 +575,8 @@ export const pandals: Pandal[] = [
       lng: 88.354808
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-51",
@@ -562,7 +586,8 @@ export const pandals: Pandal[] = [
       lat: 22.556511,
       lng: 88.379595
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-52",
@@ -572,7 +597,8 @@ export const pandals: Pandal[] = [
       lat: 22.519576,
       lng: 88.355349
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-53",
@@ -582,7 +608,8 @@ export const pandals: Pandal[] = [
       lat: 22.520201,
       lng: 88.349704
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-54",
@@ -593,7 +620,8 @@ export const pandals: Pandal[] = [
       lng: 88.357455
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-55",
@@ -604,7 +632,8 @@ export const pandals: Pandal[] = [
       lng: 88.360702
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-56",
@@ -615,7 +644,8 @@ export const pandals: Pandal[] = [
       lng: 88.369939
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-57",
@@ -626,7 +656,8 @@ export const pandals: Pandal[] = [
       lng: 88.377748
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-58",
@@ -670,7 +701,8 @@ export const pandals: Pandal[] = [
       lng: 88.375501
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-8"
+    areaId: "cluster-8",
+    geocoded: true
   },
   {
     id: "north-kolkata-62",
@@ -692,7 +724,8 @@ export const pandals: Pandal[] = [
       lng: 88.372616
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-8"
+    areaId: "cluster-8",
+    geocoded: true
   },
   {
     id: "north-kolkata-64",
@@ -703,7 +736,8 @@ export const pandals: Pandal[] = [
       lng: 88.377228
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-2"
+    areaId: "cluster-2",
+    geocoded: true
   },
   {
     id: "north-kolkata-65",
@@ -714,7 +748,8 @@ export const pandals: Pandal[] = [
       lng: 88.354934
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-3"
+    areaId: "cluster-3",
+    geocoded: true
   },
   {
     id: "north-kolkata-66",
@@ -724,7 +759,8 @@ export const pandals: Pandal[] = [
       lat: 22.798903,
       lng: 88.377810
     },
-    crowdLevel: "high" as CrowdLevel
+    crowdLevel: "high" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "north-kolkata-67",
@@ -735,7 +771,8 @@ export const pandals: Pandal[] = [
       lng: 88.378426
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-68",
@@ -757,7 +794,8 @@ export const pandals: Pandal[] = [
       lng: 88.379439
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-70",
@@ -790,7 +828,8 @@ export const pandals: Pandal[] = [
       lng: 88.384440
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-1"
+    areaId: "cluster-1",
+    geocoded: true
   },
   {
     id: "north-kolkata-73",
@@ -810,7 +849,8 @@ export const pandals: Pandal[] = [
       lat: 22.545563,
       lng: 88.377920
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-75",
@@ -887,7 +927,8 @@ export const pandals: Pandal[] = [
       lng: 88.363674
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-4"
+    areaId: "cluster-4",
+    geocoded: true
   },
   {
     id: "south-kolkata-82",
@@ -898,7 +939,8 @@ export const pandals: Pandal[] = [
       lng: 88.348669
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-83",
@@ -920,7 +962,8 @@ export const pandals: Pandal[] = [
       lng: 88.372075
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-13"
+    areaId: "cluster-13",
+    geocoded: true
   },
   {
     id: "south-kolkata-85",
@@ -930,7 +973,8 @@ export const pandals: Pandal[] = [
       lat: 22.427650,
       lng: 88.401705
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-86",
@@ -951,7 +995,8 @@ export const pandals: Pandal[] = [
       lat: 22.681692,
       lng: 88.281255
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-88",
@@ -973,7 +1018,8 @@ export const pandals: Pandal[] = [
       lng: 88.369121
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-4"
+    areaId: "cluster-4",
+    geocoded: true
   },
   {
     id: "south-kolkata-90",
@@ -984,7 +1030,8 @@ export const pandals: Pandal[] = [
       lng: 88.344165
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-91",
@@ -994,7 +1041,8 @@ export const pandals: Pandal[] = [
       lat: 22.483881,
       lng: 88.375445
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-92",
@@ -1004,7 +1052,8 @@ export const pandals: Pandal[] = [
       lat: 22.482739,
       lng: 88.386671
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-93",
@@ -1026,7 +1075,8 @@ export const pandals: Pandal[] = [
       lng: 88.365908
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-13"
+    areaId: "cluster-13",
+    geocoded: true
   },
   {
     id: "south-kolkata-95",
@@ -1037,7 +1087,8 @@ export const pandals: Pandal[] = [
       lng: 88.366922
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-13"
+    areaId: "cluster-13",
+    geocoded: true
   },
   {
     id: "south-kolkata-96",
@@ -1048,7 +1099,8 @@ export const pandals: Pandal[] = [
       lng: 88.360673
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-17"
+    areaId: "cluster-17",
+    geocoded: true
   },
   {
     id: "south-kolkata-97",
@@ -1069,7 +1121,8 @@ export const pandals: Pandal[] = [
       lat: 22.683456,
       lng: 88.368746
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-99",
@@ -1102,7 +1155,8 @@ export const pandals: Pandal[] = [
       lng: 88.345443
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-102",
@@ -1113,7 +1167,8 @@ export const pandals: Pandal[] = [
       lng: 88.346456
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-103",
@@ -1201,7 +1256,8 @@ export const pandals: Pandal[] = [
       lng: 88.391259
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-20"
+    areaId: "cluster-20",
+    geocoded: true
   },
   {
     id: "south-kolkata-111",
@@ -1245,7 +1301,8 @@ export const pandals: Pandal[] = [
       lng: 88.337189
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-10"
+    areaId: "cluster-10",
+    geocoded: true
   },
   {
     id: "south-kolkata-115",
@@ -1266,7 +1323,8 @@ export const pandals: Pandal[] = [
       lat: 22.582139,
       lng: 88.447298
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-117",
@@ -1277,7 +1335,8 @@ export const pandals: Pandal[] = [
       lng: 88.352614
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-118",
@@ -1288,7 +1347,8 @@ export const pandals: Pandal[] = [
       lng: 88.353627
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-119",
@@ -1299,7 +1359,8 @@ export const pandals: Pandal[] = [
       lng: 88.353515
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-120",
@@ -1321,7 +1382,8 @@ export const pandals: Pandal[] = [
       lng: 88.371131
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-4"
+    areaId: "cluster-4",
+    geocoded: true
   },
   {
     id: "south-kolkata-122",
@@ -1332,7 +1394,8 @@ export const pandals: Pandal[] = [
       lng: 88.365960
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-13"
+    areaId: "cluster-13",
+    geocoded: true
   },
   {
     id: "south-kolkata-123",
@@ -1353,7 +1416,8 @@ export const pandals: Pandal[] = [
       lat: 22.506145,
       lng: 88.383976
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-125",
@@ -1374,7 +1438,8 @@ export const pandals: Pandal[] = [
       lat: 22.513432,
       lng: 88.401745
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-127",
@@ -1385,7 +1450,8 @@ export const pandals: Pandal[] = [
       lng: 88.331492
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-18"
+    areaId: "cluster-18",
+    geocoded: true
   },
   {
     id: "south-kolkata-128",
@@ -1396,7 +1462,8 @@ export const pandals: Pandal[] = [
       lng: 88.343728
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-129",
@@ -1407,7 +1474,8 @@ export const pandals: Pandal[] = [
       lng: 88.374004
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-13"
+    areaId: "cluster-13",
+    geocoded: true
   },
   {
     id: "south-kolkata-130",
@@ -1418,7 +1486,8 @@ export const pandals: Pandal[] = [
       lng: 88.370836
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-4"
+    areaId: "cluster-4",
+    geocoded: true
   },
   {
     id: "south-kolkata-131",
@@ -1450,7 +1519,8 @@ export const pandals: Pandal[] = [
       lat: 22.537035,
       lng: 88.341149
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-134",
@@ -1460,7 +1530,8 @@ export const pandals: Pandal[] = [
       lat: 22.514360,
       lng: 88.405655
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-135",
@@ -1504,7 +1575,8 @@ export const pandals: Pandal[] = [
       lng: 88.362448
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-4"
+    areaId: "cluster-4",
+    geocoded: true
   },
   {
     id: "south-kolkata-139",
@@ -1514,7 +1586,8 @@ export const pandals: Pandal[] = [
       lat: 22.615490,
       lng: 88.380864
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-140",
@@ -1524,7 +1597,8 @@ export const pandals: Pandal[] = [
       lat: 22.538698,
       lng: 88.317565
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-141",
@@ -1534,7 +1608,8 @@ export const pandals: Pandal[] = [
       lat: 22.552326,
       lng: 88.343068
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-142",
@@ -1567,7 +1642,8 @@ export const pandals: Pandal[] = [
       lng: 88.353329
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-5"
+    areaId: "cluster-5",
+    geocoded: true
   },
   {
     id: "south-kolkata-145",
@@ -1599,7 +1675,8 @@ export const pandals: Pandal[] = [
       lat: 22.588866,
       lng: 88.499107
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-148",
@@ -1632,7 +1709,8 @@ export const pandals: Pandal[] = [
       lng: 88.346626
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-5"
+    areaId: "cluster-5",
+    geocoded: true
   },
   {
     id: "south-kolkata-151",
@@ -1643,7 +1721,8 @@ export const pandals: Pandal[] = [
       lng: 88.348545
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-152",
@@ -1654,7 +1733,8 @@ export const pandals: Pandal[] = [
       lng: 88.366516
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-17"
+    areaId: "cluster-17",
+    geocoded: true
   },
   {
     id: "south-kolkata-153",
@@ -1665,7 +1745,8 @@ export const pandals: Pandal[] = [
       lng: 88.360136
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-17"
+    areaId: "cluster-17",
+    geocoded: true
   },
   {
     id: "south-kolkata-154",
@@ -1676,7 +1757,8 @@ export const pandals: Pandal[] = [
       lng: 88.328112
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-10"
+    areaId: "cluster-10",
+    geocoded: true
   },
   {
     id: "south-kolkata-155",
@@ -1697,7 +1779,8 @@ export const pandals: Pandal[] = [
       lat: 22.505025,
       lng: 88.302958
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-157",
@@ -1707,7 +1790,8 @@ export const pandals: Pandal[] = [
       lat: 22.503918,
       lng: 88.303971
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-158",
@@ -1717,7 +1801,8 @@ export const pandals: Pandal[] = [
       lat: 22.584285,
       lng: 88.358102
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-159",
@@ -1727,7 +1812,8 @@ export const pandals: Pandal[] = [
       lat: 22.531020,
       lng: 88.395862
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-160",
@@ -1738,7 +1824,8 @@ export const pandals: Pandal[] = [
       lng: 88.337790
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-9"
+    areaId: "cluster-9",
+    geocoded: true
   },
   {
     id: "south-kolkata-161",
@@ -1782,7 +1869,8 @@ export const pandals: Pandal[] = [
       lng: 88.395606
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-20"
+    areaId: "cluster-20",
+    geocoded: true
   },
   {
     id: "south-kolkata-165",
@@ -1793,7 +1881,8 @@ export const pandals: Pandal[] = [
       lng: 88.396620
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-20"
+    areaId: "cluster-20",
+    geocoded: true
   },
   {
     id: "south-kolkata-166",
@@ -1803,7 +1892,8 @@ export const pandals: Pandal[] = [
       lat: 22.510497,
       lng: 88.395981
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-167",
@@ -1814,7 +1904,8 @@ export const pandals: Pandal[] = [
       lng: 88.338803
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-9"
+    areaId: "cluster-9",
+    geocoded: true
   },
   {
     id: "south-kolkata-168",
@@ -1890,7 +1981,8 @@ export const pandals: Pandal[] = [
       lat: 22.492440,
       lng: 88.392152
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-175",
@@ -1900,7 +1992,8 @@ export const pandals: Pandal[] = [
       lat: 22.491427,
       lng: 88.383691
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-176",
@@ -1933,7 +2026,8 @@ export const pandals: Pandal[] = [
       lng: 88.363011
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-13"
+    areaId: "cluster-13",
+    geocoded: true
   },
   {
     id: "south-kolkata-179",
@@ -1943,7 +2037,8 @@ export const pandals: Pandal[] = [
       lat: 22.440875,
       lng: 88.424637
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-180",
@@ -1965,7 +2060,8 @@ export const pandals: Pandal[] = [
       lng: 88.361686
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-17"
+    areaId: "cluster-17",
+    geocoded: true
   },
   {
     id: "south-kolkata-182",
@@ -1976,7 +2072,8 @@ export const pandals: Pandal[] = [
       lng: 88.356362
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-6"
+    areaId: "cluster-6",
+    geocoded: true
   },
   {
     id: "south-kolkata-183",
@@ -2019,7 +2116,8 @@ export const pandals: Pandal[] = [
       lat: 22.523695,
       lng: 88.398863
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "south-kolkata-187",
@@ -2040,7 +2138,8 @@ export const pandals: Pandal[] = [
       lat: 22.545646,
       lng: 88.321646
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "central-kolkata-189",
@@ -2072,7 +2171,8 @@ export const pandals: Pandal[] = [
       lng: 88.358743
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-11"
+    areaId: "cluster-11",
+    geocoded: true
   },
   {
     id: "central-kolkata-192",
@@ -2083,7 +2183,8 @@ export const pandals: Pandal[] = [
       lng: 88.364464
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-11"
+    areaId: "cluster-11",
+    geocoded: true
   },
   {
     id: "central-kolkata-193",
@@ -2125,7 +2226,8 @@ export const pandals: Pandal[] = [
       lng: 88.365868
     },
     crowdLevel: "medium" as CrowdLevel,
-    areaId: "cluster-11"
+    areaId: "cluster-11",
+    geocoded: true
   },
   {
     id: "central-kolkata-197",
@@ -2136,7 +2238,8 @@ export const pandals: Pandal[] = [
       lng: 88.363219
     },
     crowdLevel: "low" as CrowdLevel,
-    areaId: "cluster-11"
+    areaId: "cluster-11",
+    geocoded: true
   },
   {
     id: "central-kolkata-198",
@@ -2156,7 +2259,8 @@ export const pandals: Pandal[] = [
       lat: 22.560152,
       lng: 88.352956
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "central-kolkata-200",
@@ -2177,7 +2281,8 @@ export const pandals: Pandal[] = [
       lng: 88.365539
     },
     crowdLevel: "high" as CrowdLevel,
-    areaId: "cluster-11"
+    areaId: "cluster-11",
+    geocoded: true
   },
   {
     id: "central-kolkata-202",
@@ -2208,7 +2313,8 @@ export const pandals: Pandal[] = [
       lat: 22.517648,
       lng: 88.131751
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-205",
@@ -2228,7 +2334,8 @@ export const pandals: Pandal[] = [
       lat: 22.576833,
       lng: 88.392715
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-207",
@@ -2238,7 +2345,8 @@ export const pandals: Pandal[] = [
       lat: 22.480962,
       lng: 88.337529
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-208",
@@ -2278,7 +2386,8 @@ export const pandals: Pandal[] = [
       lat: 22.485726,
       lng: 88.315341
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-212",
@@ -2288,7 +2397,8 @@ export const pandals: Pandal[] = [
       lat: 22.456229,
       lng: 88.307162
     },
-    crowdLevel: "high" as CrowdLevel
+    crowdLevel: "high" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-213",
@@ -2308,7 +2418,8 @@ export const pandals: Pandal[] = [
       lat: 22.501572,
       lng: 88.320943
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-215",
@@ -2348,7 +2459,8 @@ export const pandals: Pandal[] = [
       lat: 22.500466,
       lng: 88.321957
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-219",
@@ -2428,7 +2540,8 @@ export const pandals: Pandal[] = [
       lat: 22.668820,
       lng: 88.342570
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-227",
@@ -2438,7 +2551,8 @@ export const pandals: Pandal[] = [
       lat: 22.702861,
       lng: 88.371664
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-228",
@@ -2458,7 +2572,8 @@ export const pandals: Pandal[] = [
       lat: 22.478133,
       lng: 88.342210
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-230",
@@ -2468,7 +2583,8 @@ export const pandals: Pandal[] = [
       lat: 22.510188,
       lng: 88.306175
     },
-    crowdLevel: "high" as CrowdLevel
+    crowdLevel: "high" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-231",
@@ -2528,7 +2644,8 @@ export const pandals: Pandal[] = [
       lat: 22.505880,
       lng: 88.326403
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-237",
@@ -2558,7 +2675,8 @@ export const pandals: Pandal[] = [
       lat: 22.552960,
       lng: 88.356451
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-240",
@@ -2568,7 +2686,8 @@ export const pandals: Pandal[] = [
       lat: 22.489183,
       lng: 88.329613
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "west-kolkata-241",
@@ -2598,7 +2717,8 @@ export const pandals: Pandal[] = [
       lat: 22.550656,
       lng: 88.403917
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-244",
@@ -2608,7 +2728,8 @@ export const pandals: Pandal[] = [
       lat: 22.511746,
       lng: 88.400357
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-245",
@@ -2628,7 +2749,8 @@ export const pandals: Pandal[] = [
       lat: 22.525294,
       lng: 88.331311
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-247",
@@ -2638,7 +2760,8 @@ export const pandals: Pandal[] = [
       lat: 22.635074,
       lng: 88.483049
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-248",
@@ -2648,7 +2771,8 @@ export const pandals: Pandal[] = [
       lat: 22.514669,
       lng: 88.390413
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-249",
@@ -2658,7 +2782,8 @@ export const pandals: Pandal[] = [
       lat: 22.480993,
       lng: 88.346000
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-250",
@@ -2668,7 +2793,8 @@ export const pandals: Pandal[] = [
       lat: 22.474452,
       lng: 88.311771
     },
-    crowdLevel: "high" as CrowdLevel
+    crowdLevel: "high" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-251",
@@ -2698,7 +2824,8 @@ export const pandals: Pandal[] = [
       lat: 22.768768,
       lng: 88.386142
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-254",
@@ -2708,7 +2835,8 @@ export const pandals: Pandal[] = [
       lat: 22.572646,
       lng: 88.363895
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-255",
@@ -2718,7 +2846,8 @@ export const pandals: Pandal[] = [
       lat: 22.603590,
       lng: 88.427041
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-256",
@@ -2738,7 +2867,8 @@ export const pandals: Pandal[] = [
       lat: 22.560589,
       lng: 88.351415
     },
-    crowdLevel: "low" as CrowdLevel
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
   },
   {
     id: "east-kolkata-258",
@@ -2748,7 +2878,8 @@ export const pandals: Pandal[] = [
       lat: 22.602950,
       lng: 88.423987
     },
-    crowdLevel: "medium" as CrowdLevel
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   }
 ];
 

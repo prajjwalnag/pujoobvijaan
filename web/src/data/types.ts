@@ -17,6 +17,8 @@ export interface Pandal {
   crowdLevel: CrowdLevel;
   /** Links to an Area (see areas.ts) when this pandal falls in a mapped geographic cluster. */
   areaId?: string;
+  /** True only when `coordinates` came from a real OpenStreetMap Nominatim match, not a region-centroid placeholder. */
+  geocoded?: boolean;
   rating?: number;
   theme?: string;
   visitingHours?: { open: string; close: string };
