@@ -1,16 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import clsx from "clsx";
 import type { Pandal, Area, CrowdLevel } from "@/data/types";
-
-const tierColor: Record<CrowdLevel, string> = {
-  high: "var(--color-red)",
-  medium: "#c98a10",
-  low: "#8c7b6b",
-};
-const tierLabel: Record<CrowdLevel, string> = { high: "Big", medium: "Medium", low: "Small" };
+import { tierColor, tierLabel } from "@/data/tiers";
 
 interface AtlasSidebarProps {
   areasList: Area[];
@@ -70,20 +63,24 @@ export function AtlasSidebar({
           className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-2 focus:border-[var(--color-red)]"
         />
         <div className="mt-2 flex flex-wrap gap-2">
-          {(["all", "high", "medium", "low"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => onTierChange(t)}
-              className={clsx(
-                "rounded-full border px-3 py-1 text-xs font-semibold",
-                tier === t
-                  ? "border-[var(--color-red)] bg-[var(--color-red)] text-white"
-                  : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
-              )}
-            >
-              {t === "all" ? "All" : tierLabel[t]}
-            </button>
-          ))}
+          {(["all", "high", "medium", "low"] as const).map((t) => {
+            const active = tier === t;
+            const color = t === "all" ? "var(--color-red)" : tierColor[t];
+            return (
+              <button
+                key={t}
+                onClick={() => onTierChange(t)}
+                className="rounded-full border-2 px-3 py-1 text-xs font-bold transition-colors"
+                style={
+                  active
+                    ? { borderColor: color, background: color, color: "#fff" }
+                    : { borderColor: color, background: "var(--color-bg-secondary)", color }
+                }
+              >
+                {t === "all" ? "All" : tierLabel[t]}
+              </button>
+            );
+          })}
           <button
             onClick={() => onGeoOnlyChange(!geoOnly)}
             className={clsx(
@@ -171,11 +168,30 @@ export function AtlasSidebar({
         </div>
       </div>
 
-      <p className="rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-tertiary)] p-3 text-xs leading-relaxed text-[var(--color-text-light)]">
-        Dashed/faint dots on the map are placeholder locations, not real addresses — solid dots are
-        geocoded via OpenStreetMap. See the <b>resource/pandals_missing_coordinates.csv</b> handoff for
-        the ones still needing a manual address.
-      </p>
+      <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] p-3">
+        <h2 className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
+          Map Legend
+        </h2>
+        <div className="grid grid-cols-3 gap-2 text-xs">
+          {(["high", "medium", "low"] as const).map((t) => (
+            <div key={t} className="flex items-center gap-1.5">
+              <span
+                className="inline-block h-3.5 w-3.5 rounded-full border-2 border-white"
+                style={{ background: tierColor[t] }}
+              />
+              <span className="font-semibold text-[var(--color-text-primary)]">{tierLabel[t]}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 flex items-center gap-1.5 text-xs">
+          <span className="inline-block h-3.5 w-3.5 rounded-full border-2 border-dashed border-[var(--color-text-secondary)] bg-white" />
+          <span className="text-[var(--color-text-secondary)]">Dashed = placeholder, not a real address yet</span>
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-light)]">
+          See <b>resource/pandals_missing_coordinates.csv</b> for the ones still needing a manual
+          address lookup.
+        </p>
+      </div>
     </div>
   );
 }
