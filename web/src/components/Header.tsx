@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "./Button";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
@@ -77,16 +78,20 @@ export function Header() {
               Points: {mockPoints} · Rank #9
             </span>
           )}
+          <ThemeToggle />
           <Button size="sm">Sign In</Button>
         </div>
 
-        <button
-          className="md:hidden text-[var(--color-text-primary)]"
-          onClick={() => setMobileOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            className="text-[var(--color-text-primary)]"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (

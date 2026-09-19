@@ -5,8 +5,16 @@ import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal, Area } from "@/data/types";
 import { tierColor, tierLabel } from "@/data/tiers";
+import { useTheme } from "./ThemeProvider";
 
 const areaByIdMap = (areasList: Area[]) => new Map(areasList.map((a) => [a.id, a]));
+
+const TILE_URLS = {
+  light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+};
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 const tierSize: Record<Pandal["crowdLevel"], number> = {
   high: 34,
@@ -95,13 +103,11 @@ export function AtlasMapView({
   showFood?: boolean;
 }) {
   const areaById = areaByIdMap(areasList);
+  const { theme } = useTheme();
 
   return (
     <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom className="h-full w-full">
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
 
       {areasList.map((area) => {
         const highlighted = area.id === focusedAreaId;

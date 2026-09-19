@@ -5,8 +5,16 @@ import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal } from "@/data/types";
 import { areas } from "@/data/areas";
+import { useTheme } from "./ThemeProvider";
 
 const areaById = new Map(areas.map((a) => [a.id, a]));
+
+const TILE_URLS = {
+  light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+};
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 function pinIcon(checkedIn: boolean) {
   const color = checkedIn ? "#52b788" : "#8b0000";
@@ -41,6 +49,8 @@ export function MapView({
   checkedIn: Set<string>;
   onCheckIn: (id: string) => void;
 }) {
+  const { theme } = useTheme();
+
   return (
     <MapContainer
       center={[22.565, 88.35]}
@@ -48,10 +58,7 @@ export function MapView({
       scrollWheelZoom
       className="h-full w-full"
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
       {pandalsList.map((pandal) => {
         const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
         return (

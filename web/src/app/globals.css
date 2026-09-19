@@ -33,6 +33,66 @@
   --radius: 10px;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-red: #e2464c;
+    --color-red-dark: #b8262c;
+    --color-red-light: #f06066;
+
+    --color-gold: #f0c24b;
+    --color-gold-light: #f5d876;
+    --color-gold-dark: #c99a2e;
+
+    --color-bg-main: #191110;
+    --color-bg-secondary: #221917;
+    --color-bg-tertiary: #2a1f1a;
+
+    --color-text-primary: #f3e7da;
+    --color-text-secondary: #cbb6a8;
+    --color-text-light: #8c7768;
+
+    --color-status-high: #e2464c;
+    --color-status-medium: #5fcf9a;
+    --color-status-low: #3fd0d0;
+    --color-status-theme: #f0c24b;
+
+    --color-border: #3b2b24;
+
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-medium: 0 4px 14px rgba(0, 0, 0, 0.45);
+    --shadow-heavy: 0 10px 28px rgba(0, 0, 0, 0.55);
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-red: #e2464c;
+  --color-red-dark: #b8262c;
+  --color-red-light: #f06066;
+
+  --color-gold: #f0c24b;
+  --color-gold-light: #f5d876;
+  --color-gold-dark: #c99a2e;
+
+  --color-bg-main: #191110;
+  --color-bg-secondary: #221917;
+  --color-bg-tertiary: #2a1f1a;
+
+  --color-text-primary: #f3e7da;
+  --color-text-secondary: #cbb6a8;
+  --color-text-light: #8c7768;
+
+  --color-status-high: #e2464c;
+  --color-status-medium: #5fcf9a;
+  --color-status-low: #3fd0d0;
+  --color-status-theme: #f0c24b;
+
+  --color-border: #3b2b24;
+
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-medium: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-heavy: 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
 @theme inline {
   --color-red: var(--color-red);
   --color-red-dark: var(--color-red-dark);
@@ -112,6 +172,34 @@ body {
 }
 .area-glow-label.leaflet-tooltip::before {
   display: none;
+}
+
+/* Dark theme: Leaflet's own chrome is hardcoded light, so re-skin it */
+:root[data-theme="dark"] .leaflet-popup-content-wrapper,
+:root[data-theme="dark"] .leaflet-popup-tip {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+:root[data-theme="dark"] .leaflet-popup-content a {
+  color: var(--color-red);
+}
+:root[data-theme="dark"] .leaflet-bar a {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-border);
+}
+:root[data-theme="dark"] .leaflet-bar a:hover {
+  background: var(--color-bg-tertiary);
+}
+:root[data-theme="dark"] .leaflet-control-attribution {
+  background: rgba(25, 17, 16, 0.75);
+  color: var(--color-text-light);
+}
+:root[data-theme="dark"] .leaflet-control-attribution a {
+  color: var(--color-text-secondary);
+}
+:root[data-theme="dark"] .leaflet-container {
+  background: var(--color-bg-tertiary);
 }
 
 /* Countdown */
