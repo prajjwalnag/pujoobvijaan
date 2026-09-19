@@ -52,6 +52,16 @@ export interface Area {
   restaurants: AreaPlace[];
 }
 
+export interface Itinerary {
+  id: string;
+  title: string;
+  description: string;
+  /** How you'd realistically cover these stops. */
+  mode: "walk" | "transit";
+  /** Ordered pandal ids — the planned visiting sequence. */
+  stops: { pandalId: string; scheduledTime: string }[];
+}
+
 export interface LeaderboardEntry {
   userId: string;
   /** Display name, e.g. "Anwesha Roy". */
