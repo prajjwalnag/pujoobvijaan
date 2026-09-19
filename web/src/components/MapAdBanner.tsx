@@ -10,12 +10,8 @@ interface AdSlot {
   href?: string;
 }
 
-// One real ad (the user's own copy) plus a real CTA slot pointing at the
-// actual /partners signup flow — not padded out with invented sponsor
-// names just to make the rotation look busier than it is.
 const AD_SLOTS: AdSlot[] = [
   { badge: "Ad", text: "Feeling hungry or craving a dough kebab? Kitchen is there." },
-  { badge: "Sponsor", text: "Want your brand here? Add yourself as a partner — free for now.", href: "/partners" },
 ];
 
 const ROTATE_MS = 6000;
