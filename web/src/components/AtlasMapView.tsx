@@ -72,7 +72,7 @@ export function AtlasMapView({
           <Circle
             key={area.id}
             center={[area.center.lat, area.center.lng]}
-            radius={2600}
+            radius={1700}
             pathOptions={{
               color: "#D4A017",
               weight: highlighted ? 4 : 2,
