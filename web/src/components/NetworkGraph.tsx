@@ -201,16 +201,57 @@ export function NetworkGraph({
         ctx!.globalAlpha = 1;
       }
 
-      if (hovered && hovered.x !== undefined && hovered.y !== undefined) {
-        const r = radiusFor(hovered);
-        ctx!.font = `${12 / transform.k}px sans-serif`;
-        const label = hovered.label;
+      function drawLabel(n: SimNode, strong: boolean) {
+        if (n.x === undefined || n.y === undefined) return;
+        const r = radiusFor(n);
+        ctx!.font = `${(strong ? 13 : 11) / transform.k}px sans-serif`;
+        const label = n.label;
         const pad = 5 / transform.k;
         const tw = ctx!.measureText(label).width;
-        ctx!.fillStyle = "rgba(42,26,26,0.92)";
-        ctx!.fillRect(hovered.x + r + 4, hovered.y - 10, tw + pad * 2, 18 / transform.k);
+        ctx!.fillStyle = strong ? "rgba(42,26,26,0.95)" : "rgba(42,26,26,0.85)";
+        ctx!.fillRect(n.x + r + 4, n.y - 10 / transform.k, tw + pad * 2, 18 / transform.k);
         ctx!.fillStyle = "#fff";
-        ctx!.fillText(label, hovered.x + r + 4 + pad, hovered.y + 3);
+        ctx!.fillText(label, n.x + r + 4 + pad, n.y + 3 / transform.k);
+      }
+
+      // On selection, label every connected node — not just the one
+      // hovered — so touch devices (no hover) can actually read who's
+      // connected. A region/area's pandal fan-out can be 50+, so pandal
+      // labels are capped to keep it legible; region/area neighbours
+      // (always few) are never capped.
+      if (selectedId && highlightSet) {
+        const selectedNode = simNodes.find((n) => n.id === selectedId);
+        const connected = simNodes.filter((n) => highlightSet.has(n.id) && n.id !== selectedId);
+        const nonPandal = connected.filter((n) => n.kind !== "pandal");
+        const pandalNeighbours = connected.filter((n) => n.kind === "pandal");
+        const MAX_PANDAL_LABELS = 25;
+
+        if (selectedNode) drawLabel(selectedNode, true);
+        for (const n of nonPandal) drawLabel(n, false);
+        for (const n of pandalNeighbours.slice(0, MAX_PANDAL_LABELS)) drawLabel(n, false);
+
+        if (pandalNeighbours.length > MAX_PANDAL_LABELS && selectedNode?.x !== undefined) {
+          const remaining = pandalNeighbours.length - MAX_PANDAL_LABELS;
+          ctx!.font = `${11 / transform.k}px sans-serif`;
+          const label = `+${remaining} more`;
+          const pad = 5 / transform.k;
+          const tw = ctx!.measureText(label).width;
+          ctx!.fillStyle = "rgba(42,26,26,0.7)";
+          ctx!.fillRect(
+            selectedNode.x! - tw / 2 - pad,
+            selectedNode.y! + radiusFor(selectedNode) + 6 / transform.k,
+            tw + pad * 2,
+            16 / transform.k
+          );
+          ctx!.fillStyle = "#fff";
+          ctx!.fillText(
+            label,
+            selectedNode.x! - tw / 2,
+            selectedNode.y! + radiusFor(selectedNode) + 18 / transform.k
+          );
+        }
+      } else if (hovered && hovered.x !== undefined && hovered.y !== undefined) {
+        drawLabel(hovered, true);
       }
 
       ctx!.restore();
