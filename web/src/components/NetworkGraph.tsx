@@ -11,10 +11,12 @@ import {
   type SimulationLinkDatum,
 } from "d3-force";
 import { tierColor } from "@/data/tiers";
-import type { GraphNode, GraphLink } from "@/data/graph";
+import type { GraphNode, GraphLink, GraphLinkKind } from "@/data/graph";
 
 interface SimNode extends SimulationNodeDatum, GraphNode {}
-interface SimLink extends SimulationLinkDatum<SimNode> {}
+interface SimLink extends SimulationLinkDatum<SimNode> {
+  kind: GraphLinkKind;
+}
 
 const REGION_COLOR = "#8b5a00";
 const AREA_COLOR = "#d4a017";
@@ -35,11 +37,13 @@ export function NetworkGraph({
   nodes,
   links,
   showPandals,
+  showDistance,
   onSelect,
 }: {
   nodes: GraphNode[];
   links: GraphLink[];
   showPandals: boolean;
+  showDistance: boolean;
   onSelect: (node: GraphNode | null) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -88,10 +92,19 @@ export function NetworkGraph({
 
     const filteredNodes = showPandals ? nodes : nodes.filter((n) => n.kind !== "pandal");
     const nodeIds = new Set(filteredNodes.map((n) => n.id));
-    const filteredLinks = links.filter((l) => nodeIds.has(l.source) && nodeIds.has(l.target));
+    const filteredLinks = links.filter(
+      (l) =>
+        nodeIds.has(l.source) &&
+        nodeIds.has(l.target) &&
+        (l.kind !== "distance" || showDistance)
+    );
 
     const simNodes: SimNode[] = filteredNodes.map((n) => ({ ...n }));
-    const simLinks: SimLink[] = filteredLinks.map((l) => ({ source: l.source, target: l.target }));
+    const simLinks: SimLink[] = filteredLinks.map((l) => ({
+      source: l.source,
+      target: l.target,
+      kind: l.kind,
+    }));
     stateRef.current.simNodes = simNodes;
     stateRef.current.simLinks = simLinks;
 
@@ -101,13 +114,14 @@ export function NetworkGraph({
         forceLink<SimNode, SimLink>(simLinks)
           .id((d) => d.id)
           .distance((l) => {
+            if (l.kind === "distance") return 14;
             const s = l.source as SimNode;
             const t = l.target as SimNode;
             if (s.kind === "region" || t.kind === "region") return 90;
             if (s.kind === "area" || t.kind === "area") return 34;
             return 20;
           })
-          .strength(0.7)
+          .strength((l) => (l.kind === "distance" ? 0.25 : 0.7))
       )
       .force("charge", forceManyBody().strength((d) => ((d as SimNode).kind === "pandal" ? -18 : -220)))
       .force("center", forceCenter(width / 2, height / 2))
@@ -140,18 +154,26 @@ export function NetworkGraph({
           )
         : null;
 
-      ctx!.lineWidth = 1 / transform.k;
       for (const l of simLinks) {
         const s = l.source as SimNode;
         const t = l.target as SimNode;
         if (s.x === undefined || t.x === undefined) continue;
         const dim = highlightSet && !(highlightSet.has(s.id) && highlightSet.has(t.id));
-        ctx!.strokeStyle = dim ? "rgba(160,148,136,0.15)" : "rgba(160,148,136,0.55)";
+        if (l.kind === "distance") {
+          ctx!.setLineDash([3 / transform.k, 3 / transform.k]);
+          ctx!.lineWidth = 0.9 / transform.k;
+          ctx!.strokeStyle = dim ? "rgba(74,144,217,0.08)" : "rgba(74,144,217,0.55)";
+        } else {
+          ctx!.setLineDash([]);
+          ctx!.lineWidth = 1 / transform.k;
+          ctx!.strokeStyle = dim ? "rgba(160,148,136,0.15)" : "rgba(160,148,136,0.55)";
+        }
         ctx!.beginPath();
         ctx!.moveTo(s.x!, s.y!);
         ctx!.lineTo(t.x!, t.y!);
         ctx!.stroke();
       }
+      ctx!.setLineDash([]);
 
       for (const n of simNodes) {
         if (n.x === undefined || n.y === undefined) continue;
@@ -300,7 +322,7 @@ export function NetworkGraph({
       resizeObserver.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodes, links, showPandals]);
+  }, [nodes, links, showPandals, showDistance]);
 
   return (
     <div ref={wrapRef} className="relative h-full w-full">

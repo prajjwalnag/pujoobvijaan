@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { Network } from "lucide-react";
-import { buildGraph, type GraphNode } from "@/data/graph";
+import { buildGraph, buildDistanceLinks, type GraphNode } from "@/data/graph";
 import { tierColor, tierLabel } from "@/data/tiers";
 
 const NetworkGraph = dynamic(() => import("@/components/NetworkGraph").then((m) => m.NetworkGraph), {
@@ -16,8 +16,11 @@ const NetworkGraph = dynamic(() => import("@/components/NetworkGraph").then((m) 
 });
 
 export default function NetworkPage() {
-  const { nodes, links } = useMemo(() => buildGraph(), []);
+  const { nodes, links: hierarchyLinks } = useMemo(() => buildGraph(), []);
+  const distanceLinks = useMemo(() => buildDistanceLinks(), []);
+  const links = useMemo(() => [...hierarchyLinks, ...distanceLinks], [hierarchyLinks, distanceLinks]);
   const [showPandals, setShowPandals] = useState(true);
+  const [showDistance, setShowDistance] = useState(true);
   const [selected, setSelected] = useState<GraphNode | null>(null);
 
   const stats = useMemo(
@@ -25,16 +28,22 @@ export default function NetworkPage() {
       regions: nodes.filter((n) => n.kind === "region").length,
       areas: nodes.filter((n) => n.kind === "area").length,
       pandals: nodes.filter((n) => n.kind === "pandal").length,
-      links: links.length,
+      distanceLinks: distanceLinks.length,
     }),
-    [nodes, links]
+    [nodes, distanceLinks]
   );
 
   return (
     <div className="flex h-[calc(100vh-64px)] flex-col lg:flex-row">
       <div className="flex-1 p-4">
         <div className="h-full w-full overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
-          <NetworkGraph nodes={nodes} links={links} showPandals={showPandals} onSelect={setSelected} />
+          <NetworkGraph
+            nodes={nodes}
+            links={links}
+            showPandals={showPandals}
+            showDistance={showDistance}
+            onSelect={setSelected}
+          />
         </div>
       </div>
 
@@ -45,8 +54,9 @@ export default function NetworkPage() {
             <h1 className="text-xl font-bold text-[var(--color-text-primary)]">Network</h1>
           </div>
           <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-            Every pandal, connected by real location — region → area → pandal. Drag nodes,
-            scroll to zoom, click a node to trace its connections.
+            Every pandal, connected by real location — region → area → pandal, plus dashed
+            links straight between pandals within ~1km of each other. Drag nodes, scroll to
+            zoom, click a node to trace its connections.
           </p>
         </div>
 
@@ -65,16 +75,29 @@ export default function NetworkPage() {
           </div>
         </div>
 
-        <button
-          onClick={() => setShowPandals((v) => !v)}
-          className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${
-            showPandals
-              ? "border-[var(--color-red)] bg-[var(--color-red)] text-white"
-              : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
-          }`}
-        >
-          {showPandals ? "Showing all pandal nodes" : "Regions + Areas only"}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setShowPandals((v) => !v)}
+            className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${
+              showPandals
+                ? "border-[var(--color-red)] bg-[var(--color-red)] text-white"
+                : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
+            }`}
+          >
+            {showPandals ? "Showing all pandal nodes" : "Regions + Areas only"}
+          </button>
+          <button
+            onClick={() => setShowDistance((v) => !v)}
+            disabled={!showPandals}
+            className={`rounded-full border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-40 ${
+              showDistance
+                ? "border-[#4a90d9] bg-[#4a90d9] text-white"
+                : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
+            }`}
+          >
+            Distance links ({stats.distanceLinks})
+          </button>
+        </div>
 
         <div>
           <h2 className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
@@ -132,11 +155,18 @@ export default function NetworkPage() {
               <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#15A34A]" />
               <span className="text-[var(--color-text-secondary)]">Pandal — Small</span>
             </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-0 w-4 border-t-2 border-dashed border-[#4a90d9]" />
+              <span className="text-[var(--color-text-secondary)]">Distance link (≤1km apart)</span>
+            </div>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-light)]">
             A pandal links to its Area when one's been mapped (see /atlas); otherwise it links
-            straight to its Region. This is the same underlying dataset as the rest of the app —
-            nothing here is invented for the graph.
+            straight to its Region. Dashed lines connect each pandal to its 3 nearest
+            neighbours by real haversine distance — on a pandal still using a placeholder
+            coordinate (not yet geocoded), that reads as "nearby within the region jitter,"
+            not a verified real-world distance. This is the same underlying dataset as the
+            rest of the app — nothing here is invented for the graph.
           </p>
         </div>
       </div>

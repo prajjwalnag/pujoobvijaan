@@ -13,9 +13,13 @@ export interface GraphNode {
   count?: number; // for region/area hubs — how many pandals hang off them
 }
 
+export type GraphLinkKind = "hierarchy" | "distance";
+
 export interface GraphLink {
   source: string;
   target: string;
+  kind: GraphLinkKind;
+  distanceKm?: number;
 }
 
 // Every pandal connects to its Area (if it has one) or straight to its
@@ -31,16 +35,16 @@ export function buildGraph(): { nodes: GraphNode[]; links: GraphLink[] } {
 
   for (const area of areas) {
     nodes.push({ id: `area:${area.id}`, kind: "area", label: area.name, count: area.pandalCount });
-    links.push({ source: `region:${area.region}`, target: `area:${area.id}` });
+    links.push({ source: `region:${area.region}`, target: `area:${area.id}`, kind: "hierarchy" });
     regionCounts.set(area.region, (regionCounts.get(area.region) ?? 0) + area.pandalCount);
   }
 
   for (const p of pandals) {
     nodes.push({ id: `pandal:${p.id}`, kind: "pandal", label: p.name, crowdLevel: p.crowdLevel });
     if (p.areaId) {
-      links.push({ source: `area:${p.areaId}`, target: `pandal:${p.id}` });
+      links.push({ source: `area:${p.areaId}`, target: `pandal:${p.id}`, kind: "hierarchy" });
     } else {
-      links.push({ source: `region:${p.region}`, target: `pandal:${p.id}` });
+      links.push({ source: `region:${p.region}`, target: `pandal:${p.id}`, kind: "hierarchy" });
       regionCounts.set(p.region, (regionCounts.get(p.region) ?? 0) + 1);
     }
   }
@@ -53,4 +57,47 @@ export function buildGraph(): { nodes: GraphNode[]; links: GraphLink[] } {
   }));
 
   return { nodes: [...regionNodes, ...nodes], links };
+}
+
+function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+  const R = 6371;
+  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
+  const la1 = (a.lat * Math.PI) / 180;
+  const la2 = (b.lat * Math.PI) / 180;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+// Connects each pandal to its K nearest neighbours by real haversine
+// distance (its own coordinates, geocoded or placeholder alike — so on
+// still-placeholder pandals this reads as "nearby within the same
+// region jitter," not a verified real-world walking distance). Capped
+// to a max radius so pandals on opposite sides of a wide region don't
+// get linked just because they're each other's least-far neighbour.
+const K_NEAREST = 3;
+const MAX_KM = 1.0;
+
+export function buildDistanceLinks(): GraphLink[] {
+  const points = pandals.map((p) => ({ id: `pandal:${p.id}`, lat: p.coordinates.lat, lng: p.coordinates.lng }));
+  const seen = new Set<string>();
+  const links: GraphLink[] = [];
+
+  for (let i = 0; i < points.length; i++) {
+    const candidates: { id: string; d: number }[] = [];
+    for (let j = 0; j < points.length; j++) {
+      if (i === j) continue;
+      const d = haversineKm(points[i], points[j]);
+      if (d <= MAX_KM) candidates.push({ id: points[j].id, d });
+    }
+    candidates.sort((a, b) => a.d - b.d);
+    for (const c of candidates.slice(0, K_NEAREST)) {
+      const key = [points[i].id, c.id].sort().join("|");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      links.push({ source: points[i].id, target: c.id, kind: "distance", distanceKm: c.d });
+    }
+  }
+
+  return links;
 }
