@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
 import { Star } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -44,6 +44,43 @@ function pinIcon(checkedIn: boolean) {
     iconAnchor: [11, 22],
     popupAnchor: [0, -22],
   });
+}
+
+function userLocationIcon() {
+  const html = renderToStaticMarkup(
+    <div style={{ width: 18, height: 18, position: "relative" }}>
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: "50%",
+          background: "#4a90d9",
+          opacity: 0.35,
+          animation: "pujo-pulse 1.8s ease-out infinite",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 4,
+          borderRadius: "50%",
+          background: "#4a90d9",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.4)",
+        }}
+      />
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [18, 18], iconAnchor: [9, 9] });
+}
+
+function FlyToLocation({ location }: { location: { lat: number; lng: number } | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (location) map.flyTo([location.lat, location.lng], 15, { duration: 1 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location?.lat, location?.lng]);
+  return null;
 }
 
 function routeMarkerIcon(index: number) {
@@ -107,6 +144,7 @@ export function MapView({
   showRoads = false,
   routeStops = [],
   onAddToRoute,
+  userLocation = null,
 }: {
   pandalsList: Pandal[];
   showMetro?: boolean;
@@ -114,6 +152,7 @@ export function MapView({
   showRoads?: boolean;
   routeStops?: Pandal[];
   onAddToRoute?: (pandal: Pandal) => void;
+  userLocation?: { lat: number; lng: number } | null;
 }) {
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
@@ -130,6 +169,16 @@ export function MapView({
       {showRoads && <RoadLayer />}
       {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
+      <FlyToLocation location={userLocation} />
+      {userLocation && (
+        <Marker
+          position={[userLocation.lat, userLocation.lng]}
+          icon={userLocationIcon()}
+          zIndexOffset={2000}
+        >
+          <Popup>You are here</Popup>
+        </Marker>
+      )}
 
       {routeStops.length > 1 && (
         <Polyline

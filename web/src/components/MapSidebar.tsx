@@ -43,6 +43,9 @@ interface MapSidebarProps {
   onRouteOptimize: () => void;
   onRouteClear: () => void;
   onRouteSave: (title: string) => void;
+  onLocate: () => void;
+  locating: boolean;
+  locationError: string | null;
 }
 
 export function MapSidebar({
@@ -58,6 +61,9 @@ export function MapSidebar({
   onRouteOptimize,
   onRouteClear,
   onRouteSave,
+  onLocate,
+  locating,
+  locationError,
 }: MapSidebarProps) {
   const [openArea, setOpenArea] = useState<string | null>(null);
   const [routeBuilderOpen, setRouteBuilderOpen] = useState(false);
@@ -181,10 +187,17 @@ export function MapSidebar({
         <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
           Tools
         </h3>
-        <button className="mb-2 flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-red)]">
-          <LocateFixed size={16} />
-          Find My Location
+        <button
+          onClick={onLocate}
+          disabled={locating}
+          className="mb-1 flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-red)] disabled:cursor-wait disabled:opacity-60"
+        >
+          <LocateFixed size={16} className={locating ? "animate-pulse" : ""} />
+          {locating ? "Locating…" : "Find My Location"}
         </button>
+        {locationError && (
+          <p className="mb-2 text-xs text-[var(--color-red)]">{locationError}</p>
+        )}
         <RouteBuilderPanel
           open={routeBuilderOpen}
           onToggleOpen={() => setRouteBuilderOpen((v) => !v)}
