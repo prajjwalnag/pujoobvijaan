@@ -9,7 +9,10 @@ export type Region =
   // Separate administrative districts, not Kolkata proper — but colloquially
   // part of the city's puja circuit (Lake Town, Patipukur, Sonarpur, etc.).
   | "North 24 Parganas"
-  | "South 24 Parganas";
+  | "South 24 Parganas"
+  // Across the Hooghly from Kolkata proper, but part of the same metro
+  // pandal-hopping circuit (just over Howrah Bridge).
+  | "Howrah";
 
 export interface Pandal {
   id: string;

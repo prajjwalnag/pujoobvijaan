@@ -2,7 +2,7 @@
 // listings (indianfestivaldiary.com, cross-checked against Kolkata Police /
 // news coverage for well-known pandals). crowdLevel is a size/prominence
 // tier (big/medium/small, based on known-prominent pandals), not live
-// crowd data. Coordinates: 143 of 294 pandals are geocoded via
+// crowd data. Coordinates: 156 of 335 pandals are geocoded via
 // OpenStreetMap Nominatim (either the pandal's own name for landmark
 // pandals, or a locality name extracted from the pandal's name) — these
 // are real neighbourhood-level locations, not exact building addresses.
@@ -13,11 +13,16 @@
 // unset rather than fabricated.
 //
 // ids north-kolkata-1..south-kolkata-*/etc (1-258) are the original 258
-// Kolkata-proper pandals; ids extra-259..extra-294 are 36 more pulled from
-// North 24 Parganas (Lake Town/Patipukur) and South 24 Parganas
-// (Sonarpur/Thakurpukur/Baishnabghata Patuli) — separate districts, not
-// Kolkata proper, but part of the same puja circuit. None of the 36 have
-// curated Area entries yet (see areas.ts) — they show up as "ungrouped".
+// Kolkata-proper pandals; ids extra-259..extra-294 are 36 more from North
+// 24 Parganas (Lake Town/Patipukur) and South 24 Parganas (Sonarpur/
+// Thakurpukur/Baishnabghata Patuli); ids howrah-295..howrah-335 are 41
+// more from Howrah, directly across the Hooghly. All three added
+// districts are separate from Kolkata proper but part of the same puja
+// circuit. Deliberately excluded: indianfestivaldiary.com's "Other Zone"
+// listing, which turned out to be towns hundreds of km away (Jaigaon,
+// Ranaghat, Pandaveswar) — not part of Kolkata's puja circuit at all.
+// None of these 77 extra pandals have curated Area entries yet (see
+// areas.ts) — they show up as "ungrouped".
 import type { Pandal, Region, CrowdLevel } from "./types";
 
 export const pandals: Pandal[] = [
@@ -3259,6 +3264,429 @@ export const pandals: Pandal[] = [
       lng: 88.364
     },
     crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-295",
+    name: "Arabinda Nagar Arabinda Sangha Sarbojanin Durga Utsav",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.566887,
+      lng: 88.269715
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-296",
+    name: "Arupara Sarbojanin Durgotsab Committee",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5901,
+      lng: 88.3284
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-297",
+    name: "Azad Hind Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5644,
+      lng: 88.3179
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-298",
+    name: "Bachhri Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.6122,
+      lng: 88.3454
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-299",
+    name: "Bagnan Nabaneer Club Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.576,
+      lng: 88.3037
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-300",
+    name: "Balitikuri Netaji Balak Sangha",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5707,
+      lng: 88.3194
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-301",
+    name: "Bantra Mohila Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.592787,
+      lng: 88.317996
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-302",
+    name: "Bantra Nabin Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.591681,
+      lng: 88.319009
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-303",
+    name: "Batore 41er Pally Sarbojanin",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5646,
+      lng: 88.3452
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-304",
+    name: "Belepole Adams Club",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5979,
+      lng: 88.3471
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-305",
+    name: "Brindabon Netaji Balak Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5779,
+      lng: 88.3464
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-306",
+    name: "Daspara Panch Bhai Sangha",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.623221,
+      lng: 88.300084
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-307",
+    name: "Dharmatala Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.570078,
+      lng: 88.321519
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-308",
+    name: "Ghoshpara Sankalpa Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5609,
+      lng: 88.3254
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-309",
+    name: "Ghoshpara Young Stars Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.6031,
+      lng: 88.3354
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-310",
+    name: "Guha Road Sarbojanin Mahapuja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.61991,
+      lng: 88.350836
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-311",
+    name: "Howrah Jatiya Sevadal Club Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5664,
+      lng: 88.3369
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-312",
+    name: "Ichapur Bayam Samity Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.592786,
+      lng: 88.305892
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-313",
+    name: "Ichapur Mitali Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.59168,
+      lng: 88.306905
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-314",
+    name: "Ichapur Sanghamitra Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.6123,
+      lng: 88.3024
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-315",
+    name: "Jhorehat Pachal Para Puja Committee",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.595,
+      lng: 88.3287
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-316",
+    name: "Kamardanga Sisu Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.6135,
+      lng: 88.3412
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-317",
+    name: "Kamardanga Sitalatala Barowari Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5768,
+      lng: 88.3221
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-318",
+    name: "Kashipur Yubo Gosthi",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.607372,
+      lng: 88.308125
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-319",
+    name: "Kazi Bagan Lane Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5563,
+      lng: 88.3051
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-320",
+    name: "Kishor Sangsad Club Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5583,
+      lng: 88.3117
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-321",
+    name: "Madhusudan Das Lane & Bye Lane Sarbojanin Durgotsab",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5686,
+      lng: 88.3249
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-322",
+    name: "Makardah Karuri Para Sarbojanin Durgotsav",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5928,
+      lng: 88.3084
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-323",
+    name: "Milan Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5731,
+      lng: 88.3382
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-324",
+    name: "Nabanagar Badamtala Sarbojanin Durgotsab",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.6114,
+      lng: 88.304
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-325",
+    name: "Salap Utsahi Sangha Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5565,
+      lng: 88.3416
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-326",
+    name: "Salkia Baroari Durgatsob",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.598926,
+      lng: 88.34757
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-327",
+    name: "Salkia Chatra Bayam Samity Sarbojanin",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.59782,
+      lng: 88.348583
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-328",
+    name: "Salkia Sadharan Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.599112,
+      lng: 88.345456
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "howrah-329",
+    name: "Salkia Sitalatala Sarbojanin Durgotsab",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.6129,
+      lng: 88.3274
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-330",
+    name: "Shaktimoyee Sarbojanin Durgotsab Committee",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5727,
+      lng: 88.3187
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-331",
+    name: "Shibpur Sastitala Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5839,
+      lng: 88.3332
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-332",
+    name: "Subhaspally Shaktinagar Sarbojanin Durgatsav",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5584,
+      lng: 88.3114
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-333",
+    name: "Torpedo Welfare Society Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.5932,
+      lng: 88.3132
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "howrah-334",
+    name: "Uttar Bantra Kumar Para Baroary Samity Durga Puja",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.592,
+      lng: 88.317
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "howrah-335",
+    name: "Uttar Salkia Sarbojanin Durgotsab",
+    region: "Howrah",
+    coordinates: {
+      lat: 22.600507,
+      lng: 88.349632
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
   }
 ];
 
@@ -3271,11 +3699,12 @@ export const pandalStats = {
 };
 
 export const regions: Region[] = [
-  "North Kolkata",
+"North Kolkata",
   "South Kolkata",
   "Central Kolkata",
   "West Kolkata",
   "East Kolkata",
   "North 24 Parganas",
-  "South 24 Parganas"
+  "South 24 Parganas",
+  "Howrah"
 ];
