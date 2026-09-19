@@ -55,11 +55,11 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
         <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
           Tools
         </h3>
-        <button className="mb-2 flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-maroon)]">
+        <button className="mb-2 flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-red)]">
           <LocateFixed size={16} />
           Find My Location
         </button>
-        <button className="flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-maroon)]">
+        <button className="flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-red)]">
           <Route size={16} />
           Route Builder
         </button>
@@ -94,7 +94,7 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
       </div>
 
       <div className="rounded-lg bg-[var(--color-bg-tertiary)] p-3">
-        <h3 className="mb-1 text-sm font-bold text-[var(--color-maroon)]">
+        <h3 className="mb-1 text-sm font-bold text-[var(--color-red)]">
           Your Pandal Hopping
         </h3>
         <p className="text-sm text-[var(--color-text-secondary)]">

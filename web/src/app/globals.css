@@ -2,36 +2,44 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
-  --color-maroon: #8b0000;
-  --color-maroon-dark: #6b0000;
-  --color-maroon-light: #a00000;
+  /* Red / White / Gold — Pujo Obhijaan palette */
+  --color-red: #c1272d;
+  --color-red-dark: #931017;
+  --color-red-light: #e0393f;
 
-  --color-bg-main: #f5f0e8;
+  --color-gold: #d4a017;
+  --color-gold-light: #f2c94c;
+  --color-gold-dark: #a97c0f;
+
+  --color-bg-main: #fffdf8;
   --color-bg-secondary: #ffffff;
-  --color-bg-tertiary: #f0ebe3;
+  --color-bg-tertiary: #fff4db;
 
-  --color-text-primary: #2d2d2d;
-  --color-text-secondary: #666666;
-  --color-text-light: #999999;
+  --color-text-primary: #2a1a1a;
+  --color-text-secondary: #6b5a52;
+  --color-text-light: #a3948c;
 
-  --color-status-high: #e84c8a;
-  --color-status-medium: #52b788;
-  --color-status-low: #4ecdc4;
-  --color-status-theme: #f4d35e;
+  --color-status-high: #c1272d;
+  --color-status-medium: #2f8f5b;
+  --color-status-low: #1f8a8a;
+  --color-status-theme: #d4a017;
 
-  --color-border: #e0d9cf;
+  --color-border: #ecdfc9;
 
-  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --shadow-light: 0 2px 8px rgba(193, 39, 45, 0.08);
+  --shadow-medium: 0 4px 14px rgba(193, 39, 45, 0.14);
+  --shadow-heavy: 0 10px 28px rgba(193, 39, 45, 0.2);
 
-  --radius: 8px;
+  --radius: 10px;
 }
 
 @theme inline {
-  --color-maroon: var(--color-maroon);
-  --color-maroon-dark: var(--color-maroon-dark);
-  --color-maroon-light: var(--color-maroon-light);
+  --color-red: var(--color-red);
+  --color-red-dark: var(--color-red-dark);
+  --color-red-light: var(--color-red-light);
+  --color-gold: var(--color-gold);
+  --color-gold-light: var(--color-gold-light);
+  --color-gold-dark: var(--color-gold-dark);
   --color-bg-main: var(--color-bg-main);
   --color-bg-secondary: var(--color-bg-secondary);
   --color-bg-tertiary: var(--color-bg-tertiary);
@@ -50,10 +58,26 @@
 body {
   background: var(--color-bg-main);
   color: var(--color-text-primary);
+  background-image: linear-gradient(
+    180deg,
+    var(--color-bg-tertiary) 0%,
+    var(--color-bg-main) 320px
+  );
 }
 
 .leaflet-container {
   width: 100%;
   height: 100%;
   border-radius: var(--radius);
+}
+
+.gold-rule {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 20%,
+    var(--color-gold) 80%,
+    transparent
+  );
 }

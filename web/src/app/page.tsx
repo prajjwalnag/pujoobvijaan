@@ -26,9 +26,10 @@ const highlights = [
 export default function Home() {
   return (
     <div className="mx-auto max-w-[1000px] px-4 py-16 text-center sm:px-6">
-      <h1 className="text-4xl font-bold text-[var(--color-maroon)] sm:text-5xl">
-        Pujo Planner
+      <h1 className="text-4xl font-bold text-[var(--color-red)] sm:text-5xl">
+        Pujo <span className="text-[var(--color-gold-dark)]">Obhijaan</span>
       </h1>
+      <div className="gold-rule mx-auto mt-3 w-24" />
       <p className="mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
         Plan, explore, and navigate Kolkata&apos;s Durga Puja pandals — with a
         leaderboard that turns pandal hopping into a game.
@@ -43,7 +44,7 @@ export default function Home() {
               href={item.href}
               className="flex flex-col items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-6 text-left shadow-[var(--shadow-light)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg-tertiary)] text-[var(--color-maroon)]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-bg-tertiary)] text-[var(--color-red)]">
                 <Icon size={22} />
               </div>
               <h2 className="text-lg font-bold text-[var(--color-text-primary)]">

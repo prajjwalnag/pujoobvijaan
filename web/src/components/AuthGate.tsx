@@ -12,7 +12,7 @@ export function AuthGate({
 }) {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-24 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-bg-tertiary)] text-[var(--color-maroon)]">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-bg-tertiary)] text-[var(--color-red)]">
         <Icon size={28} />
       </div>
       <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">{title}</h2>

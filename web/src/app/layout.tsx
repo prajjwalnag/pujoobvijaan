@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pujo Planner",
+  title: "Pujo Obhijaan",
   description: "Plan, explore, and navigate Kolkata's Durga Puja pandals",
 };
 

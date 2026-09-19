@@ -21,26 +21,26 @@ export function Footer() {
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg-main)] py-8">
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 text-center sm:flex-row sm:justify-between sm:text-left">
         <p className="text-sm text-[var(--color-text-secondary)]">
-          Developed with ❤️ by Pujo Planner Team
+          Developed with ❤️ by Pujo Obhijaan Team
         </p>
         <div className="flex items-center gap-4">
           <a
             href="#"
             aria-label="Facebook"
-            className="text-[var(--color-text-secondary)] hover:text-[var(--color-maroon)]"
+            className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]"
           >
             <FacebookIcon />
           </a>
           <a
             href="#"
             aria-label="Instagram"
-            className="text-[var(--color-text-secondary)] hover:text-[var(--color-maroon)]"
+            className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]"
           >
             <InstagramIcon />
           </a>
         </div>
         <p className="text-sm text-[var(--color-text-light)]">
-          Copyright © 2026 PujoPlanner
+          Copyright © 2026 Pujo Obhijaan
         </p>
       </div>
     </footer>

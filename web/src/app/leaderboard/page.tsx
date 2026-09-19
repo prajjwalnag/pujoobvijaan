@@ -14,22 +14,22 @@ export default function LeaderboardPage() {
   return (
     <div className="mx-auto max-w-[900px] px-4 py-8 sm:px-6">
       <div className="flex items-center gap-2">
-        <Trophy className="text-[var(--color-maroon)]" size={28} />
+        <Trophy className="text-[var(--color-red)]" size={28} />
         <h1 className="text-[32px] font-bold text-[var(--color-text-primary)]">
           Leaderboard
         </h1>
       </div>
       <p className="mt-1 text-[var(--color-text-secondary)]">
         Earn points by checking in at pandals on the{" "}
-        <Link href="/map" className="text-[var(--color-maroon)] underline">
+        <Link href="/map" className="text-[var(--color-red)] underline">
           map
         </Link>
         . Explore low-crowd pandals for bonus points.
       </p>
 
-      <div className="mt-6 flex items-center justify-between rounded-lg border-2 border-[var(--color-maroon)] bg-[var(--color-bg-secondary)] p-4">
+      <div className="mt-6 flex items-center justify-between rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-maroon)] text-sm font-bold text-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-red)] text-sm font-bold text-white">
             {currentUser.avatarInitials}
           </div>
           <div>
@@ -41,7 +41,7 @@ export default function LeaderboardPage() {
             </p>
           </div>
         </div>
-        <p className="text-xl font-bold text-[var(--color-maroon)]">
+        <p className="text-xl font-bold text-[var(--color-red)]">
           {currentUser.points} pts
         </p>
       </div>

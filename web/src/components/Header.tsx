@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "./Button";
+import { Flame } from "lucide-react";
 
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
@@ -34,10 +35,16 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--color-bg-main)] shadow-[var(--shadow-light)]">
+    <header className="sticky top-0 z-50 bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
+      <div className="gold-rule" />
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="text-xl font-bold text-[var(--color-maroon)]">
-          Pujo Planner
+        <Link href="/" className="flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-red)] text-[var(--color-gold-light)]">
+            <Flame size={16} fill="currentColor" />
+          </span>
+          <span className="text-xl font-bold tracking-tight text-[var(--color-red)]">
+            Pujo <span className="text-[var(--color-gold-dark)]">Obhijaan</span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
@@ -51,8 +58,8 @@ export function Header() {
                 className={clsx(
                   "flex items-center gap-1.5 rounded-md px-3 py-2 text-sm transition-colors duration-300",
                   active
-                    ? "font-bold text-[var(--color-maroon)] border-b-[3px] border-[var(--color-maroon)]"
-                    : "font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-maroon)]"
+                    ? "font-bold text-[var(--color-red)] border-b-[3px] border-[var(--color-gold)]"
+                    : "font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-red)]"
                 )}
               >
                 <Icon size={16} />
@@ -93,7 +100,7 @@ export function Header() {
                 className={clsx(
                   "flex items-center gap-2 rounded-md px-3 py-3 text-base",
                   active
-                    ? "font-bold text-[var(--color-maroon)] bg-[var(--color-bg-tertiary)]"
+                    ? "font-bold text-[var(--color-red)] bg-[var(--color-bg-tertiary)]"
                     : "font-medium text-[var(--color-text-secondary)]"
                 )}
               >

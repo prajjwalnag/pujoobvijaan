@@ -36,14 +36,14 @@ export function FilterBar({
         placeholder="Search pandals..."
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
-        className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-maroon)] focus:border-2 sm:w-64"
+        className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-red)] focus:border-2 sm:w-64"
       />
 
       <div className="flex flex-wrap items-center gap-3">
         <select
           value={selectedRegion}
           onChange={(e) => onRegionChange(e.target.value)}
-          className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-maroon)] focus:border-2"
+          className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-red)] focus:border-2"
         >
           <option value="all">All Regions</option>
           {regions.map((r) => (
@@ -56,7 +56,7 @@ export function FilterBar({
         <select
           value={selectedCrowdLevel}
           onChange={(e) => onCrowdChange(e.target.value)}
-          className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-maroon)] focus:border-2"
+          className="h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 text-sm outline-none focus:border-[var(--color-red)] focus:border-2"
         >
           <option value="all">All Crowd Levels</option>
           {crowdLevels.map((c) => (
@@ -73,7 +73,7 @@ export function FilterBar({
             className={clsx(
               "flex h-10 w-10 items-center justify-center transition-colors",
               viewMode === "grid"
-                ? "bg-[var(--color-maroon)] text-white"
+                ? "bg-[var(--color-red)] text-white"
                 : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
             )}
           >
@@ -85,7 +85,7 @@ export function FilterBar({
             className={clsx(
               "flex h-10 w-10 items-center justify-center transition-colors",
               viewMode === "list"
-                ? "bg-[var(--color-maroon)] text-white"
+                ? "bg-[var(--color-red)] text-white"
                 : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
             )}
           >

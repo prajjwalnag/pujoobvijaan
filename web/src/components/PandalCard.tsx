@@ -18,17 +18,18 @@ export function PandalCard({
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${pandal.coordinates.lat},${pandal.coordinates.lng}`;
 
   return (
-    <div className="group flex min-h-[280px] flex-col rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 shadow-[var(--shadow-light)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
+    <div className="group relative flex min-h-[280px] flex-col overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 pt-5 shadow-[var(--shadow-light)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
+      <div className="absolute inset-x-0 top-0 h-1 bg-[var(--color-gold)]" />
       <div className="flex items-start justify-between">
         <RatingDisplay rating={pandal.rating} />
         <button
           aria-label="Toggle wishlist"
           onClick={() => onWishlist?.(pandal.id)}
-          className="text-[var(--color-text-light)] transition-transform hover:scale-110 hover:text-[var(--color-maroon)]"
+          className="text-[var(--color-text-light)] transition-transform hover:scale-110 hover:text-[var(--color-red)]"
         >
           <Heart
             size={20}
-            className={clsx(isWishlisted && "fill-[var(--color-maroon)] text-[var(--color-maroon)]")}
+            className={clsx(isWishlisted && "fill-[var(--color-red)] text-[var(--color-red)]")}
           />
         </button>
       </div>
@@ -70,7 +71,7 @@ export function PandalCard({
         href={mapsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-[var(--color-maroon)] px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.02] hover:bg-[var(--color-maroon-dark)]"
+        className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-[var(--color-red)] px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.02] hover:bg-[var(--color-red-dark)]"
       >
         <Navigation size={14} />
         Directions
