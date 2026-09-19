@@ -441,5 +441,31 @@ export const areas: Area[] = [
         "note": "short ride"
       }
     ]
+  },
+  {
+    "id": "cluster-21",
+    "name": "Dum Dum Park",
+    "region": "North Kolkata",
+    "center": {
+      "lat": 22.6209,
+      "lng": 88.3934
+    },
+    "pandalCount": 5,
+    "thingsToDo": [
+      "Walk around Dum Dum Park's numbered tanks/lakes (Tank No. 1-5) — a genuine local morning/evening walking spot"
+    ],
+    "cafes": [
+      {
+        "name": "Food & Flora"
+      }
+    ],
+    "restaurants": [
+      {
+        "name": "Bongo Kitchen"
+      },
+      {
+        "name": "Khatirdari Restaurant"
+      }
+    ]
   }
 ];
