@@ -10,14 +10,29 @@ export function PujaFlashOverlay() {
   const [phase, setPhase] = useState<Phase>("idle");
 
   useEffect(() => {
-    function onScroll() {
-      if (window.scrollY > SCROLL_TRIGGER_PX) {
-        setPhase("showing");
-        window.removeEventListener("scroll", onScroll);
-      }
+    let fired = false;
+    function fire() {
+      if (fired) return;
+      fired = true;
+      setPhase("showing");
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(fallbackTimer);
     }
+    function onScroll() {
+      if (window.scrollY > SCROLL_TRIGGER_PX) fire();
+    }
+
+    const scrollRoom = document.documentElement.scrollHeight - window.innerHeight;
+    // On a page short enough that there's nothing to scroll (or barely
+    // anything), scrollY would never cross the threshold — fall back to
+    // firing on a short timer instead of silently never showing.
+    const fallbackTimer = setTimeout(fire, scrollRoom > SCROLL_TRIGGER_PX ? 6000 : 1200);
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(fallbackTimer);
+    };
   }, []);
 
   useEffect(() => {
