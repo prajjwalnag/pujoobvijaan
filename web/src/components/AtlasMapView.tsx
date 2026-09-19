@@ -1,6 +1,7 @@
 "use client";
 
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, Circle } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal, Area } from "@/data/types";
@@ -124,7 +125,7 @@ export function AtlasMapView({
   const { theme } = useTheme();
 
   return (
-    <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom className="h-full w-full">
+    <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom preferCanvas className="h-full w-full">
       {theme === "dark" ? (
         <>
           <TileLayer key="dark-base" attribution={TILE_ATTRIBUTION_DARK} url={TILE_URLS.darkBase} />
@@ -210,46 +211,48 @@ export function AtlasMapView({
           return [...cafeMarkers, ...foodMarkers];
         })}
 
-      {pandalsList.map((pandal) => {
-        const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
-        return (
-          <Marker
-            key={pandal.id}
-            position={[pandal.coordinates.lat, pandal.coordinates.lng]}
-            icon={pandalIcon(pandal)}
-            eventHandlers={{ click: () => onSelectPandal(pandal) }}
-          >
-            <Tooltip direction="top" opacity={0.95} className="pandal-tooltip">
-              {pandal.name}
-            </Tooltip>
-            <Popup>
-              <div className="min-w-[200px] max-w-[240px]">
-                <p className="font-bold">{pandal.name}</p>
-                <p className="text-xs text-gray-600">{pandal.region}</p>
-                <p className="text-xs">
-                  <span style={{ color: tierColor[pandal.crowdLevel], fontWeight: 700 }}>
-                    {tierLabel[pandal.crowdLevel]}
-                  </span>{" "}
-                  · {pandal.geocoded ? "geocoded location" : "placeholder location"}
-                </p>
-                {area && (
-                  <div className="mt-2 border-t border-gray-200 pt-2 text-xs">
-                    <p className="font-semibold text-[#8b0000]">In {area.name}</p>
-                    {!pandal.geocoded && (
-                      <p className="italic text-gray-500">
-                        Not individually geocoded — clustered near this area.
-                      </p>
-                    )}
-                    {area.thingsToDo[0] && <p>🎯 {area.thingsToDo[0]}</p>}
-                    {area.cafes[0] && <p>☕ {area.cafes[0].name}</p>}
-                    {area.restaurants[0] && <p>🍽️ {area.restaurants[0].name}</p>}
-                  </div>
-                )}
-              </div>
-            </Popup>
-          </Marker>
-        );
-      })}
+      <MarkerClusterGroup chunkedLoading maxClusterRadius={50} disableClusteringAtZoom={16}>
+        {pandalsList.map((pandal) => {
+          const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
+          return (
+            <Marker
+              key={pandal.id}
+              position={[pandal.coordinates.lat, pandal.coordinates.lng]}
+              icon={pandalIcon(pandal)}
+              eventHandlers={{ click: () => onSelectPandal(pandal) }}
+            >
+              <Tooltip direction="top" opacity={0.95} className="pandal-tooltip">
+                {pandal.name}
+              </Tooltip>
+              <Popup>
+                <div className="min-w-[200px] max-w-[240px]">
+                  <p className="font-bold">{pandal.name}</p>
+                  <p className="text-xs text-gray-600">{pandal.region}</p>
+                  <p className="text-xs">
+                    <span style={{ color: tierColor[pandal.crowdLevel], fontWeight: 700 }}>
+                      {tierLabel[pandal.crowdLevel]}
+                    </span>{" "}
+                    · {pandal.geocoded ? "geocoded location" : "placeholder location"}
+                  </p>
+                  {area && (
+                    <div className="mt-2 border-t border-gray-200 pt-2 text-xs">
+                      <p className="font-semibold text-[#8b0000]">In {area.name}</p>
+                      {!pandal.geocoded && (
+                        <p className="italic text-gray-500">
+                          Not individually geocoded — clustered near this area.
+                        </p>
+                      )}
+                      {area.thingsToDo[0] && <p>🎯 {area.thingsToDo[0]}</p>}
+                      {area.cafes[0] && <p>☕ {area.cafes[0].name}</p>}
+                      {area.restaurants[0] && <p>🍽️ {area.restaurants[0].name}</p>}
+                    </div>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 }

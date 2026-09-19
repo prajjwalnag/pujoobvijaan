@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { Star } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -172,6 +173,7 @@ export function MapView({
       center={[22.565, 88.35]}
       zoom={12}
       scrollWheelZoom
+      preferCanvas
       className="h-full w-full"
     >
       {theme === "dark" ? (
@@ -210,56 +212,58 @@ export function MapView({
           zIndexOffset={1000}
         />
       ))}
-      {pandalsList.map((pandal) => {
-        const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
-        const visited = checkedIn.has(pandal.id);
-        return (
-          <Marker
-            key={pandal.id}
-            position={[pandal.coordinates.lat, pandal.coordinates.lng]}
-            icon={pinIcon(visited)}
-          >
-            <Popup>
-              <div className="min-w-[200px] max-w-[240px]">
-                <p className="font-bold">{pandal.name}</p>
-                <p className="text-xs text-gray-600">{pandal.region}</p>
-                <p className="text-xs">
-                  Size: {pandal.crowdLevel}
-                  {pandal.rating !== undefined ? ` · ⭐ ${pandal.rating}` : ""}
-                </p>
-                <button
-                  onClick={() => checkIn(pandal)}
-                  disabled={visited}
-                  className="mt-2 w-full rounded bg-[#8b0000] px-2 py-1 text-xs font-semibold text-white disabled:opacity-50"
-                >
-                  {visited ? "Checked in ✓" : `Check in (+${checkinPointsFor(pandal)} pts)`}
-                </button>
-
-                <StarRow pandal={pandal} />
-
-                {onAddToRoute && (
+      <MarkerClusterGroup chunkedLoading maxClusterRadius={50} disableClusteringAtZoom={16}>
+        {pandalsList.map((pandal) => {
+          const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
+          const visited = checkedIn.has(pandal.id);
+          return (
+            <Marker
+              key={pandal.id}
+              position={[pandal.coordinates.lat, pandal.coordinates.lng]}
+              icon={pinIcon(visited)}
+            >
+              <Popup>
+                <div className="min-w-[200px] max-w-[240px]">
+                  <p className="font-bold">{pandal.name}</p>
+                  <p className="text-xs text-gray-600">{pandal.region}</p>
+                  <p className="text-xs">
+                    Size: {pandal.crowdLevel}
+                    {pandal.rating !== undefined ? ` · ⭐ ${pandal.rating}` : ""}
+                  </p>
                   <button
-                    onClick={() => onAddToRoute(pandal)}
-                    disabled={routeIds.has(pandal.id)}
-                    className="mt-2 w-full rounded border border-[#D4A017] px-2 py-1 text-xs font-semibold text-[#8B5A00] disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={() => checkIn(pandal)}
+                    disabled={visited}
+                    className="mt-2 w-full rounded bg-[#8b0000] px-2 py-1 text-xs font-semibold text-white disabled:opacity-50"
                   >
-                    {routeIds.has(pandal.id) ? "In route ✓" : "+ Add to route"}
+                    {visited ? "Checked in ✓" : `Check in (+${checkinPointsFor(pandal)} pts)`}
                   </button>
-                )}
 
-                {area && (
-                  <div className="mt-2 border-t border-gray-200 pt-2 text-xs">
-                    <p className="font-semibold text-[#8b0000]">In {area.name}</p>
-                    {area.thingsToDo[0] && <p>🎯 {area.thingsToDo[0]}</p>}
-                    {area.cafes[0] && <p>☕ {area.cafes[0].name}</p>}
-                    {area.restaurants[0] && <p>🍽️ {area.restaurants[0].name}</p>}
-                  </div>
-                )}
-              </div>
-            </Popup>
-          </Marker>
-        );
-      })}
+                  <StarRow pandal={pandal} />
+
+                  {onAddToRoute && (
+                    <button
+                      onClick={() => onAddToRoute(pandal)}
+                      disabled={routeIds.has(pandal.id)}
+                      className="mt-2 w-full rounded border border-[#D4A017] px-2 py-1 text-xs font-semibold text-[#8B5A00] disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {routeIds.has(pandal.id) ? "In route ✓" : "+ Add to route"}
+                    </button>
+                  )}
+
+                  {area && (
+                    <div className="mt-2 border-t border-gray-200 pt-2 text-xs">
+                      <p className="font-semibold text-[#8b0000]">In {area.name}</p>
+                      {area.thingsToDo[0] && <p>🎯 {area.thingsToDo[0]}</p>}
+                      {area.cafes[0] && <p>☕ {area.cafes[0].name}</p>}
+                      {area.restaurants[0] && <p>🍽️ {area.restaurants[0].name}</p>}
+                    </div>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 }
