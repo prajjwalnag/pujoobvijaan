@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Trophy, MapPinned } from "lucide-react";
+import { Trophy, MapPinned, Crown } from "lucide-react";
+import clsx from "clsx";
 import { leaderboard, currentUser } from "@/data/leaderboard";
 import { Badge } from "@/components/Badge";
+import type { LeaderboardEntry } from "@/data/types";
 
 function rankColor(rank: number) {
   if (rank === 1) return "text-[#FFB700]";
@@ -10,7 +12,82 @@ function rankColor(rank: number) {
   return "text-[var(--color-text-secondary)]";
 }
 
+// Row sizes grow 1, 2, 3, 4, ... so rank 1 sits alone at the apex and the
+// crowd widens the further down the pyramid you go — fewer people at the
+// top makes the ranking read at a glance instead of scanning a long list.
+function pyramidRows<T>(items: T[]): T[][] {
+  const rows: T[][] = [];
+  let i = 0;
+  let size = 1;
+  while (i < items.length) {
+    rows.push(items.slice(i, i + size));
+    i += size;
+    size++;
+  }
+  return rows;
+}
+
+const TIER_STYLE = [
+  { avatar: "h-16 w-16 text-lg", card: "w-full max-w-[260px] p-5", name: "text-base", points: "text-2xl" },
+  { avatar: "h-13 w-13 text-base", card: "w-full max-w-[220px] p-4", name: "text-sm", points: "text-xl" },
+  { avatar: "h-11 w-11 text-sm", card: "w-full max-w-[190px] p-3.5", name: "text-sm", points: "text-lg" },
+  { avatar: "h-10 w-10 text-sm", card: "w-full max-w-[170px] p-3", name: "text-xs", points: "text-base" },
+];
+function tierStyle(rowIndex: number) {
+  return TIER_STYLE[Math.min(rowIndex, TIER_STYLE.length - 1)];
+}
+
+function PyramidCard({ entry, rowIndex }: { entry: LeaderboardEntry; rowIndex: number }) {
+  const style = tierStyle(rowIndex);
+  const isApex = rowIndex === 0;
+  return (
+    <div
+      className={clsx(
+        "flex flex-col items-center rounded-xl border bg-[var(--color-bg-secondary)] text-center shadow-[var(--shadow-light)] transition-transform hover:-translate-y-0.5",
+        style.card,
+        isApex ? "border-2 border-[#FFB700]" : "border-[var(--color-border)]"
+      )}
+    >
+      {isApex && <Crown size={20} className="mb-1 text-[#FFB700]" fill="currentColor" />}
+      <span className={clsx("font-bold", rankColor(entry.rank))}>#{entry.rank}</span>
+      <div
+        className={clsx(
+          "mt-1 flex items-center justify-center rounded-full font-bold",
+          style.avatar,
+          isApex
+            ? "bg-[var(--color-red)] text-white"
+            : "bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)]"
+        )}
+      >
+        {entry.avatarInitials}
+      </div>
+      <p className={clsx("mt-2 truncate font-semibold text-[var(--color-text-primary)]", style.name)}>
+        {entry.name}
+      </p>
+      <p className={clsx("mt-1 font-bold text-[var(--color-red)]", style.points)}>
+        {entry.points}
+        <span className="ml-0.5 text-[10px] font-normal text-[var(--color-text-light)]">pts</span>
+      </p>
+      <div className="mt-1.5 flex items-center gap-1 text-[10px] text-[var(--color-text-secondary)]">
+        <MapPinned size={10} />
+        {entry.pandalsVisited} pandals
+      </div>
+      {isApex && entry.badges.length > 0 && (
+        <div className="mt-2 flex flex-wrap justify-center gap-1">
+          {entry.badges.map((b) => (
+            <Badge key={b} variant="theme" size="sm">
+              {b}
+            </Badge>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function LeaderboardPage() {
+  const rows = pyramidRows(leaderboard);
+
   return (
     <div className="mx-auto max-w-[900px] px-4 py-8 sm:px-6">
       <div className="flex items-center gap-2">
@@ -46,36 +123,12 @@ export default function LeaderboardPage() {
         </p>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-lg border border-[var(--color-border)]">
-        {leaderboard.map((entry) => (
-          <div
-            key={entry.userId}
-            className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 last:border-b-0"
-          >
-            <div className="flex items-center gap-4">
-              <span className={`w-6 text-center text-lg font-bold ${rankColor(entry.rank)}`}>
-                {entry.rank}
-              </span>
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg-tertiary)] text-sm font-bold text-[var(--color-text-primary)]">
-                {entry.avatarInitials}
-              </div>
-              <div>
-                <p className="font-semibold text-[var(--color-text-primary)]">{entry.name}</p>
-                <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-[var(--color-text-secondary)]">
-                  <MapPinned size={12} />
-                  {entry.pandalsVisited} pandals
-                  {entry.badges.map((b) => (
-                    <Badge key={b} variant="theme" size="sm">
-                      {b}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <p className="text-lg font-bold text-[var(--color-text-primary)]">
-              {entry.points}
-              <span className="ml-1 text-xs font-normal text-[var(--color-text-light)]">pts</span>
-            </p>
+      <div className="mt-10 flex flex-col items-center gap-5 sm:gap-6">
+        {rows.map((row, rowIndex) => (
+          <div key={rowIndex} className="flex w-full flex-wrap items-start justify-center gap-3 sm:gap-4">
+            {row.map((entry) => (
+              <PyramidCard key={entry.userId} entry={entry} rowIndex={rowIndex} />
+            ))}
           </div>
         ))}
       </div>
