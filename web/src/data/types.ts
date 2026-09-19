@@ -5,7 +5,11 @@ export type Region =
   | "South Kolkata"
   | "Central Kolkata"
   | "East Kolkata"
-  | "West Kolkata";
+  | "West Kolkata"
+  // Separate administrative districts, not Kolkata proper — but colloquially
+  // part of the city's puja circuit (Lake Town, Patipukur, Sonarpur, etc.).
+  | "North 24 Parganas"
+  | "South 24 Parganas";
 
 export interface Pandal {
   id: string;

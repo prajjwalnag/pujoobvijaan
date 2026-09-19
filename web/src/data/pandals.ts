@@ -2,7 +2,7 @@
 // listings (indianfestivaldiary.com, cross-checked against Kolkata Police /
 // news coverage for well-known pandals). crowdLevel is a size/prominence
 // tier (big/medium/small, based on known-prominent pandals), not live
-// crowd data. Coordinates: 131 of 258 pandals are geocoded via
+// crowd data. Coordinates: 143 of 294 pandals are geocoded via
 // OpenStreetMap Nominatim (either the pandal's own name for landmark
 // pandals, or a locality name extracted from the pandal's name) — these
 // are real neighbourhood-level locations, not exact building addresses.
@@ -11,6 +11,13 @@
 // as a rough placeholder. Fields we have no verified source for
 // (rating, visiting hours, nearest metro, theme, description) are left
 // unset rather than fabricated.
+//
+// ids north-kolkata-1..south-kolkata-*/etc (1-258) are the original 258
+// Kolkata-proper pandals; ids extra-259..extra-294 are 36 more pulled from
+// North 24 Parganas (Lake Town/Patipukur) and South 24 Parganas
+// (Sonarpur/Thakurpukur/Baishnabghata Patuli) — separate districts, not
+// Kolkata proper, but part of the same puja circuit. None of the 36 have
+// curated Area entries yet (see areas.ts) — they show up as "ungrouped".
 import type { Pandal, Region, CrowdLevel } from "./types";
 
 export const pandals: Pandal[] = [
@@ -2880,6 +2887,378 @@ export const pandals: Pandal[] = [
     },
     crowdLevel: "medium" as CrowdLevel,
     geocoded: true
+  },
+  {
+    id: "extra-259",
+    name: "Airport Enclave Residents Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.505445,
+      lng: 88.294009
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-260",
+    name: "Ambagan Durga Puja Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.471753,
+      lng: 88.351117
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-261",
+    name: "Atghara Noapara Baroary Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6074,
+      lng: 88.4065
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "extra-262",
+    name: "Banerjeepara Sarbojanin",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.631,
+      lng: 88.377
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-263",
+    name: "Biswanath Abasan Sharodotsav",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.5991,
+      lng: 88.4
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-264",
+    name: "Chitrakut Dham Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6445,
+      lng: 88.4052
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "extra-265",
+    name: "Debendra Nagar Sarbojanin",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.608,
+      lng: 88.379
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-266",
+    name: "Lake Town Adhibasi Brinda Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.605728,
+      lng: 88.402961
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-267",
+    name: "Lake Town Sarbojanin Durgotsav",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.604622,
+      lng: 88.403974
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-268",
+    name: "Maniratnam Flat Owner Association",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6157,
+      lng: 88.4126
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-269",
+    name: "Patipukur Sarkari Abas Sharad Utsav Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.606551,
+      lng: 88.395245
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-270",
+    name: "Regent Enclave Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.486573,
+      lng: 88.352579
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-271",
+    name: "Riya Gitanjali Housing Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6339,
+      lng: 88.4005
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-272",
+    name: "Sabuj Sangha Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.532487,
+      lng: 88.255276
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-273",
+    name: "Sampoorna Tritiya Puja Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6321,
+      lng: 88.4015
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "extra-274",
+    name: "Shastri Bagan Sporting Club Durgotsav Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6193,
+      lng: 88.4224
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-275",
+    name: "Siddha Happyville Cultural Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6308,
+      lng: 88.4077
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-276",
+    name: "Siddha Town Cultural Committee",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.630911,
+      lng: 88.471547
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-277",
+    name: "Sitalatala Mahila Samity",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6331,
+      lng: 88.3905
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-278",
+    name: "SOE Residents Durga Puja",
+    region: "North 24 Parganas",
+    coordinates: {
+      lat: 22.6236,
+      lng: 88.3956
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-279",
+    name: "23 Pally Sarbojanin Durgotsab",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4028,
+      lng: 88.3465
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "extra-280",
+    name: "Bansdroni Shanti Sangha",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.473586,
+      lng: 88.360673
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-281",
+    name: "Brahmapur Boral Sarbojanin Durgotsab",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4236,
+      lng: 88.3457
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-282",
+    name: "Brahmapur Sarbojanin Durgotsab",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.460239,
+      lng: 88.364448
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-283",
+    name: "Harindanga Milan Sangha Sarbojanin",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4599,
+      lng: 88.3669
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-284",
+    name: "Jhikurberia Sarbojanin Durga Puja",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4534,
+      lng: 88.388
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-285",
+    name: "Khamarkur Durga Puja",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4557,
+      lng: 88.4207
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "extra-286",
+    name: "Mukundapur Sarbojanin Durgotsav Committee",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.495626,
+      lng: 88.398449
+    },
+    crowdLevel: "medium" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-287",
+    name: "Pockpari Sanghasree Sarbojanin Durgotsab Puja Committee",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4068,
+      lng: 88.4064
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-288",
+    name: "Sonarpur Power House Sarbojanin Durgotsab",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.440875,
+      lng: 88.424637
+    },
+    crowdLevel: "low" as CrowdLevel,
+    geocoded: true
+  },
+  {
+    id: "extra-289",
+    name: "Subodh Garden Cultural & Welfare Society",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.3963,
+      lng: 88.4139
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-290",
+    name: "Sujaday Club Durga Puja",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.449,
+      lng: 88.4231
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-291",
+    name: "Thakurpukur Sister Nivedita Multipurpose Society",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.456,
+      lng: 88.3585
+    },
+    crowdLevel: "low" as CrowdLevel
+  },
+  {
+    id: "extra-292",
+    name: "Udairampur Recreation Club",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.438,
+      lng: 88.3597
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-293",
+    name: "Uttar Purba Baishnabghata Patuli Sarbojanin Durgotsab Committee",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.4359,
+      lng: 88.374
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "extra-294",
+    name: "Windsor Greens Flat Owners Association",
+    region: "South 24 Parganas",
+    coordinates: {
+      lat: 22.435,
+      lng: 88.364
+    },
+    crowdLevel: "low" as CrowdLevel
   }
 ];
 
@@ -2896,5 +3275,7 @@ export const regions: Region[] = [
   "South Kolkata",
   "Central Kolkata",
   "West Kolkata",
-  "East Kolkata"
+  "East Kolkata",
+  "North 24 Parganas",
+  "South 24 Parganas"
 ];
