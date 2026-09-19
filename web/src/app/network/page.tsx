@@ -1,0 +1,145 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
+import { Network } from "lucide-react";
+import { buildGraph, type GraphNode } from "@/data/graph";
+import { tierColor, tierLabel } from "@/data/tiers";
+
+const NetworkGraph = dynamic(() => import("@/components/NetworkGraph").then((m) => m.NetworkGraph), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center text-[var(--color-text-secondary)]">
+      Building network…
+    </div>
+  ),
+});
+
+export default function NetworkPage() {
+  const { nodes, links } = useMemo(() => buildGraph(), []);
+  const [showPandals, setShowPandals] = useState(true);
+  const [selected, setSelected] = useState<GraphNode | null>(null);
+
+  const stats = useMemo(
+    () => ({
+      regions: nodes.filter((n) => n.kind === "region").length,
+      areas: nodes.filter((n) => n.kind === "area").length,
+      pandals: nodes.filter((n) => n.kind === "pandal").length,
+      links: links.length,
+    }),
+    [nodes, links]
+  );
+
+  return (
+    <div className="flex h-[calc(100vh-64px)] flex-col lg:flex-row">
+      <div className="flex-1 p-4">
+        <div className="h-full w-full overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
+          <NetworkGraph nodes={nodes} links={links} showPandals={showPandals} onSelect={setSelected} />
+        </div>
+      </div>
+
+      <div className="flex h-full w-full flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 lg:w-[320px]">
+        <div>
+          <div className="flex items-center gap-2">
+            <Network className="text-[var(--color-red)]" size={22} />
+            <h1 className="text-xl font-bold text-[var(--color-text-primary)]">Network</h1>
+          </div>
+          <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+            Every pandal, connected by real location — region → area → pandal. Drag nodes,
+            scroll to zoom, click a node to trace its connections.
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          <div className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-2 text-center">
+            <p className="text-lg font-bold text-[var(--color-red)]">{stats.regions}</p>
+            <p className="text-[10px] uppercase tracking-wide text-[var(--color-text-light)]">Regions</p>
+          </div>
+          <div className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-2 text-center">
+            <p className="text-lg font-bold text-[var(--color-red)]">{stats.areas}</p>
+            <p className="text-[10px] uppercase tracking-wide text-[var(--color-text-light)]">Areas</p>
+          </div>
+          <div className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-2 text-center">
+            <p className="text-lg font-bold text-[var(--color-red)]">{stats.pandals}</p>
+            <p className="text-[10px] uppercase tracking-wide text-[var(--color-text-light)]">Pandals</p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setShowPandals((v) => !v)}
+          className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${
+            showPandals
+              ? "border-[var(--color-red)] bg-[var(--color-red)] text-white"
+              : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
+          }`}
+        >
+          {showPandals ? "Showing all pandal nodes" : "Regions + Areas only"}
+        </button>
+
+        <div>
+          <h2 className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
+            Selected
+          </h2>
+          {selected ? (
+            <div className="rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-3">
+              <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-text-light)]">
+                {selected.kind}
+              </p>
+              <p className="font-semibold text-[var(--color-text-primary)]">{selected.label}</p>
+              {selected.kind !== "pandal" && (
+                <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
+                  {selected.count} pandal{selected.count === 1 ? "" : "s"} connected
+                </p>
+              )}
+              {selected.kind === "pandal" && selected.crowdLevel && (
+                <span
+                  className="mt-1.5 inline-block rounded-full px-2 py-0.5 text-[11px] font-bold text-white"
+                  style={{ background: tierColor[selected.crowdLevel] }}
+                >
+                  {tierLabel[selected.crowdLevel]}
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-dashed border-[var(--color-border)] p-3 text-xs text-[var(--color-text-light)]">
+              Click a node to see what it's connected to.
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] p-3">
+          <h2 className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
+            Legend
+          </h2>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-3.5 w-3.5 rounded-full border-2 border-white bg-[#8b5a00]" />
+              <span className="text-[var(--color-text-secondary)]">Region (8)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-3 w-3 rounded-full border-2 border-white bg-[var(--color-gold)]" />
+              <span className="text-[var(--color-text-secondary)]">Area (16 real clusters)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#E11D2E]" />
+              <span className="text-[var(--color-text-secondary)]">Pandal — Big</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#F5820C]" />
+              <span className="text-[var(--color-text-secondary)]">Pandal — Medium</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#15A34A]" />
+              <span className="text-[var(--color-text-secondary)]">Pandal — Small</span>
+            </div>
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-light)]">
+            A pandal links to its Area when one's been mapped (see /atlas); otherwise it links
+            straight to its Region. This is the same underlying dataset as the rest of the app —
+            nothing here is invented for the graph.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
