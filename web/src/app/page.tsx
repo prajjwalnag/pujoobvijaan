@@ -3,6 +3,7 @@ import { LayoutGrid, Map, Trophy } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { Countdown } from "@/components/Countdown";
 import { PujaFlashOverlay } from "@/components/PujaFlashOverlay";
+import { NetworkBackground } from "@/components/NetworkBackground";
 
 const highlights = [
   {
@@ -28,7 +29,10 @@ const highlights = [
 export default function Home() {
   return (
     <div>
-      <div className="mx-auto max-w-[1000px] px-4 py-16 text-center sm:px-6">
+      <div className="relative mx-auto max-w-[1000px] overflow-hidden px-4 py-16 text-center sm:px-6">
+        <div className="absolute inset-0 -z-10">
+          <NetworkBackground />
+        </div>
         <h1 className="text-4xl font-bold text-[var(--color-red)] sm:text-5xl">
           Pujo <span className="text-[var(--color-gold-dark)]">Obhijaan</span>
         </h1>
