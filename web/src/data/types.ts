@@ -54,7 +54,10 @@ export interface Area {
 
 export interface LeaderboardEntry {
   userId: string;
+  /** Display name, e.g. "Anwesha Roy". */
   name: string;
+  /** Handle shown as @username, e.g. "anwesha_roy". Unique per user. */
+  username: string;
   avatarInitials: string;
   points: number;
   pandalsVisited: number;

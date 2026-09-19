@@ -64,6 +64,7 @@ function PyramidCard({ entry, rowIndex }: { entry: LeaderboardEntry; rowIndex: n
       <p className={clsx("mt-2 truncate font-semibold text-[var(--color-text-primary)]", style.name)}>
         {entry.name}
       </p>
+      <p className="truncate text-[10px] text-[var(--color-text-light)]">@{entry.username}</p>
       <p className={clsx("mt-1 font-bold text-[var(--color-red)]", style.points)}>
         {entry.points}
         <span className="ml-0.5 text-[10px] font-normal text-[var(--color-text-light)]">pts</span>
@@ -113,6 +114,7 @@ export default function LeaderboardPage() {
             <p className="font-semibold text-[var(--color-text-primary)]">
               You · Rank #{currentUser.rank}
             </p>
+            <p className="text-xs text-[var(--color-text-light)]">@{currentUser.username}</p>
             <p className="text-sm text-[var(--color-text-secondary)]">
               {currentUser.pandalsVisited} pandals visited
             </p>

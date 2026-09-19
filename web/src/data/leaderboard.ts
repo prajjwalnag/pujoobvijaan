@@ -22,6 +22,11 @@ function initials(name: string) {
     .join("");
 }
 
+function usernameFor(name: string) {
+  const [first, last] = name.toLowerCase().split(" ");
+  return `${first}_${last}`;
+}
+
 const badgePool = [
   "North Kolkata Complete",
   "Night Owl",
@@ -37,6 +42,7 @@ export const leaderboard: LeaderboardEntry[] = names
     return {
       userId: `user-${i + 1}`,
       name,
+      username: usernameFor(name),
       avatarInitials: initials(name),
       points: Math.max(points, 15),
       pandalsVisited: Math.max(Math.round(points / 40), 1),
@@ -51,6 +57,7 @@ export const leaderboard: LeaderboardEntry[] = names
 export const currentUser: LeaderboardEntry = {
   userId: "current-user",
   name: "You",
+  username: "your_handle",
   avatarInitials: "Y",
   points: 240,
   pandalsVisited: 6,
