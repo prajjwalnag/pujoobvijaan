@@ -4,6 +4,7 @@ import { Heart, Clock, TrainFront, MapPinned, Navigation } from "lucide-react";
 import clsx from "clsx";
 import { Badge, crowdVariant } from "./Badge";
 import { RatingDisplay } from "./RatingDisplay";
+import { PandalThumb } from "./PandalThumb";
 import type { Pandal } from "@/data/types";
 
 const sizeLabel = { high: "Big", medium: "Medium", low: "Small" } as const;
@@ -22,6 +23,7 @@ export function PandalCard({
   return (
     <div className="group relative flex min-h-[220px] flex-col overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 pt-5 shadow-[var(--shadow-light)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
       <div className="absolute inset-x-0 top-0 h-1 bg-[var(--color-gold)]" />
+      <PandalThumb pandal={pandal} />
       <div className="flex items-start justify-between">
         {pandal.rating !== undefined ? (
           <RatingDisplay rating={pandal.rating} />
