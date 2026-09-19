@@ -21,7 +21,7 @@ export function Footer() {
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg-main)] py-8">
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 text-center sm:flex-row sm:justify-between sm:text-left">
         <p className="text-sm text-[var(--color-text-secondary)]">
-          Developed with ❤️ by Pujo Obhijaan Team
+          Made with ❤️ by <span className="font-semibold text-[var(--color-red)]">MWR Agency</span>
         </p>
         <div className="flex items-center gap-4">
           <a
