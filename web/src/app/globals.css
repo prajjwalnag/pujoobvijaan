@@ -113,3 +113,59 @@ body {
 .area-glow-label.leaflet-tooltip::before {
   display: none;
 }
+
+/* Countdown */
+@keyframes countdown-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.countdown-tile {
+  animation: countdown-pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Reveal tagline */
+.reveal-word {
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes flame-burst-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(193, 39, 45, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 22px rgba(193, 39, 45, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(193, 39, 45, 0);
+  }
+}
+.flame-burst {
+  transform: scale(0);
+  opacity: 0;
+  transition:
+    transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.4s ease;
+}
+.flame-burst.flame-burst-on {
+  transform: scale(1);
+  opacity: 1;
+  animation: flame-burst-ring 1.6s ease-out 0.55s 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-tile,
+  .flame-burst,
+  .flame-burst.flame-burst-on,
+  .reveal-word {
+    animation: none !important;
+    transition: none !important;
+  }
+}
