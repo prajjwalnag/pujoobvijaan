@@ -26,6 +26,8 @@ interface AtlasSidebarProps {
   onGeoOnlyChange: (v: boolean) => void;
   showFood: boolean;
   onShowFoodChange: (v: boolean) => void;
+  showMetro: boolean;
+  onShowMetroChange: (v: boolean) => void;
   stats: { total: number; geocoded: number };
 }
 
@@ -50,6 +52,8 @@ export function AtlasSidebar({
   onGeoOnlyChange,
   showFood,
   onShowFoodChange,
+  showMetro,
+  onShowMetroChange,
   stats,
 }: AtlasSidebarProps) {
   const sorted = [...areasList].sort((a, b) => b.pandalCount - a.pandalCount);
@@ -124,6 +128,17 @@ export function AtlasSidebar({
             )}
           >
             ☕🍽️ Cafes & food
+          </button>
+          <button
+            onClick={() => onShowMetroChange(!showMetro)}
+            className={clsx(
+              "rounded-full border px-3 py-1 text-xs font-semibold",
+              showMetro
+                ? "border-[#0047AB] bg-[#0047AB] text-white"
+                : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
+            )}
+          >
+            🚇 Metro lines
           </button>
         </div>
       </div>

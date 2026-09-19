@@ -49,7 +49,7 @@ export function PujaFlashOverlay() {
 
   if (phase !== "showing" && phase !== "leaving") return null;
 
-  const words = ["Let", "your", "Puja", "be", "the", "best", "Puja."];
+  const words = ["Let", "your", "Pujo", "Obhijaan", "begin."];
 
   return (
     <div
@@ -63,7 +63,7 @@ export function PujaFlashOverlay() {
             key={i}
             className="puja-flash-word"
             style={{ "--i": i } as React.CSSProperties}
-            data-gold={word.startsWith("Puja") || undefined}
+            data-gold={word === "Pujo" || word === "Obhijaan" || undefined}
           >
             {word}
           </span>

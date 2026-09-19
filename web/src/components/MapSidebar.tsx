@@ -4,12 +4,14 @@ import { useState } from "react";
 import { LocateFixed, Route, ChevronDown } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { areas } from "@/data/areas";
+import { metroLines } from "@/data/metro";
 
 const sortedAreas = [...areas].sort((a, b) => b.pandalCount - a.pandalCount);
+const metroStationCount = metroLines.reduce((sum, l) => sum + l.stations.length, 0);
 
 interface MapSidebarProps {
-  categories: { pandals: boolean; foodStalls: boolean; itinerary: boolean };
-  onCategoryToggle: (key: "pandals" | "foodStalls" | "itinerary") => void;
+  categories: { pandals: boolean; foodStalls: boolean; itinerary: boolean; metro: boolean };
+  onCategoryToggle: (key: "pandals" | "foodStalls" | "itinerary" | "metro") => void;
   checkedInCount: number;
 }
 
@@ -54,6 +56,17 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
             Itinerary
           </span>
           <span className="text-[var(--color-text-light)]">0</span>
+        </label>
+        <label className="flex items-center justify-between py-1.5 text-sm">
+          <span className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={categories.metro}
+              onChange={() => onCategoryToggle("metro")}
+            />
+            Metro lines
+          </span>
+          <span className="text-[var(--color-text-light)]">{metroStationCount}</span>
         </label>
       </div>
 

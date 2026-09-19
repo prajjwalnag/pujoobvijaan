@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal, Area } from "@/data/types";
 import { tierColor, tierLabel } from "@/data/tiers";
 import { useTheme } from "./ThemeProvider";
+import { MetroLayer } from "./MetroLayer";
 
 const areaByIdMap = (areasList: Area[]) => new Map(areasList.map((a) => [a.id, a]));
 
@@ -94,6 +95,7 @@ export function AtlasMapView({
   onSelectPandal,
   onSelectArea,
   showFood = true,
+  showMetro = true,
 }: {
   pandalsList: Pandal[];
   areasList: Area[];
@@ -101,6 +103,7 @@ export function AtlasMapView({
   onSelectPandal: (p: Pandal) => void;
   onSelectArea: (id: string) => void;
   showFood?: boolean;
+  showMetro?: boolean;
 }) {
   const areaById = areaByIdMap(areasList);
   const { theme } = useTheme();
@@ -108,6 +111,8 @@ export function AtlasMapView({
   return (
     <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom className="h-full w-full">
       <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
+
+      {showMetro && <MetroLayer />}
 
       {areasList.map((area) => {
         const highlighted = area.id === focusedAreaId;

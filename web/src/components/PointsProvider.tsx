@@ -10,6 +10,8 @@ import type { Pandal } from "@/data/types";
 // New area:      +15 the first time you check in anywhere within an
 //                Area you haven't visited before — rewards spreading
 //                out rather than clustering all your check-ins.
+// Itinerary:     +20 flat for building and saving your own itinerary
+//                (see /itinerary) — one-time per itinerary created.
 export const POINTS = {
   CHECKIN_BASE: 10,
   CHECKIN_BONUS_SMALL: 10,
@@ -17,6 +19,7 @@ export const POINTS = {
   CHECKIN_BONUS_BIG: 0,
   RATING: 5,
   NEW_AREA: 15,
+  CREATE_ITINERARY: 20,
 } as const;
 
 export function checkinPointsFor(pandal: Pandal) {
@@ -40,6 +43,7 @@ interface PointsState {
 interface PointsContextValue extends PointsState {
   checkIn: (pandal: Pandal) => void;
   rate: (pandal: Pandal, stars: number) => void;
+  award: (amount: number, reason: string) => void;
 }
 
 const PointsContext = createContext<PointsContextValue | null>(null);
@@ -135,7 +139,17 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const award = useCallback((amount: number, reason: string) => {
+    setState((prev) => ({
+      ...prev,
+      points: prev.points + amount,
+      lastGain: { amount, reason, at: Date.now() },
+    }));
+  }, []);
+
   return (
-    <PointsContext.Provider value={{ ...state, checkIn, rate }}>{children}</PointsContext.Provider>
+    <PointsContext.Provider value={{ ...state, checkIn, rate, award }}>
+      {children}
+    </PointsContext.Provider>
   );
 }
