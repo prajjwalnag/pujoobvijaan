@@ -298,6 +298,36 @@ export const pandals: Pandal[] = [
     geocoded: true
   },
   {
+    id: "north-kolkata-75",
+    name: "Dum Dum Park Tarun Sangha",
+    region: "North Kolkata",
+    coordinates: {
+      lat: 22.6198,
+      lng: 88.3944
+    },
+    crowdLevel: "high" as CrowdLevel
+  },
+  {
+    id: "north-kolkata-76",
+    name: "Dum Dum Park Tarun Dal",
+    region: "North Kolkata",
+    coordinates: {
+      lat: 22.6215,
+      lng: 88.3921
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
+    id: "north-kolkata-77",
+    name: "Dum Dum Park Yubak Brinda",
+    region: "North Kolkata",
+    coordinates: {
+      lat: 22.6222,
+      lng: 88.3935
+    },
+    crowdLevel: "medium" as CrowdLevel
+  },
+  {
     id: "north-kolkata-25",
     name: "Durbar Mahila Samanya Committee",
     region: "North Kolkata",
