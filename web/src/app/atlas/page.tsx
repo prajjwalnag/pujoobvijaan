@@ -27,6 +27,7 @@ export default function AtlasPage() {
   const [geoOnly, setGeoOnly] = useState(false);
   const [focusedArea, setFocusedArea] = useState<string | null>(null);
   const [enabledAreas, setEnabledAreas] = useState<Set<string>>(allAreaIds);
+  const [showUngrouped, setShowUngrouped] = useState(true);
   const [selectedPandal, setSelectedPandal] = useState<Pandal | null>(null);
   const [showFood, setShowFood] = useState(true);
 
@@ -35,16 +36,22 @@ export default function AtlasPage() {
     [enabledAreas]
   );
 
+  const ungroupedCount = useMemo(() => pandals.filter((p) => !p.areaId).length, []);
+
   const filtered = useMemo(() => {
     return pandals.filter((p) => {
       if (tier !== "all" && p.crowdLevel !== tier) return false;
       if (geoOnly && !p.geocoded) return false;
       if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
-      // Pandals outside any mapped area always show; grouped ones follow their area's toggle.
-      if (p.areaId && !enabledAreas.has(p.areaId)) return false;
+      // Grouped pandals follow their area's toggle; ungrouped ones have their own toggle.
+      if (p.areaId) {
+        if (!enabledAreas.has(p.areaId)) return false;
+      } else if (!showUngrouped) {
+        return false;
+      }
       return true;
     });
-  }, [tier, geoOnly, search, enabledAreas]);
+  }, [tier, geoOnly, search, enabledAreas, showUngrouped]);
 
   const stats = useMemo(
     () => ({ total: pandals.length, geocoded: pandals.filter((p) => p.geocoded).length }),
@@ -61,6 +68,7 @@ export default function AtlasPage() {
 
   function setAllEnabled(value: boolean) {
     setEnabledAreas(value ? new Set(allAreaIds) : new Set());
+    setShowUngrouped(value);
   }
 
   function toggleFocus(id: string | null) {
@@ -75,6 +83,9 @@ export default function AtlasPage() {
         enabledAreas={enabledAreas}
         onToggleAreaEnabled={toggleAreaEnabled}
         onSetAllEnabled={setAllEnabled}
+        showUngrouped={showUngrouped}
+        onToggleUngrouped={() => setShowUngrouped((v) => !v)}
+        ungroupedCount={ungroupedCount}
         focusedArea={focusedArea}
         onToggleFocus={toggleFocus}
         search={search}

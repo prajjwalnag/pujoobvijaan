@@ -11,6 +11,9 @@ interface AtlasSidebarProps {
   enabledAreas: Set<string>;
   onToggleAreaEnabled: (id: string) => void;
   onSetAllEnabled: (value: boolean) => void;
+  showUngrouped: boolean;
+  onToggleUngrouped: () => void;
+  ungroupedCount: number;
   focusedArea: string | null;
   onToggleFocus: (id: string | null) => void;
   search: string;
@@ -30,6 +33,9 @@ export function AtlasSidebar({
   enabledAreas,
   onToggleAreaEnabled,
   onSetAllEnabled,
+  showUngrouped,
+  onToggleUngrouped,
+  ungroupedCount,
   focusedArea,
   onToggleFocus,
   search,
@@ -46,8 +52,8 @@ export function AtlasSidebar({
   const selectedAreaData = selectedPandal?.areaId
     ? areasList.find((a) => a.id === selectedPandal.areaId)
     : undefined;
-  const allOn = enabledAreas.size === areasList.length;
-  const allOff = enabledAreas.size === 0;
+  const allOn = enabledAreas.size === areasList.length && showUngrouped;
+  const allOff = enabledAreas.size === 0 && !showUngrouped;
 
   return (
     <div className="flex h-full w-full flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 lg:w-[320px]">
@@ -224,6 +230,33 @@ export function AtlasSidebar({
               </div>
             );
           })}
+
+          <div
+            className={clsx(
+              "rounded-lg border border-dashed bg-[var(--color-bg-secondary)] transition-opacity",
+              showUngrouped ? "border-[var(--color-border)]" : "border-[var(--color-border)] opacity-50"
+            )}
+          >
+            <div className="flex items-center gap-1 px-2 py-1.5">
+              <button
+                onClick={onToggleUngrouped}
+                aria-label={showUngrouped ? "Hide ungrouped pandals" : "Show ungrouped pandals"}
+                aria-pressed={showUngrouped}
+                className={clsx(
+                  "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2",
+                  showUngrouped
+                    ? "border-[var(--color-text-secondary)] bg-[var(--color-text-secondary)] text-white"
+                    : "border-[var(--color-border)] bg-transparent text-[var(--color-text-light)]"
+                )}
+              >
+                {showUngrouped ? <Eye size={13} /> : <EyeOff size={13} />}
+              </button>
+              <span className="flex-1 px-1 py-1 text-sm text-[var(--color-text-secondary)]">
+                Ungrouped pandals
+                <span className="ml-1 text-[var(--color-text-light)]">({ungroupedCount})</span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
