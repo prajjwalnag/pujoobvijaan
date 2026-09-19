@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
+import { SlidersHorizontal, X } from "lucide-react";
 import { AtlasSidebar } from "@/components/AtlasSidebar";
 import { pandals } from "@/data/pandals";
 import { areas } from "@/data/areas";
@@ -34,6 +35,7 @@ export default function AtlasPage() {
   const [showMetro, setShowMetro] = useState(true);
   const [showRailway, setShowRailway] = useState(false);
   const [showRoads, setShowRoads] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const visibleAreas = useMemo(
     () => areas.filter((a) => enabledAreas.has(a.id)),
@@ -90,8 +92,27 @@ export default function AtlasPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-64px)] flex-col lg:flex-row-reverse">
-      <AtlasSidebar
+    <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row-reverse">
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <div
+        className={`fixed inset-y-0 right-0 z-40 w-[85%] max-w-[320px] transform bg-[var(--color-bg-main)] transition-transform duration-200 lg:static lg:z-auto lg:w-[320px] lg:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <button
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close filters"
+          className="absolute left-3 top-3 z-10 rounded-full bg-[var(--color-bg-secondary)] p-1.5 text-[var(--color-text-secondary)] lg:hidden"
+        >
+          <X size={16} />
+        </button>
+        <AtlasSidebar
         areasList={areas}
         selectedPandal={selectedPandal}
         nearbyPandals={nearby}
@@ -119,8 +140,18 @@ export default function AtlasPage() {
         showRoads={showRoads}
         onShowRoadsChange={setShowRoads}
         stats={stats}
-      />
-      <div className="flex-1 p-4">
+        />
+      </div>
+
+      <button
+        onClick={() => setSidebarOpen(true)}
+        className="fixed bottom-5 right-4 z-20 flex items-center gap-2 rounded-full bg-[var(--color-red)] px-4 py-3 text-sm font-semibold text-white shadow-lg lg:hidden"
+      >
+        <SlidersHorizontal size={16} />
+        Filters
+      </button>
+
+      <div className="flex-1 p-2 sm:p-4">
         <div className="h-full w-full overflow-hidden rounded-lg shadow-[var(--shadow-light)]">
           <AtlasMapView
             pandalsList={filtered}

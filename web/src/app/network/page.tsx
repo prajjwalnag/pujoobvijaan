@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
-import { Network } from "lucide-react";
+import { Network, SlidersHorizontal, X } from "lucide-react";
 import { buildGraph, buildDistanceLinks, type GraphNode } from "@/data/graph";
 import { tierColor, tierLabel } from "@/data/tiers";
 
@@ -22,6 +22,7 @@ export default function NetworkPage() {
   const [showPandals, setShowPandals] = useState(true);
   const [showDistance, setShowDistance] = useState(true);
   const [selected, setSelected] = useState<GraphNode | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   const stats = useMemo(
     () => ({
@@ -34,8 +35,8 @@ export default function NetworkPage() {
   );
 
   return (
-    <div className="flex h-[calc(100vh-64px)] flex-col lg:flex-row">
-      <div className="flex-1 p-4">
+    <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row">
+      <div className="flex-1 p-2 sm:p-4">
         <div className="h-full w-full overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
           <NetworkGraph
             nodes={nodes}
@@ -47,7 +48,33 @@ export default function NetworkPage() {
         </div>
       </div>
 
-      <div className="flex h-full w-full flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 lg:w-[320px]">
+      <button
+        onClick={() => setPanelOpen(true)}
+        className="fixed bottom-5 right-4 z-20 flex items-center gap-2 rounded-full bg-[var(--color-red)] px-4 py-3 text-sm font-semibold text-white shadow-lg lg:hidden"
+      >
+        <SlidersHorizontal size={16} />
+        Details
+      </button>
+
+      {panelOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+          onClick={() => setPanelOpen(false)}
+        />
+      )}
+
+      <div
+        className={`fixed inset-y-0 right-0 z-40 flex w-[85%] max-w-[320px] transform flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 transition-transform duration-200 lg:static lg:z-auto lg:w-[320px] lg:translate-x-0 ${
+          panelOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <button
+          onClick={() => setPanelOpen(false)}
+          aria-label="Close details"
+          className="absolute left-3 top-3 z-10 rounded-full bg-[var(--color-bg-secondary)] p-1.5 text-[var(--color-text-secondary)] lg:hidden"
+        >
+          <X size={16} />
+        </button>
         <div>
           <div className="flex items-center gap-2">
             <Network className="text-[var(--color-red)]" size={22} />
