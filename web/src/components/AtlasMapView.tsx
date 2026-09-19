@@ -72,13 +72,13 @@ export function AtlasMapView({
           <Circle
             key={area.id}
             center={[area.center.lat, area.center.lng]}
-            radius={1300}
+            radius={2600}
             pathOptions={{
               color: "#D4A017",
-              weight: highlighted ? 3 : 1.5,
+              weight: highlighted ? 4 : 2,
               fillColor: "#F2C94C",
-              fillOpacity: highlighted ? 0.32 : 0.14,
-              opacity: highlighted ? 0.9 : 0.55,
+              fillOpacity: highlighted ? 0.36 : 0.18,
+              opacity: highlighted ? 0.95 : 0.6,
             }}
             eventHandlers={{ click: () => onSelectArea(area.id) }}
           >
