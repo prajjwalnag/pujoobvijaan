@@ -50,7 +50,7 @@ export default function NetworkPage() {
 
       <button
         onClick={() => setPanelOpen(true)}
-        className="fixed bottom-5 right-4 z-20 flex items-center gap-2 rounded-full bg-[var(--color-red)] px-4 py-3 text-sm font-semibold text-white shadow-lg lg:hidden"
+        className="fixed bottom-5 right-4 z-[1005] flex items-center gap-2 rounded-full bg-[var(--color-red)] px-4 py-3 text-sm font-semibold text-white shadow-lg lg:hidden"
       >
         <SlidersHorizontal size={16} />
         Details
@@ -58,13 +58,13 @@ export default function NetworkPage() {
 
       {panelOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-[1000] bg-black/40 lg:hidden"
           onClick={() => setPanelOpen(false)}
         />
       )}
 
       <div
-        className={`fixed inset-y-0 right-0 z-40 flex w-[85%] max-w-[320px] transform flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 transition-transform duration-200 lg:static lg:z-auto lg:w-[320px] lg:translate-x-0 ${
+        className={`fixed inset-y-0 right-0 z-[1010] flex w-[85%] max-w-[320px] transform flex-col gap-5 overflow-y-auto border-l border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 transition-transform duration-200 lg:static lg:z-auto lg:w-[320px] lg:translate-x-0 ${
           panelOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

@@ -157,13 +157,13 @@ export default function MapPage() {
     <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row">
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-[1000] bg-black/40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       <div
-        className={`fixed inset-y-0 left-0 z-40 w-[85%] max-w-[300px] transform bg-[var(--color-bg-main)] transition-transform duration-200 lg:static lg:z-auto lg:w-[280px] lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-[1010] w-[85%] max-w-[300px] transform bg-[var(--color-bg-main)] transition-transform duration-200 lg:static lg:z-auto lg:w-[280px] lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -195,7 +195,7 @@ export default function MapPage() {
 
       <button
         onClick={() => setSidebarOpen(true)}
-        className="fixed bottom-5 right-4 z-20 flex items-center gap-2 rounded-full bg-[var(--color-red)] px-4 py-3 text-sm font-semibold text-white shadow-lg lg:hidden"
+        className="fixed bottom-5 right-4 z-[1005] flex items-center gap-2 rounded-full bg-[var(--color-red)] px-4 py-3 text-sm font-semibold text-white shadow-lg lg:hidden"
       >
         <SlidersHorizontal size={16} />
         Filters
