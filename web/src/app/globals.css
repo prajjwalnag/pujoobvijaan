@@ -129,43 +129,155 @@ body {
   animation: countdown-pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* Reveal tagline */
-.reveal-word {
-  transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+/* Full-screen puja flash overlay */
+.puja-flash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(8, 4, 4, 0.82);
+  backdrop-filter: blur(2px);
+  overflow: hidden;
 }
 
-@keyframes flame-burst-ring {
-  0% {
-    box-shadow: 0 0 0 0 rgba(193, 39, 45, 0.5);
+.puja-flash-glow {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(225, 29, 46, 0.9) 0%,
+    rgba(193, 39, 45, 0.45) 28%,
+    rgba(193, 39, 45, 0.12) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.puja-flash-text {
+  position: relative;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 6vw, 3.2rem);
+  line-height: 1.25;
+  color: #fff;
+  max-width: 18ch;
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  text-shadow: 0 0 30px rgba(225, 29, 46, 0.65);
+}
+.puja-flash-text span {
+  color: #f2c94c;
+}
+
+.puja-flash-hint {
+  position: relative;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 0;
+}
+
+.puja-flash-showing {
+  animation: puja-overlay-in 0.5s ease-out both;
+}
+.puja-flash-showing .puja-flash-glow {
+  animation: puja-glow-flash 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.puja-flash-showing .puja-flash-text {
+  animation: puja-text-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+.puja-flash-showing .puja-flash-hint {
+  animation: puja-hint-in 0.6s ease-out 1.4s both;
+}
+
+.puja-flash-leaving {
+  animation: puja-overlay-out 0.65s ease-in both;
+  pointer-events: none;
+}
+
+@keyframes puja-overlay-in {
+  from {
+    opacity: 0;
   }
-  70% {
-    box-shadow: 0 0 0 22px rgba(193, 39, 45, 0);
+  to {
+    opacity: 1;
+  }
+}
+@keyframes puja-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes puja-glow-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  45% {
+    opacity: 0.55;
+    transform: scale(1);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(193, 39, 45, 0);
+    opacity: 0.55;
+    transform: scale(1);
   }
 }
-.flame-burst {
-  transform: scale(0);
-  opacity: 0;
-  transition:
-    transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.4s ease;
+@keyframes puja-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
-.flame-burst.flame-burst-on {
-  transform: scale(1);
-  opacity: 1;
-  animation: flame-burst-ring 1.6s ease-out 0.55s 2;
+@keyframes puja-hint-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .countdown-tile,
-  .flame-burst,
-  .flame-burst.flame-burst-on,
-  .reveal-word {
+  .puja-flash-overlay,
+  .puja-flash-glow,
+  .puja-flash-text,
+  .puja-flash-hint,
+  .puja-flash-showing,
+  .puja-flash-showing .puja-flash-glow,
+  .puja-flash-showing .puja-flash-text,
+  .puja-flash-showing .puja-flash-hint,
+  .puja-flash-leaving {
     animation: none !important;
     transition: none !important;
+  }
+  .puja-flash-showing {
+    opacity: 1;
+  }
+  .puja-flash-showing .puja-flash-glow,
+  .puja-flash-showing .puja-flash-text,
+  .puja-flash-showing .puja-flash-hint {
+    opacity: 1;
+    transform: none;
   }
 }

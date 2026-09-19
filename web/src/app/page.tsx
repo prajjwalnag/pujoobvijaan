@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LayoutGrid, Map, Trophy } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { Countdown } from "@/components/Countdown";
-import { RevealTagline } from "@/components/RevealTagline";
+import { PujaFlashOverlay } from "@/components/PujaFlashOverlay";
 
 const highlights = [
   {
@@ -64,7 +64,7 @@ export default function Home() {
         </div>
       </div>
 
-      <RevealTagline />
+      <PujaFlashOverlay />
     </div>
   );
 }
