@@ -3,6 +3,7 @@ import { Trophy, MapPinned, Crown } from "lucide-react";
 import clsx from "clsx";
 import { leaderboard, currentUser } from "@/data/leaderboard";
 import { Badge } from "@/components/Badge";
+import { ReferralPanel } from "@/components/ReferralPanel";
 import type { LeaderboardEntry } from "@/data/types";
 
 function rankColor(rank: number) {
@@ -105,7 +106,7 @@ export default function LeaderboardPage() {
         .
       </p>
 
-      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
           <p className="text-sm font-bold text-[var(--color-text-primary)]">Check in</p>
           <p className="text-xs text-[var(--color-text-secondary)]">
@@ -124,6 +125,12 @@ export default function LeaderboardPage() {
           <p className="text-xs text-[var(--color-text-secondary)]">
             +15 bonus the first time you check in anywhere within an Area you haven't visited
             yet — rewards spreading out, not just one cluster.
+          </p>
+        </div>
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
+          <p className="text-sm font-bold text-[var(--color-text-primary)]">Invite a friend</p>
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            +15 flat, once per name — self-reported, see below.
           </p>
         </div>
       </div>
@@ -146,6 +153,10 @@ export default function LeaderboardPage() {
         <p className="text-xl font-bold text-[var(--color-red)]">
           {currentUser.points} pts
         </p>
+      </div>
+
+      <div className="mt-4">
+        <ReferralPanel />
       </div>
 
       <div className="mt-10 flex flex-col items-center gap-5 sm:gap-6">

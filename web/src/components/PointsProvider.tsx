@@ -12,6 +12,10 @@ import type { Pandal } from "@/data/types";
 //                out rather than clustering all your check-ins.
 // Itinerary:     +20 flat for building and saving your own itinerary
 //                (see /itinerary) — one-time per itinerary created.
+// Referral:      +15 flat per friend you bring onto the app, once per
+//                name. Self-reported (no signup/account system exists to
+//                verify it against), same honor-system basis as everything
+//                else tracked client-side here.
 export const POINTS = {
   CHECKIN_BASE: 10,
   CHECKIN_BONUS_SMALL: 10,
@@ -20,6 +24,7 @@ export const POINTS = {
   RATING: 5,
   NEW_AREA: 15,
   CREATE_ITINERARY: 20,
+  REFERRAL: 15,
 } as const;
 
 export function checkinPointsFor(pandal: Pandal) {
@@ -37,6 +42,7 @@ interface PointsState {
   checkedIn: Set<string>;
   ratings: Record<string, number>;
   visitedAreas: Set<string>;
+  referrals: string[];
   lastGain: { amount: number; reason: string; at: number } | null;
 }
 
@@ -44,6 +50,7 @@ interface PointsContextValue extends PointsState {
   checkIn: (pandal: Pandal) => void;
   rate: (pandal: Pandal, stars: number) => void;
   award: (amount: number, reason: string) => void;
+  addReferral: (name: string) => boolean;
 }
 
 const PointsContext = createContext<PointsContextValue | null>(null);
@@ -62,6 +69,7 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
     checkedIn: new Set(),
     ratings: {},
     visitedAreas: new Set(),
+    referrals: [],
     lastGain: null,
   });
   const [hydrated, setHydrated] = useState(false);
@@ -76,6 +84,7 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
           checkedIn: new Set(parsed.checkedIn ?? []),
           ratings: parsed.ratings ?? {},
           visitedAreas: new Set(parsed.visitedAreas ?? []),
+          referrals: parsed.referrals ?? [],
           lastGain: null,
         });
       }
@@ -95,6 +104,7 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
           checkedIn: [...state.checkedIn],
           ratings: state.ratings,
           visitedAreas: [...state.visitedAreas],
+          referrals: state.referrals,
         })
       );
     } catch {
@@ -147,8 +157,27 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  const addReferral = useCallback(
+    (name: string) => {
+      const trimmed = name.trim();
+      if (!trimmed) return false;
+      const alreadyReferred = state.referrals.some(
+        (r) => r.toLowerCase() === trimmed.toLowerCase()
+      );
+      if (alreadyReferred) return false;
+      setState((prev) => ({
+        ...prev,
+        points: prev.points + POINTS.REFERRAL,
+        referrals: [...prev.referrals, trimmed],
+        lastGain: { amount: POINTS.REFERRAL, reason: "Invited a friend", at: Date.now() },
+      }));
+      return true;
+    },
+    [state.referrals]
+  );
+
   return (
-    <PointsContext.Provider value={{ ...state, checkIn, rate, award }}>
+    <PointsContext.Provider value={{ ...state, checkIn, rate, award, addReferral }}>
       {children}
     </PointsContext.Provider>
   );
