@@ -211,6 +211,9 @@ export default function MapPage() {
             routeStops={routeStops}
             onAddToRoute={addToRoute}
             userLocation={userLocation}
+            onLocate={locateMe}
+            locating={locating}
+            locationError={locationError}
           />
         </div>
       </div>

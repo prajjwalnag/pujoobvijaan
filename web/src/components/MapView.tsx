@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
+import { LocateFixed } from "lucide-react";
 import { Star } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal } from "@/data/types";
@@ -155,6 +156,9 @@ export function MapView({
   routeStops = [],
   onAddToRoute,
   userLocation = null,
+  onLocate,
+  locating = false,
+  locationError = null,
 }: {
   pandalsList: Pandal[];
   showMetro?: boolean;
@@ -163,12 +167,34 @@ export function MapView({
   routeStops?: Pandal[];
   onAddToRoute?: (pandal: Pandal) => void;
   userLocation?: { lat: number; lng: number } | null;
+  onLocate?: () => void;
+  locating?: boolean;
+  locationError?: string | null;
 }) {
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
   const routeIds = new Set(routeStops.map((p) => p.id));
 
   return (
+    <div className="relative h-full w-full">
+      {onLocate && (
+        <div className="absolute right-3 top-3 z-[1010] flex flex-col items-end gap-1.5">
+          <button
+            onClick={onLocate}
+            disabled={locating}
+            aria-label="Find my location"
+            title="Find my location"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-red)] shadow-lg ring-1 ring-[var(--color-border)] transition-transform hover:scale-105 disabled:cursor-wait disabled:opacity-60"
+          >
+            <LocateFixed size={20} className={locating ? "animate-pulse" : ""} />
+          </button>
+          {locationError && (
+            <p className="max-w-[180px] rounded-md bg-[var(--color-bg-secondary)] px-2 py-1 text-right text-[11px] text-[var(--color-red)] shadow-lg">
+              {locationError}
+            </p>
+          )}
+        </div>
+      )}
     <MapContainer
       center={[22.565, 88.35]}
       zoom={12}
@@ -265,5 +291,6 @@ export function MapView({
         })}
       </MarkerClusterGroup>
     </MapContainer>
+    </div>
   );
 }
