@@ -5,8 +5,8 @@ export default function ChatPage() {
   return (
     <AuthGate
       icon={MessageCircle}
-      title="Chat with Tihti"
-      description="Sign in to access personalized assistance and chat with Tihti for your Durga Puja planning needs."
+      title="Chat with Tithi"
+      description="Sign in to access personalized assistance and chat with Tithi for your Durga Puja planning needs."
     />
   );
 }
