@@ -1,12 +1,16 @@
 // Real pandal names + regions sourced from Kolkata's 2025 registered-pandal
 // listings (indianfestivaldiary.com, cross-checked against Kolkata Police /
-// news coverage for well-known pandals). Coordinates are approximate —
-// jittered around each region's centroid, not geocoded addresses — and
-// crowdLevel is a size/prominence tier (famous vs. neighbourhood puja),
-// not live crowd data. Fields we have no verified source for (rating,
-// visiting hours, nearest metro, theme, description) are intentionally
-// left unset rather than fabricated; backfill them as real data becomes
-// available.
+// news coverage for well-known pandals). crowdLevel is a size/prominence
+// tier (big/medium/small, based on known-prominent pandals), not live
+// crowd data. Coordinates: 131 of 258 pandals are geocoded via
+// OpenStreetMap Nominatim (either the pandal's own name for landmark
+// pandals, or a locality name extracted from the pandal's name) — these
+// are real neighbourhood-level locations, not exact building addresses.
+// The remaining pandals (generic committee names with no matchable
+// place) still use a coordinate jittered around their region's centroid
+// as a rough placeholder. Fields we have no verified source for
+// (rating, visiting hours, nearest metro, theme, description) are left
+// unset rather than fabricated.
 import type { Pandal, Region, CrowdLevel } from "./types";
 
 export const pandals: Pandal[] = [
@@ -25,8 +29,8 @@ export const pandals: Pandal[] = [
     name: "Ahiritola Jubak Brinda Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.582,
-      lng: 88.3727
+      lat: 22.596397,
+      lng: 88.353298
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -35,8 +39,8 @@ export const pandals: Pandal[] = [
     name: "Amherst Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6192,
-      lng: 88.3858
+      lat: 22.584256,
+      lng: 88.373447
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -75,8 +79,8 @@ export const pandals: Pandal[] = [
     name: "Beadon Street Sarbojanin Durgotsav",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.617,
-      lng: 88.3522
+      lat: 22.590461,
+      lng: 88.360743
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -85,8 +89,8 @@ export const pandals: Pandal[] = [
     name: "Belgachia Sadharan Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5858,
-      lng: 88.3714
+      lat: 22.605924,
+      lng: 88.386391
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -95,8 +99,8 @@ export const pandals: Pandal[] = [
     name: "Belgachia Yuba Sammilani Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5861,
-      lng: 88.3908
+      lat: 22.604818,
+      lng: 88.387404
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -105,8 +109,8 @@ export const pandals: Pandal[] = [
     name: "Bhagabati Park Durga Puja Committee",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5842,
-      lng: 88.3655
+      lat: 22.617629,
+      lng: 88.412869
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -115,8 +119,8 @@ export const pandals: Pandal[] = [
     name: "Bharatiya Tarun Sangha Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6141,
-      lng: 88.3695
+      lat: 22.557586,
+      lng: 88.351027
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -135,8 +139,8 @@ export const pandals: Pandal[] = [
     name: "Brindaban Matri Mandir Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5922,
-      lng: 88.3816
+      lat: 22.586691,
+      lng: 88.377534
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -195,8 +199,8 @@ export const pandals: Pandal[] = [
     name: "Cossipore Shakti Sangha Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6068,
-      lng: 88.3762
+      lat: 22.616070,
+      lng: 88.378045
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -235,8 +239,8 @@ export const pandals: Pandal[] = [
     name: "Dum Dum Park Bharat Chakra Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6004,
-      lng: 88.3862
+      lat: 22.621114,
+      lng: 88.392897
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -245,8 +249,8 @@ export const pandals: Pandal[] = [
     name: "Dum Dum Park Sarbojanin Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6137,
-      lng: 88.3511
+      lat: 22.620008,
+      lng: 88.393910
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -265,8 +269,8 @@ export const pandals: Pandal[] = [
     name: "Garden Lane Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5874,
-      lng: 88.3729
+      lat: 22.545331,
+      lng: 88.343200
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -285,8 +289,8 @@ export const pandals: Pandal[] = [
     name: "Golaghata Sammilani Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6033,
-      lng: 88.3791
+      lat: 22.596106,
+      lng: 88.400305
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -305,8 +309,8 @@ export const pandals: Pandal[] = [
     name: "Halsibagan Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6002,
-      lng: 88.3907
+      lat: 22.578913,
+      lng: 88.374682
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -335,8 +339,8 @@ export const pandals: Pandal[] = [
     name: "Haritaki Bagan Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.619,
-      lng: 88.378
+      lat: 22.586384,
+      lng: 88.372935
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -355,8 +359,8 @@ export const pandals: Pandal[] = [
     name: "Jagat Mukherjee Park Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6011,
-      lng: 88.3574
+      lat: 22.601311,
+      lng: 88.366647
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -375,8 +379,8 @@ export const pandals: Pandal[] = [
     name: "Kailash Bose Street Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6091,
-      lng: 88.3838
+      lat: 22.583193,
+      lng: 88.369077
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -385,8 +389,8 @@ export const pandals: Pandal[] = [
     name: "Kankurgachi Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6096,
-      lng: 88.3703
+      lat: 22.580257,
+      lng: 88.390137
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -395,8 +399,8 @@ export const pandals: Pandal[] = [
     name: "Kashi Bose Lane Durga Puja Committee",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6022,
-      lng: 88.3732
+      lat: 22.589362,
+      lng: 88.365247
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -425,8 +429,8 @@ export const pandals: Pandal[] = [
     name: "Lake View Park Sarbojanin Durgotsav Samity",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6145,
-      lng: 88.3841
+      lat: 22.650587,
+      lng: 88.397627
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -445,8 +449,8 @@ export const pandals: Pandal[] = [
     name: "Mitali Kankurgachi Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5853,
-      lng: 88.3574
+      lat: 22.580031,
+      lng: 88.394413
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -455,8 +459,8 @@ export const pandals: Pandal[] = [
     name: "Mohan Bagan Barwari Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5864,
-      lng: 88.355
+      lat: 22.597336,
+      lng: 88.372751
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -485,8 +489,8 @@ export const pandals: Pandal[] = [
     name: "Nalin Sarkar Street Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5977,
-      lng: 88.3621
+      lat: 22.595346,
+      lng: 88.373396
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -505,8 +509,8 @@ export const pandals: Pandal[] = [
     name: "Nimtala Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.59,
-      lng: 88.3902
+      lat: 22.592771,
+      lng: 88.354808
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -515,8 +519,8 @@ export const pandals: Pandal[] = [
     name: "North Tangra Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5863,
-      lng: 88.3761
+      lat: 22.556511,
+      lng: 88.379595
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -525,8 +529,8 @@ export const pandals: Pandal[] = [
     name: "North Tridhara Sarbojanin Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5757,
-      lng: 88.3716
+      lat: 22.519576,
+      lng: 88.355349
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -535,8 +539,8 @@ export const pandals: Pandal[] = [
     name: "Nutan Pally Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6084,
-      lng: 88.3536
+      lat: 22.520201,
+      lng: 88.349704
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -545,8 +549,8 @@ export const pandals: Pandal[] = [
     name: "Pathuria Ghata Pancher Palli Sarbojanin",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.602,
-      lng: 88.3621
+      lat: 22.588523,
+      lng: 88.357455
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -555,8 +559,8 @@ export const pandals: Pandal[] = [
     name: "Ramesh Dutta Street Sarbojanin Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5942,
-      lng: 88.3621
+      lat: 22.589789,
+      lng: 88.360702
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -565,8 +569,8 @@ export const pandals: Pandal[] = [
     name: "Rammohan Sammilani Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6176,
-      lng: 88.3567
+      lat: 22.579379,
+      lng: 88.369939
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -575,8 +579,8 @@ export const pandals: Pandal[] = [
     name: "Sadhukhan Bari Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5817,
-      lng: 88.3729
+      lat: 22.602456,
+      lng: 88.377748
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -615,8 +619,8 @@ export const pandals: Pandal[] = [
     name: "Shyambazar Nabin Sangha Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5847,
-      lng: 88.3547
+      lat: 22.598694,
+      lng: 88.375501
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -635,8 +639,8 @@ export const pandals: Pandal[] = [
     name: "Sikdar Bagan Sadharan Durgotsov",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6174,
-      lng: 88.3749
+      lat: 22.596611,
+      lng: 88.372616
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -645,8 +649,8 @@ export const pandals: Pandal[] = [
     name: "Simla Sporting Club Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5943,
-      lng: 88.3854
+      lat: 22.588366,
+      lng: 88.377228
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -655,8 +659,8 @@ export const pandals: Pandal[] = [
     name: "Sovabazar Sarbojanin Durgotsav",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.6126,
-      lng: 88.368
+      lat: 22.597529,
+      lng: 88.354934
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -665,8 +669,8 @@ export const pandals: Pandal[] = [
     name: "Sreebhumi Sporting Club Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5775,
-      lng: 88.3702
+      lat: 22.798903,
+      lng: 88.377810
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -675,8 +679,8 @@ export const pandals: Pandal[] = [
     name: "Tala Barowari Durgotsab",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5834,
-      lng: 88.3888
+      lat: 22.606351,
+      lng: 88.378426
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -695,8 +699,8 @@ export const pandals: Pandal[] = [
     name: "Tala Park 15 Pally Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5817,
-      lng: 88.3583
+      lat: 22.605245,
+      lng: 88.379439
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -725,8 +729,8 @@ export const pandals: Pandal[] = [
     name: "Ultadanga Pallyshree Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5935,
-      lng: 88.3567
+      lat: 22.595790,
+      lng: 88.384440
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -745,8 +749,8 @@ export const pandals: Pandal[] = [
     name: "Young Citizens Club Durga Puja",
     region: "North Kolkata",
     coordinates: {
-      lat: 22.5792,
-      lng: 88.3679
+      lat: 22.545563,
+      lng: 88.377920
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -815,8 +819,8 @@ export const pandals: Pandal[] = [
     name: "95 Pally Jodhpur Park Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4788,
-      lng: 88.3437
+      lat: 22.505606,
+      lng: 88.363674
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -825,8 +829,8 @@ export const pandals: Pandal[] = [
     name: "Abasar Sarbojanin Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5059,
-      lng: 88.3694
+      lat: 22.528139,
+      lng: 88.348669
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -845,8 +849,8 @@ export const pandals: Pandal[] = [
     name: "Adi Ballygunge Sarbojanin Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.485,
-      lng: 88.3364
+      lat: 22.531728,
+      lng: 88.372075
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -855,8 +859,8 @@ export const pandals: Pandal[] = [
     name: "Adi Dakshin Kalikata Barowari Samittee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4775,
-      lng: 88.3476
+      lat: 22.427650,
+      lng: 88.401705
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -875,8 +879,8 @@ export const pandals: Pandal[] = [
     name: "Arunodaya Adhibashi Brinder Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5042,
-      lng: 88.3467
+      lat: 22.681692,
+      lng: 88.281255
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -895,8 +899,8 @@ export const pandals: Pandal[] = [
     name: "Babu Bagan Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.489,
-      lng: 88.3514
+      lat: 22.508452,
+      lng: 88.369121
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -905,8 +909,8 @@ export const pandals: Pandal[] = [
     name: "Badamtala Ashar Sangha Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5033,
-      lng: 88.3556
+      lat: 22.517927,
+      lng: 88.344165
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -915,8 +919,8 @@ export const pandals: Pandal[] = [
     name: "Baghajatin B and C Block Durgotsav Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4925,
-      lng: 88.3414
+      lat: 22.483881,
+      lng: 88.375445
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -925,8 +929,8 @@ export const pandals: Pandal[] = [
     name: "Baghajatin Tarun Sangha Durgotsav",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5044,
-      lng: 88.3288
+      lat: 22.482739,
+      lng: 88.386671
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -945,8 +949,8 @@ export const pandals: Pandal[] = [
     name: "Ballygunge Cultural Association Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5085,
-      lng: 88.3676
+      lat: 22.528034,
+      lng: 88.365908
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -955,8 +959,8 @@ export const pandals: Pandal[] = [
     name: "Ballygunge Pally Sarbojanin Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.516,
-      lng: 88.359
+      lat: 22.526928,
+      lng: 88.366922
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -965,8 +969,8 @@ export const pandals: Pandal[] = [
     name: "Bansdroni Sammilita Sarbojanin Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4778,
-      lng: 88.3614
+      lat: 22.473586,
+      lng: 88.360673
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -985,8 +989,8 @@ export const pandals: Pandal[] = [
     name: "Beltala Sarbojanin Durgotsab",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.506,
-      lng: 88.3472
+      lat: 22.683456,
+      lng: 88.368746
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1015,8 +1019,8 @@ export const pandals: Pandal[] = [
     name: "Bhowanipore De Bari Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5181,
-      lng: 88.3497
+      lat: 22.532584,
+      lng: 88.345443
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1025,8 +1029,8 @@ export const pandals: Pandal[] = [
     name: "Bhowanipore Mitra Bari Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4966,
-      lng: 88.349
+      lat: 22.531478,
+      lng: 88.346456
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1105,8 +1109,8 @@ export const pandals: Pandal[] = [
     name: "Bidhan Nagar South Atheletics Club",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5038,
-      lng: 88.3378
+      lat: 22.591149,
+      lng: 88.391259
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1145,8 +1149,8 @@ export const pandals: Pandal[] = [
     name: "Chetla Agrani Club Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4986,
-      lng: 88.3604
+      lat: 22.516435,
+      lng: 88.337189
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1165,8 +1169,8 @@ export const pandals: Pandal[] = [
     name: "Coal India Puja Committee Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5096,
-      lng: 88.3692
+      lat: 22.582139,
+      lng: 88.447298
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1175,8 +1179,8 @@ export const pandals: Pandal[] = [
     name: "Dakshin Kolkata Sarbojanin Durgotsab",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5044,
-      lng: 88.3487
+      lat: 22.518565,
+      lng: 88.352614
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1185,8 +1189,8 @@ export const pandals: Pandal[] = [
     name: "Dakshin Kolkata Tarun Samity Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4939,
-      lng: 88.3662
+      lat: 22.517459,
+      lng: 88.353627
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1195,8 +1199,8 @@ export const pandals: Pandal[] = [
     name: "Deshapriya Park Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.52,
-      lng: 88.3501
+      lat: 22.518435,
+      lng: 88.353515
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1215,8 +1219,8 @@ export const pandals: Pandal[] = [
     name: "Dhakuria Sarbojanin Durgotsab",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4832,
-      lng: 88.3587
+      lat: 22.509107,
+      lng: 88.371131
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1225,8 +1229,8 @@ export const pandals: Pandal[] = [
     name: "Ekdalia Evergreen Club Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5091,
-      lng: 88.3666
+      lat: 22.521253,
+      lng: 88.365960
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1245,8 +1249,8 @@ export const pandals: Pandal[] = [
     name: "Garfa Sarbojanin Durgotsav",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.489,
-      lng: 88.3325
+      lat: 22.506145,
+      lng: 88.383976
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1265,8 +1269,8 @@ export const pandals: Pandal[] = [
     name: "Golpark Sarbojanin Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4918,
-      lng: 88.3505
+      lat: 22.513432,
+      lng: 88.401745
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1275,8 +1279,8 @@ export const pandals: Pandal[] = [
     name: "Gopal Nagar Kalyan Sangha Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4903,
-      lng: 88.3629
+      lat: 22.498555,
+      lng: 88.331492
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1285,8 +1289,8 @@ export const pandals: Pandal[] = [
     name: "Harish Park Sarbojanin Durgotsab Samity",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5031,
-      lng: 88.3716
+      lat: 22.530533,
+      lng: 88.343728
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1295,8 +1299,8 @@ export const pandals: Pandal[] = [
     name: "Hindustan Pally Durga Puja Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5144,
-      lng: 88.3538
+      lat: 22.531637,
+      lng: 88.374004
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1305,8 +1309,8 @@ export const pandals: Pandal[] = [
     name: "Jagaran Club Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5066,
-      lng: 88.3292
+      lat: 22.504815,
+      lng: 88.370836
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1335,8 +1339,8 @@ export const pandals: Pandal[] = [
     name: "Kansaripara Sarbojanin Sarodotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5136,
-      lng: 88.3459
+      lat: 22.537035,
+      lng: 88.341149
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1345,8 +1349,8 @@ export const pandals: Pandal[] = [
     name: "Kasba R.K. Chatterjee Road Adhibasi Brinda Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5142,
-      lng: 88.3559
+      lat: 22.514360,
+      lng: 88.405655
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1385,8 +1389,8 @@ export const pandals: Pandal[] = [
     name: "Keyatala Pally Samity Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4945,
-      lng: 88.3435
+      lat: 22.515428,
+      lng: 88.362448
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1395,8 +1399,8 @@ export const pandals: Pandal[] = [
     name: "Kheyali Sangha Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.491,
-      lng: 88.3476
+      lat: 22.615490,
+      lng: 88.380864
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1405,8 +1409,8 @@ export const pandals: Pandal[] = [
     name: "Khidderpore Sarbojanin Durgotsab",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5028,
-      lng: 88.3477
+      lat: 22.538698,
+      lng: 88.317565
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1415,8 +1419,8 @@ export const pandals: Pandal[] = [
     name: "Khidderpur 75 Pally Sarbojanin Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4856,
-      lng: 88.3432
+      lat: 22.552326,
+      lng: 88.343068
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1445,8 +1449,8 @@ export const pandals: Pandal[] = [
     name: "Lake Gardens Peoples Association Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5172,
-      lng: 88.3329
+      lat: 22.508055,
+      lng: 88.353329
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1475,8 +1479,8 @@ export const pandals: Pandal[] = [
     name: "Megacity Residents Puja Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5082,
-      lng: 88.3628
+      lat: 22.588866,
+      lng: 88.499107
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1505,8 +1509,8 @@ export const pandals: Pandal[] = [
     name: "Mudiali Club Sarbojanin Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4832,
-      lng: 88.3284
+      lat: 22.510075,
+      lng: 88.346626
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1515,8 +1519,8 @@ export const pandals: Pandal[] = [
     name: "N.S.C. Sports Club Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4838,
-      lng: 88.3376
+      lat: 22.512899,
+      lng: 88.348545
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1525,8 +1529,8 @@ export const pandals: Pandal[] = [
     name: "Naktala Udayan Sangha Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4899,
-      lng: 88.3551
+      lat: 22.474361,
+      lng: 88.366516
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1535,8 +1539,8 @@ export const pandals: Pandal[] = [
     name: "Naskarpara Sarbojanin Durgotsav",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5143,
-      lng: 88.3705
+      lat: 22.473175,
+      lng: 88.360136
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1545,8 +1549,8 @@ export const pandals: Pandal[] = [
     name: "New Alipore Suruchi Sangha Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4948,
-      lng: 88.3407
+      lat: 22.511165,
+      lng: 88.328112
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1565,8 +1569,8 @@ export const pandals: Pandal[] = [
     name: "Paddapukur Barwari Samity",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4796,
-      lng: 88.3304
+      lat: 22.505025,
+      lng: 88.302958
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1575,8 +1579,8 @@ export const pandals: Pandal[] = [
     name: "Paddapukur Youth Association Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5037,
-      lng: 88.3508
+      lat: 22.503918,
+      lng: 88.303971
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1585,8 +1589,8 @@ export const pandals: Pandal[] = [
     name: "Pally Mangal Samity Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4866,
-      lng: 88.3452
+      lat: 22.584285,
+      lng: 88.358102
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1595,8 +1599,8 @@ export const pandals: Pandal[] = [
     name: "Panchanna Gram Adhibasibrinda",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5222,
-      lng: 88.3444
+      lat: 22.531020,
+      lng: 88.395862
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1605,8 +1609,8 @@ export const pandals: Pandal[] = [
     name: "Paschim Putiary Sarbojanin Nabo Durgotsav",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4842,
-      lng: 88.3513
+      lat: 22.480362,
+      lng: 88.337790
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1645,8 +1649,8 @@ export const pandals: Pandal[] = [
     name: "Pragati Sangha Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5057,
-      lng: 88.3438
+      lat: 22.590109,
+      lng: 88.395606
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1655,8 +1659,8 @@ export const pandals: Pandal[] = [
     name: "Pragati Sangha Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4994,
-      lng: 88.3712
+      lat: 22.589003,
+      lng: 88.396620
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1665,8 +1669,8 @@ export const pandals: Pandal[] = [
     name: "Purbachal Residents Sarbojanin Durgotsav",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4988,
-      lng: 88.3297
+      lat: 22.510497,
+      lng: 88.395981
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1675,8 +1679,8 @@ export const pandals: Pandal[] = [
     name: "Putiary Sarbojanin Durgotsab Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4775,
-      lng: 88.3553
+      lat: 22.479256,
+      lng: 88.338803
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1745,8 +1749,8 @@ export const pandals: Pandal[] = [
     name: "Santoshpur Avenue South",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4861,
-      lng: 88.3502
+      lat: 22.492440,
+      lng: 88.392152
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1755,8 +1759,8 @@ export const pandals: Pandal[] = [
     name: "Santoshpur Lake Pally Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4978,
-      lng: 88.3593
+      lat: 22.491427,
+      lng: 88.383691
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1785,8 +1789,8 @@ export const pandals: Pandal[] = [
     name: "Singhi Park Sarbojanin Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4847,
-      lng: 88.3554
+      lat: 22.521224,
+      lng: 88.363011
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1795,8 +1799,8 @@ export const pandals: Pandal[] = [
     name: "Sonarpur Sarbojanin Durgotsav Puja Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5093,
-      lng: 88.3725
+      lat: 22.440875,
+      lng: 88.424637
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1815,8 +1819,8 @@ export const pandals: Pandal[] = [
     name: "Surya Nagar Sarbojanin Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.5193,
-      lng: 88.3609
+      lat: 22.472480,
+      lng: 88.361686
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1825,8 +1829,8 @@ export const pandals: Pandal[] = [
     name: "Tridhara Sammilani Durga Puja",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4828,
-      lng: 88.3312
+      lat: 22.518470,
+      lng: 88.356362
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1865,8 +1869,8 @@ export const pandals: Pandal[] = [
     name: "VIP Nagar Sarbojanin Durga Puja Committee",
     region: "South Kolkata",
     coordinates: {
-      lat: 22.4808,
-      lng: 88.368
+      lat: 22.523695,
+      lng: 88.398863
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1885,8 +1889,8 @@ export const pandals: Pandal[] = [
     name: "14 Pally Udayan Sangha",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5521,
-      lng: 88.3626
+      lat: 22.545646,
+      lng: 88.321646
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1915,8 +1919,8 @@ export const pandals: Pandal[] = [
     name: "Central Calcutta Youth Association",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5448,
-      lng: 88.3615
+      lat: 22.572486,
+      lng: 88.358743
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1925,8 +1929,8 @@ export const pandals: Pandal[] = [
     name: "College Square Sarbojanin Durgotsav",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5871,
-      lng: 88.3371
+      lat: 22.574525,
+      lng: 88.364464
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -1965,8 +1969,8 @@ export const pandals: Pandal[] = [
     name: "Kanai Dhar Lane Adhibasi Brinda",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5493,
-      lng: 88.369
+      lat: 22.571575,
+      lng: 88.365868
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -1975,8 +1979,8 @@ export const pandals: Pandal[] = [
     name: "Machua Bazar Sarbajanik Durga Puja Samity",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5864,
-      lng: 88.3365
+      lat: 22.580781,
+      lng: 88.363219
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -1995,8 +1999,8 @@ export const pandals: Pandal[] = [
     name: "New Market Sarbojanin Sri Sri Durga Puja",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5854,
-      lng: 88.3406
+      lat: 22.560152,
+      lng: 88.352956
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2015,8 +2019,8 @@ export const pandals: Pandal[] = [
     name: "Santosh Mitra Square Durga Puja",
     region: "Central Kolkata",
     coordinates: {
-      lat: 22.5767,
-      lng: 88.3535
+      lat: 22.565863,
+      lng: 88.365539
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -2045,8 +2049,8 @@ export const pandals: Pandal[] = [
     name: "2 No Basudebpur Sarbojanin Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5663,
-      lng: 88.3205
+      lat: 22.517648,
+      lng: 88.131751
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -2065,8 +2069,8 @@ export const pandals: Pandal[] = [
     name: "Acharya Prafulla Sangha",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.569,
-      lng: 88.3006
+      lat: 22.576833,
+      lng: 88.392715
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2075,8 +2079,8 @@ export const pandals: Pandal[] = [
     name: "Ajeya Sanghati Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5792,
-      lng: 88.288
+      lat: 22.480962,
+      lng: 88.337529
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -2115,8 +2119,8 @@ export const pandals: Pandal[] = [
     name: "Barisha Netaji Sangha Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5693,
-      lng: 88.2897
+      lat: 22.485726,
+      lng: 88.315341
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2125,8 +2129,8 @@ export const pandals: Pandal[] = [
     name: "Barisha Sarbojanin Durgotsab",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.584,
-      lng: 88.3024
+      lat: 22.456229,
+      lng: 88.307162
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -2145,8 +2149,8 @@ export const pandals: Pandal[] = [
     name: "Behala 11 Pally Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5647,
-      lng: 88.3116
+      lat: 22.501572,
+      lng: 88.320943
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2185,8 +2189,8 @@ export const pandals: Pandal[] = [
     name: "Behala Mitra Sangha Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.6046,
-      lng: 88.3153
+      lat: 22.500466,
+      lng: 88.321957
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2265,8 +2269,8 @@ export const pandals: Pandal[] = [
     name: "Monmohan Park Sarbojanin Durgotsab",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5801,
-      lng: 88.3275
+      lat: 22.668820,
+      lng: 88.342570
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2275,8 +2279,8 @@ export const pandals: Pandal[] = [
     name: "Nabarun Sangha Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5856,
-      lng: 88.3107
+      lat: 22.702861,
+      lng: 88.371664
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2295,8 +2299,8 @@ export const pandals: Pandal[] = [
     name: "Palli Unnayan Samity Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5908,
-      lng: 88.2895
+      lat: 22.478133,
+      lng: 88.342210
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2305,8 +2309,8 @@ export const pandals: Pandal[] = [
     name: "Parnasree Club Sarbojanin Durgotsav",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5802,
-      lng: 88.3039
+      lat: 22.510188,
+      lng: 88.306175
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -2365,8 +2369,8 @@ export const pandals: Pandal[] = [
     name: "Sahapur Sarbojanin Durgotsab Committee",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5738,
-      lng: 88.3194
+      lat: 22.505880,
+      lng: 88.326403
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2395,8 +2399,8 @@ export const pandals: Pandal[] = [
     name: "State Bank Park Sarbojanin Durga Puja",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.6066,
-      lng: 88.3069
+      lat: 22.552960,
+      lng: 88.356451
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2405,8 +2409,8 @@ export const pandals: Pandal[] = [
     name: "Swamiji Sarak Sarbojanin Durgotsab",
     region: "West Kolkata",
     coordinates: {
-      lat: 22.5815,
-      lng: 88.329
+      lat: 22.489183,
+      lng: 88.329613
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -2435,8 +2439,8 @@ export const pandals: Pandal[] = [
     name: "Beliaghata 33 Palli Durga Puja",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5636,
-      lng: 88.4382
+      lat: 22.550656,
+      lng: 88.403917
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2445,8 +2449,8 @@ export const pandals: Pandal[] = [
     name: "EKTP Phase 2 Abasik Puja Samity",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5657,
-      lng: 88.4106
+      lat: 22.511746,
+      lng: 88.400357
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2465,8 +2469,8 @@ export const pandals: Pandal[] = [
     name: "Judge Bagan Sarbojanin Durgotsab",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5484,
-      lng: 88.4204
+      lat: 22.525294,
+      lng: 88.331311
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2475,8 +2479,8 @@ export const pandals: Pandal[] = [
     name: "Kanjial Para Puja Samity Durga Puja",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5899,
-      lng: 88.4281
+      lat: 22.635074,
+      lng: 88.483049
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2485,8 +2489,8 @@ export const pandals: Pandal[] = [
     name: "Nabapally Adhibashi Brinda Durga Puja",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5549,
-      lng: 88.4297
+      lat: 22.514669,
+      lng: 88.390413
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -2495,8 +2499,8 @@ export const pandals: Pandal[] = [
     name: "Netaji Sporting Club Durga Puja",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5885,
-      lng: 88.4021
+      lat: 22.480993,
+      lng: 88.346000
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2505,8 +2509,8 @@ export const pandals: Pandal[] = [
     name: "Purba Kalikata Sarbojanin Durgotsav",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5724,
-      lng: 88.428
+      lat: 22.474452,
+      lng: 88.311771
     },
     crowdLevel: "high" as CrowdLevel
   },
@@ -2535,8 +2539,8 @@ export const pandals: Pandal[] = [
     name: "Sree Sree Durga Puja Committee, Rabindrapally",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.587,
-      lng: 88.4385
+      lat: 22.768768,
+      lng: 88.386142
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2545,8 +2549,8 @@ export const pandals: Pandal[] = [
     name: "AJ Block Durga Puja",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5886,
-      lng: 88.4419
+      lat: 22.572646,
+      lng: 88.363895
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -2555,8 +2559,8 @@ export const pandals: Pandal[] = [
     name: "BD Block Sarbojanin Durgotsab Committee",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5629,
-      lng: 88.4422
+      lat: 22.603590,
+      lng: 88.427041
     },
     crowdLevel: "medium" as CrowdLevel
   },
@@ -2575,8 +2579,8 @@ export const pandals: Pandal[] = [
     name: "BL Block Durga Puja",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5631,
-      lng: 88.4018
+      lat: 22.560589,
+      lng: 88.351415
     },
     crowdLevel: "low" as CrowdLevel
   },
@@ -2585,8 +2589,8 @@ export const pandals: Pandal[] = [
     name: "Prafulla Kanan Sarbojanin Durgotsab",
     region: "East Kolkata",
     coordinates: {
-      lat: 22.5779,
-      lng: 88.428
+      lat: 22.602950,
+      lng: 88.423987
     },
     crowdLevel: "medium" as CrowdLevel
   }
