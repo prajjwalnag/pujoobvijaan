@@ -92,7 +92,7 @@ export default function AtlasPage() {
   }
 
   return (
-    <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row-reverse">
+    <div className="relative flex h-[calc(100dvh-64px)] flex-col overflow-hidden lg:flex-row-reverse">
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-[1000] bg-black/40 lg:hidden"

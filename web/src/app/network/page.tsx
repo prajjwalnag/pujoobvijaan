@@ -35,7 +35,7 @@ export default function NetworkPage() {
   );
 
   return (
-    <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row">
+    <div className="relative flex h-[calc(100dvh-64px)] flex-col overflow-hidden lg:flex-row">
       <div className="flex-1 p-2 sm:p-4">
         <div className="relative h-full w-full overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
           <NetworkGraph
