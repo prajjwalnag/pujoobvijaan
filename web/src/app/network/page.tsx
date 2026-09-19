@@ -37,7 +37,7 @@ export default function NetworkPage() {
   return (
     <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row">
       <div className="flex-1 p-2 sm:p-4">
-        <div className="h-full w-full overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
+        <div className="relative h-full w-full overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
           <NetworkGraph
             nodes={nodes}
             links={links}
@@ -45,6 +45,36 @@ export default function NetworkPage() {
             showDistance={showDistance}
             onSelect={setSelected}
           />
+
+          {selected && (
+            <div className="pointer-events-none absolute inset-x-0 top-3 z-[900] flex justify-center px-3 lg:hidden">
+              <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-4 py-2 shadow-[var(--shadow-medium)]">
+                <span
+                  className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{
+                    background:
+                      selected.kind === "region"
+                        ? "#8b5a00"
+                        : selected.kind === "area"
+                          ? "#d4a017"
+                          : selected.crowdLevel
+                            ? tierColor[selected.crowdLevel]
+                            : "#8b0000",
+                  }}
+                />
+                <span className="max-w-[220px] truncate text-sm font-semibold text-[var(--color-text-primary)]">
+                  {selected.label}
+                </span>
+                <button
+                  onClick={() => setSelected(null)}
+                  aria-label="Clear selection"
+                  className="ml-1 text-[var(--color-text-light)]"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

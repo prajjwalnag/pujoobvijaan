@@ -57,6 +57,8 @@ export function NetworkGraph({
     panning: boolean;
     lastPointer: { x: number; y: number };
     selectedId: string | null;
+    activePointers: Map<number, { x: number; y: number }>;
+    pinchStartDist: number | null;
   }>({
     simNodes: [],
     simLinks: [],
@@ -66,6 +68,8 @@ export function NetworkGraph({
     panning: false,
     lastPointer: { x: 0, y: 0 },
     selectedId: null,
+    activePointers: new Map(),
+    pinchStartDist: null,
   });
   const [, forceRerender] = useState(0);
 
@@ -232,7 +236,36 @@ export function NetworkGraph({
       return null;
     }
 
+    function pointerDist(pts: { x: number; y: number }[]) {
+      return Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    }
+
     function onPointerDown(e: PointerEvent) {
+      const { activePointers } = stateRef.current;
+      activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      try {
+        canvas!.setPointerCapture(e.pointerId);
+      } catch {
+        // Ignorable — can race with a second finger's own capture on some
+        // touchscreens during a fast pinch start.
+      }
+
+      if (activePointers.size >= 2) {
+        // Second finger landed — switch to pinch-zoom, abandon any
+        // single-pointer drag/pan that was in progress.
+        const dragging = stateRef.current.dragging;
+        if (dragging) {
+          dragging.fx = null;
+          dragging.fy = null;
+          simulation.alphaTarget(0);
+        }
+        stateRef.current.dragging = null;
+        stateRef.current.panning = false;
+        const pts = [...activePointers.values()].slice(0, 2);
+        stateRef.current.pinchStartDist = pointerDist(pts);
+        return;
+      }
+
       const { x, y } = toWorld(e.clientX, e.clientY);
       const node = findNode(x, y);
       if (node) {
@@ -244,11 +277,32 @@ export function NetworkGraph({
         stateRef.current.panning = true;
       }
       stateRef.current.lastPointer = { x: e.clientX, y: e.clientY };
-      canvas!.setPointerCapture(e.pointerId);
     }
 
     function onPointerMove(e: PointerEvent) {
-      const { dragging, panning, transform, lastPointer } = stateRef.current;
+      const { activePointers, dragging, panning, transform, lastPointer } = stateRef.current;
+      if (activePointers.has(e.pointerId)) {
+        activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      }
+
+      if (activePointers.size >= 2) {
+        const pts = [...activePointers.values()].slice(0, 2);
+        const rect = canvas!.getBoundingClientRect();
+        const midX = (pts[0].x + pts[1].x) / 2 - rect.left;
+        const midY = (pts[0].y + pts[1].y) / 2 - rect.top;
+        const dist = pointerDist(pts);
+        const prevDist = stateRef.current.pinchStartDist ?? dist;
+        if (prevDist > 0) {
+          const factor = dist / prevDist;
+          const newK = Math.min(Math.max(transform.k * factor, 0.15), 5);
+          transform.x = midX - ((midX - transform.x) * newK) / transform.k;
+          transform.y = midY - ((midY - transform.y) * newK) / transform.k;
+          transform.k = newK;
+        }
+        stateRef.current.pinchStartDist = dist;
+        return;
+      }
+
       if (dragging) {
         const { x, y } = toWorld(e.clientX, e.clientY);
         dragging.fx = x;
@@ -267,7 +321,30 @@ export function NetworkGraph({
     }
 
     function onPointerUp(e: PointerEvent) {
-      const { dragging } = stateRef.current;
+      const { activePointers, dragging } = stateRef.current;
+      activePointers.delete(e.pointerId);
+      try {
+        canvas!.releasePointerCapture(e.pointerId);
+      } catch {
+        // Ignorable — pointer capture may already be gone by the time a
+        // second finger lifts during a pinch.
+      }
+
+      if (activePointers.size >= 2) {
+        const pts = [...activePointers.values()].slice(0, 2);
+        stateRef.current.pinchStartDist = pointerDist(pts);
+        return;
+      }
+      stateRef.current.pinchStartDist = null;
+      if (activePointers.size === 1) {
+        // One finger remains — resume panning from its current position
+        // instead of jumping based on stale lastPointer.
+        const [remaining] = activePointers.values();
+        stateRef.current.lastPointer = remaining;
+        stateRef.current.panning = true;
+        return;
+      }
+
       if (dragging) {
         dragging.fx = null;
         dragging.fy = null;
@@ -275,7 +352,6 @@ export function NetworkGraph({
       }
       stateRef.current.dragging = null;
       stateRef.current.panning = false;
-      canvas!.releasePointerCapture(e.pointerId);
     }
 
     function onClick(e: MouseEvent) {
