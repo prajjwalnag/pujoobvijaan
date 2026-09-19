@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --color-maroon: #8b0000;
+  --color-maroon-dark: #6b0000;
+  --color-maroon-light: #a00000;
+
+  --color-bg-main: #f5f0e8;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #f0ebe3;
+
+  --color-text-primary: #2d2d2d;
+  --color-text-secondary: #666666;
+  --color-text-light: #999999;
+
+  --color-status-high: #e84c8a;
+  --color-status-medium: #52b788;
+  --color-status-low: #4ecdc4;
+  --color-status-theme: #f4d35e;
+
+  --color-border: #e0d9cf;
+
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+  --radius: 8px;
+}
+
+@theme inline {
+  --color-maroon: var(--color-maroon);
+  --color-maroon-dark: var(--color-maroon-dark);
+  --color-maroon-light: var(--color-maroon-light);
+  --color-bg-main: var(--color-bg-main);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-bg-tertiary: var(--color-bg-tertiary);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-light: var(--color-text-light);
+  --color-status-high: var(--color-status-high);
+  --color-status-medium: var(--color-status-medium);
+  --color-status-low: var(--color-status-low);
+  --color-status-theme: var(--color-status-theme);
+  --color-border: var(--color-border);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-bg-main);
+  color: var(--color-text-primary);
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+}
