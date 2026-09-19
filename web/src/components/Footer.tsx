@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePartners } from "./usePartners";
 
 function FacebookIcon() {
@@ -28,17 +27,9 @@ function PartnersRow() {
   return (
     <div className="border-b border-[var(--color-border)] py-8">
       <div className="mx-auto max-w-[1400px] px-4 text-center">
-        <div className="flex items-center justify-center gap-3">
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-text-light)]">
-            Our Partners
-          </p>
-          <Link
-            href="/admin/partners"
-            className="text-xs font-semibold text-[var(--color-red)] hover:underline"
-          >
-            + Add a partner
-          </Link>
-        </div>
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-text-light)]">
+          Our Partners
+        </p>
 
         {hasPartners ? (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
