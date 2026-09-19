@@ -11,6 +11,7 @@ import { useTheme } from "./ThemeProvider";
 import { usePoints, checkinPointsFor, POINTS } from "./PointsProvider";
 import { MetroLayer } from "./MetroLayer";
 import { RailwayLayer } from "./RailwayLayer";
+import { RoadLayer } from "./RoadLayer";
 
 const areaById = new Map(areas.map((a) => [a.id, a]));
 
@@ -79,10 +80,12 @@ export function MapView({
   pandalsList,
   showMetro = true,
   showRailway = false,
+  showRoads = false,
 }: {
   pandalsList: Pandal[];
   showMetro?: boolean;
   showRailway?: boolean;
+  showRoads?: boolean;
 }) {
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
@@ -95,6 +98,7 @@ export function MapView({
       className="h-full w-full"
     >
       <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
+      {showRoads && <RoadLayer />}
       {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
       {pandalsList.map((pandal) => {

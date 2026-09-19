@@ -30,6 +30,8 @@ interface AtlasSidebarProps {
   onShowMetroChange: (v: boolean) => void;
   showRailway: boolean;
   onShowRailwayChange: (v: boolean) => void;
+  showRoads: boolean;
+  onShowRoadsChange: (v: boolean) => void;
   stats: { total: number; geocoded: number };
 }
 
@@ -58,6 +60,8 @@ export function AtlasSidebar({
   onShowMetroChange,
   showRailway,
   onShowRailwayChange,
+  showRoads,
+  onShowRoadsChange,
   stats,
 }: AtlasSidebarProps) {
   const sorted = [...areasList].sort((a, b) => b.pandalCount - a.pandalCount);
@@ -154,6 +158,17 @@ export function AtlasSidebar({
             )}
           >
             🚆 Suburban railway
+          </button>
+          <button
+            onClick={() => onShowRoadsChange(!showRoads)}
+            className={clsx(
+              "rounded-full border px-3 py-1 text-xs font-semibold",
+              showRoads
+                ? "border-[#3949AB] bg-[#3949AB] text-white"
+                : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
+            )}
+          >
+            🛣️ Main roads
           </button>
         </div>
       </div>

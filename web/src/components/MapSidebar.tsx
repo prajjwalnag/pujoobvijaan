@@ -6,6 +6,7 @@ import { pandalStats } from "@/data/pandals";
 import { areas } from "@/data/areas";
 import { metroLines } from "@/data/metro";
 import { railStations } from "@/data/railway";
+import { roadSegments } from "@/data/roads";
 
 const sortedAreas = [...areas].sort((a, b) => b.pandalCount - a.pandalCount);
 const metroStationCount = metroLines.reduce((sum, l) => sum + l.stations.length, 0);
@@ -17,8 +18,11 @@ interface MapSidebarProps {
     itinerary: boolean;
     metro: boolean;
     railway: boolean;
+    roads: boolean;
   };
-  onCategoryToggle: (key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway") => void;
+  onCategoryToggle: (
+    key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads"
+  ) => void;
   checkedInCount: number;
 }
 
@@ -85,6 +89,17 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
             Suburban railway
           </span>
           <span className="text-[var(--color-text-light)]">{railStations.length}</span>
+        </label>
+        <label className="flex items-center justify-between py-1.5 text-sm">
+          <span className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={categories.roads}
+              onChange={() => onCategoryToggle("roads")}
+            />
+            Main roads
+          </span>
+          <span className="text-[var(--color-text-light)]">{roadSegments.length}</span>
         </label>
       </div>
 
