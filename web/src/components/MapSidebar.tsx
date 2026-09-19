@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { LocateFixed, Route, ChevronDown } from "lucide-react";
+import { LocateFixed, ChevronDown } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { areas } from "@/data/areas";
 import { metroLines } from "@/data/metro";
 import { railStations } from "@/data/railway";
 import { roadSegments } from "@/data/roads";
+import { RouteBuilderPanel } from "./RouteBuilderPanel";
+import type { Pandal } from "@/data/types";
 
 const sortedAreas = [...areas].sort((a, b) => b.pandalCount - a.pandalCount);
 const metroStationCount = metroLines.reduce((sum, l) => sum + l.stations.length, 0);
@@ -24,10 +26,27 @@ interface MapSidebarProps {
     key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads"
   ) => void;
   checkedInCount: number;
+  routeStops: Pandal[];
+  onRouteRemove: (id: string) => void;
+  onRouteMove: (index: number, dir: -1 | 1) => void;
+  onRouteOptimize: () => void;
+  onRouteClear: () => void;
+  onRouteSave: (title: string) => void;
 }
 
-export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: MapSidebarProps) {
+export function MapSidebar({
+  categories,
+  onCategoryToggle,
+  checkedInCount,
+  routeStops,
+  onRouteRemove,
+  onRouteMove,
+  onRouteOptimize,
+  onRouteClear,
+  onRouteSave,
+}: MapSidebarProps) {
   const [openArea, setOpenArea] = useState<string | null>(null);
+  const [routeBuilderOpen, setRouteBuilderOpen] = useState(false);
 
   return (
     <div className="flex h-full w-full flex-col gap-6 overflow-y-auto border-r border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 lg:w-[280px]">
@@ -111,10 +130,16 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
           <LocateFixed size={16} />
           Find My Location
         </button>
-        <button className="flex w-full items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm hover:border-[var(--color-red)]">
-          <Route size={16} />
-          Route Builder
-        </button>
+        <RouteBuilderPanel
+          open={routeBuilderOpen}
+          onToggleOpen={() => setRouteBuilderOpen((v) => !v)}
+          routeStops={routeStops}
+          onRemove={onRouteRemove}
+          onMove={onRouteMove}
+          onOptimize={onRouteOptimize}
+          onClear={onRouteClear}
+          onSave={onRouteSave}
+        />
       </div>
 
       <div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import L from "leaflet";
 import { Star } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -46,6 +46,30 @@ function pinIcon(checkedIn: boolean) {
   });
 }
 
+function routeMarkerIcon(index: number) {
+  const html = renderToStaticMarkup(
+    <div
+      style={{
+        width: 24,
+        height: 24,
+        borderRadius: "50%",
+        background: "#D4A017",
+        border: "2.5px solid white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        fontWeight: 800,
+        fontSize: 12,
+        boxShadow: "0 2px 5px rgba(0,0,0,0.4)",
+      }}
+    >
+      {index + 1}
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [24, 24], iconAnchor: [12, 12] });
+}
+
 function StarRow({ pandal }: { pandal: Pandal }) {
   const { ratings, rate } = usePoints();
   const [hover, setHover] = useState(0);
@@ -81,14 +105,19 @@ export function MapView({
   showMetro = true,
   showRailway = false,
   showRoads = false,
+  routeStops = [],
+  onAddToRoute,
 }: {
   pandalsList: Pandal[];
   showMetro?: boolean;
   showRailway?: boolean;
   showRoads?: boolean;
+  routeStops?: Pandal[];
+  onAddToRoute?: (pandal: Pandal) => void;
 }) {
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
+  const routeIds = new Set(routeStops.map((p) => p.id));
 
   return (
     <MapContainer
@@ -101,6 +130,21 @@ export function MapView({
       {showRoads && <RoadLayer />}
       {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
+
+      {routeStops.length > 1 && (
+        <Polyline
+          positions={routeStops.map((p) => [p.coordinates.lat, p.coordinates.lng])}
+          pathOptions={{ color: "#D4A017", weight: 4, opacity: 0.9, dashArray: "8,6" }}
+        />
+      )}
+      {routeStops.map((p, i) => (
+        <Marker
+          key={`route-${p.id}`}
+          position={[p.coordinates.lat, p.coordinates.lng]}
+          icon={routeMarkerIcon(i)}
+          zIndexOffset={1000}
+        />
+      ))}
       {pandalsList.map((pandal) => {
         const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
         const visited = checkedIn.has(pandal.id);
@@ -127,6 +171,16 @@ export function MapView({
                 </button>
 
                 <StarRow pandal={pandal} />
+
+                {onAddToRoute && (
+                  <button
+                    onClick={() => onAddToRoute(pandal)}
+                    disabled={routeIds.has(pandal.id)}
+                    className="mt-2 w-full rounded border border-[#D4A017] px-2 py-1 text-xs font-semibold text-[#8B5A00] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {routeIds.has(pandal.id) ? "In route ✓" : "+ Add to route"}
+                  </button>
+                )}
 
                 {area && (
                   <div className="mt-2 border-t border-gray-200 pt-2 text-xs">

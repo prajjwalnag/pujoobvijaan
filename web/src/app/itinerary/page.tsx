@@ -1,44 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Map } from "lucide-react";
+import Link from "next/link";
 import { itineraries } from "@/data/itineraries";
 import { ItineraryCard } from "@/components/ItineraryCard";
 import { ItineraryBuilder } from "@/components/ItineraryBuilder";
-import type { Itinerary } from "@/data/types";
-
-const STORAGE_KEY = "pujo-my-itineraries-v1";
+import { useMyItineraries } from "@/components/useMyItineraries";
 
 export default function ItineraryPage() {
-  const [myItineraries, setMyItineraries] = useState<Itinerary[]>([]);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setMyItineraries(JSON.parse(raw));
-    } catch {
-      // ignore — start fresh
-    }
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(myItineraries));
-    } catch {
-      // ignore (private browsing / storage blocked)
-    }
-  }, [myItineraries, hydrated]);
-
-  function addItinerary(itinerary: Itinerary) {
-    setMyItineraries((prev) => [itinerary, ...prev]);
-  }
-
-  function deleteItinerary(id: string) {
-    setMyItineraries((prev) => prev.filter((it) => it.id !== id));
-  }
+  const { myItineraries, addItinerary, deleteItinerary } = useMyItineraries();
 
   return (
     <div className="mx-auto max-w-[800px] px-4 py-8 sm:px-6">
@@ -48,7 +18,11 @@ export default function ItineraryPage() {
       </div>
       <p className="mt-1 text-[var(--color-text-secondary)]">
         Sample routes to get you started — distances are real (straight-line, not walking-path).
-        Build your own below and earn points for it.
+        Build your own below, or use the{" "}
+        <Link href="/map" className="text-[var(--color-red)] underline">
+          Route Builder on the map
+        </Link>{" "}
+        to build one by clicking pandals directly. Either way earns points.
       </p>
 
       <div className="mt-6">
@@ -78,6 +52,14 @@ export default function ItineraryPage() {
           ))}
         </div>
       </div>
+
+      <Link
+        href="/map"
+        className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-dashed border-[var(--color-border)] p-3 text-sm font-semibold text-[var(--color-text-secondary)] hover:border-[var(--color-red)] hover:text-[var(--color-red)]"
+      >
+        <Map size={15} />
+        Build a route visually on the map instead
+      </Link>
     </div>
   );
 }
