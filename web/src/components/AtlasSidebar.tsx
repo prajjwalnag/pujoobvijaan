@@ -8,6 +8,8 @@ import { tierColor, tierLabel } from "@/data/tiers";
 interface AtlasSidebarProps {
   areasList: Area[];
   selectedPandal: Pandal | null;
+  nearbyPandals: { pandal: Pandal; distanceKm: number }[];
+  onSelectNearby: (id: string) => void;
   enabledAreas: Set<string>;
   onToggleAreaEnabled: (id: string) => void;
   onSetAllEnabled: (value: boolean) => void;
@@ -30,6 +32,8 @@ interface AtlasSidebarProps {
 export function AtlasSidebar({
   areasList,
   selectedPandal,
+  nearbyPandals,
+  onSelectNearby,
   enabledAreas,
   onToggleAreaEnabled,
   onSetAllEnabled,
@@ -149,6 +153,42 @@ export function AtlasSidebar({
                 {selectedAreaData.thingsToDo[0] && <p>🎯 {selectedAreaData.thingsToDo[0]}</p>}
                 {selectedAreaData.cafes[0] && <p>☕ {selectedAreaData.cafes[0].name}</p>}
                 {selectedAreaData.restaurants[0] && <p>🍽️ {selectedAreaData.restaurants[0].name}</p>}
+              </div>
+            )}
+
+            {nearbyPandals.length > 0 && (
+              <div className="mt-2 border-t border-[var(--color-border)] pt-2 text-left">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-text-light)]">
+                  Nearby pandals
+                </p>
+                <ul className="mt-1 space-y-1">
+                  {nearbyPandals.map(({ pandal, distanceKm }) => (
+                    <li key={pandal.id}>
+                      <button
+                        onClick={() => onSelectNearby(pandal.id)}
+                        className="flex w-full items-center justify-between gap-2 rounded px-1.5 py-1 text-left text-xs hover:bg-[var(--color-bg-tertiary)]"
+                      >
+                        <span className="flex items-center gap-1.5 truncate">
+                          <span
+                            className="inline-block h-2 w-2 flex-shrink-0 rounded-full"
+                            style={{ background: tierColor[pandal.crowdLevel] }}
+                          />
+                          <span className="truncate text-[var(--color-text-primary)]">{pandal.name}</span>
+                        </span>
+                        <span className="flex-shrink-0 text-[var(--color-text-light)]">
+                          {distanceKm < 1
+                            ? `${Math.round(distanceKm * 1000)} m`
+                            : `${distanceKm.toFixed(1)} km`}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {!selectedPandal.geocoded && (
+                  <p className="mt-1 text-[10px] italic text-[var(--color-text-light)]">
+                    Approximate — this pandal's own location isn't geocoded yet.
+                  </p>
+                )}
               </div>
             )}
           </div>

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { AtlasSidebar } from "@/components/AtlasSidebar";
 import { pandals } from "@/data/pandals";
 import { areas } from "@/data/areas";
+import { nearestPandals } from "@/data/graph";
 import type { Pandal, CrowdLevel } from "@/data/types";
 
 const AtlasMapView = dynamic(
@@ -58,6 +59,16 @@ export default function AtlasPage() {
     []
   );
 
+  const nearby = useMemo(
+    () => (selectedPandal ? nearestPandals(selectedPandal.id, 5) : []),
+    [selectedPandal]
+  );
+
+  function selectPandalById(id: string) {
+    const p = pandals.find((x) => x.id === id);
+    if (p) setSelectedPandal(p);
+  }
+
   function toggleAreaEnabled(id: string) {
     setEnabledAreas((prev) => {
       const next = new Set(prev);
@@ -80,6 +91,8 @@ export default function AtlasPage() {
       <AtlasSidebar
         areasList={areas}
         selectedPandal={selectedPandal}
+        nearbyPandals={nearby}
+        onSelectNearby={selectPandalById}
         enabledAreas={enabledAreas}
         onToggleAreaEnabled={toggleAreaEnabled}
         onSetAllEnabled={setAllEnabled}

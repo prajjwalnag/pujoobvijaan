@@ -1,7 +1,7 @@
 import { pandals } from "./pandals";
 import { areas } from "./areas";
 import { regions as allRegions } from "./pandals";
-import type { CrowdLevel } from "./types";
+import type { CrowdLevel, Pandal } from "./types";
 
 export type GraphNodeKind = "region" | "area" | "pandal";
 
@@ -59,7 +59,7 @@ export function buildGraph(): { nodes: GraphNode[]; links: GraphLink[] } {
   return { nodes: [...regionNodes, ...nodes], links };
 }
 
-function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+export function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
   const R = 6371;
   const dLat = ((b.lat - a.lat) * Math.PI) / 180;
   const dLng = ((b.lng - a.lng) * Math.PI) / 180;
@@ -100,4 +100,19 @@ export function buildDistanceLinks(): GraphLink[] {
   }
 
   return links;
+}
+
+// Powers the "Nearby Pandals" suggestions on the Atlas detail panel:
+// given a pandal, return its K closest others by real haversine
+// distance. Same caveat as buildDistanceLinks — on a pandal that's
+// still on a placeholder coordinate, "nearby" only means nearby within
+// its region's jitter spread, not a verified real-world distance.
+export function nearestPandals(pandalId: string, k = 5): { pandal: Pandal; distanceKm: number }[] {
+  const origin = pandals.find((p) => p.id === pandalId);
+  if (!origin) return [];
+  return pandals
+    .filter((p) => p.id !== pandalId)
+    .map((p) => ({ pandal: p, distanceKm: haversineKm(origin.coordinates, p.coordinates) }))
+    .sort((a, b) => a.distanceKm - b.distanceKm)
+    .slice(0, k);
 }
