@@ -1,7 +1,11 @@
 "use client";
 
-import { LocateFixed, Route } from "lucide-react";
+import { useState } from "react";
+import { LocateFixed, Route, ChevronDown } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
+import { areas } from "@/data/areas";
+
+const sortedAreas = [...areas].sort((a, b) => b.pandalCount - a.pandalCount);
 
 interface MapSidebarProps {
   categories: { pandals: boolean; foodStalls: boolean; itinerary: boolean };
@@ -10,6 +14,8 @@ interface MapSidebarProps {
 }
 
 export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: MapSidebarProps) {
+  const [openArea, setOpenArea] = useState<string | null>(null);
+
   return (
     <div className="flex h-full w-full flex-col gap-6 overflow-y-auto border-r border-[var(--color-border)] bg-[var(--color-bg-main)] p-4 lg:w-[280px]">
       <div>
@@ -96,6 +102,44 @@ export function MapSidebar({ categories, onCategoryToggle, checkedInCount }: Map
         <p className="text-sm text-[var(--color-text-secondary)]">
           Checked in: {checkedInCount} / {pandalStats.total}
         </p>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
+          Explore by Area
+        </h3>
+        <div className="space-y-1">
+          {sortedAreas.map((area) => {
+            const open = openArea === area.id;
+            return (
+              <div key={area.id} className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)]">
+                <button
+                  onClick={() => setOpenArea(open ? null : area.id)}
+                  className="flex w-full items-center justify-between px-3 py-2 text-left text-sm"
+                >
+                  <span>
+                    {area.name}
+                    <span className="ml-1 text-[var(--color-text-light)]">({area.pandalCount})</span>
+                  </span>
+                  <ChevronDown size={14} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
+                </button>
+                {open && (
+                  <div className="space-y-1.5 border-t border-[var(--color-border)] px-3 py-2 text-xs text-[var(--color-text-secondary)]">
+                    {area.thingsToDo.length > 0 && (
+                      <p>🎯 {area.thingsToDo.join(" · ")}</p>
+                    )}
+                    {area.cafes.length > 0 && (
+                      <p>☕ {area.cafes.map((c) => c.name).join(" · ")}</p>
+                    )}
+                    {area.restaurants.length > 0 && (
+                      <p>🍽️ {area.restaurants.map((r) => r.name).join(" · ")}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

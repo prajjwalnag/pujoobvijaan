@@ -15,6 +15,8 @@ export interface Pandal {
   coordinates: { lat: number; lng: number };
   /** Size/prominence tier (budget & footfall), not live crowd data. */
   crowdLevel: CrowdLevel;
+  /** Links to an Area (see areas.ts) when this pandal falls in a mapped geographic cluster. */
+  areaId?: string;
   rating?: number;
   theme?: string;
   visitingHours?: { open: string; close: string };
@@ -22,6 +24,23 @@ export interface Pandal {
   accessPoints?: string[];
   description?: string;
   tags?: string[];
+}
+
+export interface AreaPlace {
+  name: string;
+  note?: string;
+}
+
+export interface Area {
+  id: string;
+  /** Real neighbourhood name, reverse-geocoded from the cluster's centroid. */
+  name: string;
+  region: Region;
+  center: { lat: number; lng: number };
+  pandalCount: number;
+  thingsToDo: string[];
+  cafes: AreaPlace[];
+  restaurants: AreaPlace[];
 }
 
 export interface LeaderboardEntry {
