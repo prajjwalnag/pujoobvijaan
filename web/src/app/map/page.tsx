@@ -1,13 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { MapSidebar } from "@/components/MapSidebar";
 import { pandals } from "@/data/pandals";
 import { usePoints, POINTS } from "@/components/PointsProvider";
 import { useMyItineraries } from "@/components/useMyItineraries";
-import { haversineKm } from "@/data/graph";
+import { haversineKm, nearestPandalsToPoint } from "@/data/graph";
 import type { Pandal, Itinerary, CrowdLevel } from "@/data/types";
 
 const MapView = dynamic(() => import("@/components/MapView").then((m) => m.MapView), {
@@ -153,6 +153,13 @@ export default function MapPage() {
 
   const visible = categories.pandals ? pandals.filter((p) => sizeFilters[p.crowdLevel]) : [];
 
+  // Real nearest-by-distance suggestions off the device's actual GPS fix —
+  // recomputes whenever locateMe() gets a new position.
+  const suggested = useMemo(
+    () => (userLocation ? nearestPandalsToPoint(userLocation, 5).map((s) => s.pandal) : []),
+    [userLocation]
+  );
+
   return (
     <div className="relative flex h-[calc(100vh-64px)] flex-col overflow-hidden lg:flex-row">
       {sidebarOpen && (
@@ -211,6 +218,7 @@ export default function MapPage() {
             routeStops={routeStops}
             onAddToRoute={addToRoute}
             userLocation={userLocation}
+            suggestedPandals={suggested}
             onLocate={locateMe}
             locating={locating}
             locationError={locationError}

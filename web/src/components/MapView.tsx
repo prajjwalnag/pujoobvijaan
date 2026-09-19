@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
@@ -9,6 +9,7 @@ import { Star } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal } from "@/data/types";
 import { areas } from "@/data/areas";
+import { haversineKm } from "@/data/graph";
 import { useTheme } from "./ThemeProvider";
 import { usePoints, checkinPointsFor, POINTS } from "./PointsProvider";
 import { MetroLayer } from "./MetroLayer";
@@ -94,6 +95,27 @@ function FlyToLocation({ location }: { location: { lat: number; lng: number } | 
   return null;
 }
 
+function suggestedIcon() {
+  const html = renderToStaticMarkup(
+    <div
+      style={{
+        width: 26,
+        height: 26,
+        borderRadius: "50%",
+        background: "#D4A017",
+        border: "2.5px solid white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+      }}
+    >
+      <Star size={13} color="white" fill="white" />
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -13] });
+}
+
 function routeMarkerIcon(index: number) {
   const html = renderToStaticMarkup(
     <div
@@ -156,6 +178,7 @@ export function MapView({
   routeStops = [],
   onAddToRoute,
   userLocation = null,
+  suggestedPandals = [],
   onLocate,
   locating = false,
   locationError = null,
@@ -167,6 +190,7 @@ export function MapView({
   routeStops?: Pandal[];
   onAddToRoute?: (pandal: Pandal) => void;
   userLocation?: { lat: number; lng: number } | null;
+  suggestedPandals?: Pandal[];
   onLocate?: () => void;
   locating?: boolean;
   locationError?: string | null;
@@ -223,6 +247,39 @@ export function MapView({
           <Popup>You are here</Popup>
         </Marker>
       )}
+
+      {userLocation &&
+        suggestedPandals.map((pandal) => {
+          const distanceKm = haversineKm(userLocation, pandal.coordinates);
+          return (
+            <Fragment key={`suggested-${pandal.id}`}>
+              <Polyline
+                positions={[
+                  [userLocation.lat, userLocation.lng],
+                  [pandal.coordinates.lat, pandal.coordinates.lng],
+                ]}
+                pathOptions={{ color: "#D4A017", weight: 1.5, opacity: 0.55, dashArray: "4,6" }}
+              />
+              <Marker
+                position={[pandal.coordinates.lat, pandal.coordinates.lng]}
+                icon={suggestedIcon()}
+                zIndexOffset={1500}
+              >
+                <Popup>
+                  <div className="min-w-[180px]">
+                    <p className="font-bold">⭐ {pandal.name}</p>
+                    <p className="text-xs text-gray-600">
+                      {distanceKm < 1
+                        ? `${Math.round(distanceKm * 1000)} m away`
+                        : `${distanceKm.toFixed(1)} km away`}{" "}
+                      — nearest by real GPS distance
+                    </p>
+                  </div>
+                </Popup>
+              </Marker>
+            </Fragment>
+          );
+        })}
 
       {routeStops.length > 1 && (
         <Polyline

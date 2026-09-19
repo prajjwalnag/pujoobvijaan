@@ -116,3 +116,16 @@ export function nearestPandals(pandalId: string, k = 5): { pandal: Pandal; dista
     .sort((a, b) => a.distanceKm - b.distanceKm)
     .slice(0, k);
 }
+
+// Same real-distance ranking as nearestPandals, but from an arbitrary
+// point rather than another pandal — powers "suggested pandals near me"
+// off the device's actual GPS coordinates (see /map's locate button).
+export function nearestPandalsToPoint(
+  point: { lat: number; lng: number },
+  k = 5
+): { pandal: Pandal; distanceKm: number }[] {
+  return pandals
+    .map((p) => ({ pandal: p, distanceKm: haversineKm(point, p.coordinates) }))
+    .sort((a, b) => a.distanceKm - b.distanceKm)
+    .slice(0, k);
+}
