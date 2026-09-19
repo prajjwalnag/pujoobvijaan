@@ -5,6 +5,8 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/ThemeProvider";
+import { PointsProvider } from "@/components/PointsProvider";
+import { PointsToast } from "@/components/PointsToast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +35,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {THEME_INIT_SCRIPT}
         </Script>
         <ThemeProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <PointsProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <PointsToast />
+          </PointsProvider>
         </ThemeProvider>
       </body>
     </html>

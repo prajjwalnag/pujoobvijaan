@@ -98,12 +98,35 @@ export default function LeaderboardPage() {
         </h1>
       </div>
       <p className="mt-1 text-[var(--color-text-secondary)]">
-        Earn points by checking in at pandals on the{" "}
+        Earn points by checking in and rating pandals on the{" "}
         <Link href="/map" className="text-[var(--color-red)] underline">
           map
         </Link>
-        . Explore low-crowd pandals for bonus points.
+        .
       </p>
+
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
+          <p className="text-sm font-bold text-[var(--color-text-primary)]">Check in</p>
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            +10 base, +5 for Medium pandals, +10 for Small ones — hidden gems pay off more than
+            the famous ones.
+          </p>
+        </div>
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
+          <p className="text-sm font-bold text-[var(--color-text-primary)]">Rate a pandal</p>
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            +5 flat, once per pandal. Rate any pandal — you don't have to check in first.
+          </p>
+        </div>
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
+          <p className="text-sm font-bold text-[var(--color-text-primary)]">New area</p>
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            +15 bonus the first time you check in anywhere within an Area you haven't visited
+            yet — rewards spreading out, not just one cluster.
+          </p>
+        </div>
+      </div>
 
       <div className="mt-6 flex items-center justify-between rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4">
         <div className="flex items-center gap-3">

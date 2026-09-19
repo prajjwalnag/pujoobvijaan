@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import { Star } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal } from "@/data/types";
 import { areas } from "@/data/areas";
 import { useTheme } from "./ThemeProvider";
+import { usePoints, checkinPointsFor, POINTS } from "./PointsProvider";
 
 const areaById = new Map(areas.map((a) => [a.id, a]));
 
@@ -40,16 +43,39 @@ function pinIcon(checkedIn: boolean) {
   });
 }
 
-export function MapView({
-  pandalsList,
-  checkedIn,
-  onCheckIn,
-}: {
-  pandalsList: Pandal[];
-  checkedIn: Set<string>;
-  onCheckIn: (id: string) => void;
-}) {
+function StarRow({ pandal }: { pandal: Pandal }) {
+  const { ratings, rate } = usePoints();
+  const [hover, setHover] = useState(0);
+  const current = ratings[pandal.id] ?? 0;
+  const alreadyRated = pandal.id in ratings;
+
+  return (
+    <div className="mt-2 flex items-center gap-2">
+      <div className="flex" onMouseLeave={() => setHover(0)}>
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            onClick={() => rate(pandal, n)}
+            onMouseEnter={() => setHover(n)}
+            aria-label={`Rate ${n} star${n > 1 ? "s" : ""}`}
+            className="p-0.5"
+          >
+            <Star
+              size={16}
+              className={(hover || current) >= n ? "text-[#FFB700]" : "text-gray-300"}
+              fill={(hover || current) >= n ? "#FFB700" : "none"}
+            />
+          </button>
+        ))}
+      </div>
+      <span className="text-[10px] text-gray-500">{alreadyRated ? "rated" : `+${POINTS.RATING} pts`}</span>
+    </div>
+  );
+}
+
+export function MapView({ pandalsList }: { pandalsList: Pandal[] }) {
   const { theme } = useTheme();
+  const { checkedIn, checkIn } = usePoints();
 
   return (
     <MapContainer
@@ -61,11 +87,12 @@ export function MapView({
       <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
       {pandalsList.map((pandal) => {
         const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
+        const visited = checkedIn.has(pandal.id);
         return (
           <Marker
             key={pandal.id}
             position={[pandal.coordinates.lat, pandal.coordinates.lng]}
-            icon={pinIcon(checkedIn.has(pandal.id))}
+            icon={pinIcon(visited)}
           >
             <Popup>
               <div className="min-w-[200px] max-w-[240px]">
@@ -76,12 +103,14 @@ export function MapView({
                   {pandal.rating !== undefined ? ` · ⭐ ${pandal.rating}` : ""}
                 </p>
                 <button
-                  onClick={() => onCheckIn(pandal.id)}
-                  disabled={checkedIn.has(pandal.id)}
+                  onClick={() => checkIn(pandal)}
+                  disabled={visited}
                   className="mt-2 w-full rounded bg-[#8b0000] px-2 py-1 text-xs font-semibold text-white disabled:opacity-50"
                 >
-                  {checkedIn.has(pandal.id) ? "Checked in ✓" : "Check in (+10 pts)"}
+                  {visited ? "Checked in ✓" : `Check in (+${checkinPointsFor(pandal)} pts)`}
                 </button>
+
+                <StarRow pandal={pandal} />
 
                 {area && (
                   <div className="mt-2 border-t border-gray-200 pt-2 text-xs">

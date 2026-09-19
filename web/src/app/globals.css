@@ -393,3 +393,34 @@ body {
     transform: none;
   }
 }
+
+/* Points gain toast */
+.points-toast {
+  animation:
+    points-toast-in 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both,
+    points-toast-out 0.4s ease-in 2s both;
+}
+@keyframes points-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+@keyframes points-toast-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -6px) scale(0.96);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .points-toast {
+    animation: none !important;
+  }
+}

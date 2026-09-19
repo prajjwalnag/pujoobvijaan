@@ -14,10 +14,12 @@ import {
   Menu,
   X,
   Flame,
+  Sparkles,
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
+import { usePoints } from "./PointsProvider";
 
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
@@ -29,13 +31,14 @@ const navItems = [
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },
 ];
 
-// Mocked for Phase 1 UI — real auth/points land with the backend.
+// Auth is still mocked for Phase 1 UI, but points are real — tracked
+// client-side (localStorage) via PointsProvider from check-ins and ratings.
 const isAuthenticated = false;
-const mockPoints = 240;
 
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { points } = usePoints();
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
@@ -73,13 +76,12 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          {isAuthenticated && (
-            <span className="text-sm font-semibold text-[var(--color-text-secondary)]">
-              Points: {mockPoints} · Rank #9
-            </span>
-          )}
+          <span className="flex items-center gap-1 text-sm font-semibold text-[var(--color-text-secondary)]">
+            <Sparkles size={14} className="text-[var(--color-gold)]" />
+            {points} pts
+          </span>
           <ThemeToggle />
-          <Button size="sm">Sign In</Button>
+          {!isAuthenticated && <Button size="sm">Sign In</Button>}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -96,6 +98,10 @@ export function Header() {
 
       {mobileOpen && (
         <nav className="md:hidden flex flex-col gap-1 border-t border-[var(--color-border)] bg-[var(--color-bg-main)] px-4 py-3">
+          <span className="flex items-center gap-1 px-3 py-1 text-sm font-semibold text-[var(--color-text-secondary)]">
+            <Sparkles size={14} className="text-[var(--color-gold)]" />
+            {points} pts
+          </span>
           {navItems.map((item) => {
             const active = pathname?.startsWith(item.href);
             const Icon = item.icon;

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { MapSidebar } from "@/components/MapSidebar";
 import { pandals } from "@/data/pandals";
+import { usePoints } from "@/components/PointsProvider";
 
 const MapView = dynamic(() => import("@/components/MapView").then((m) => m.MapView), {
   ssr: false,
@@ -20,14 +21,10 @@ export default function MapPage() {
     foodStalls: false,
     itinerary: false,
   });
-  const [checkedIn, setCheckedIn] = useState<Set<string>>(new Set());
+  const { checkedIn } = usePoints();
 
   function toggleCategory(key: "pandals" | "foodStalls" | "itinerary") {
     setCategories((prev) => ({ ...prev, [key]: !prev[key] }));
-  }
-
-  function checkIn(id: string) {
-    setCheckedIn((prev) => new Set(prev).add(id));
   }
 
   const visible = categories.pandals ? pandals : [];
@@ -41,7 +38,7 @@ export default function MapPage() {
       />
       <div className="flex-1 p-4">
         <div className="h-full w-full overflow-hidden rounded-lg shadow-[var(--shadow-light)]">
-          <MapView pandalsList={visible} checkedIn={checkedIn} onCheckIn={checkIn} />
+          <MapView pandalsList={visible} />
         </div>
       </div>
     </div>
