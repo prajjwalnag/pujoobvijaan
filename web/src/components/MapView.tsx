@@ -4,8 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
-import { LocateFixed } from "lucide-react";
-import { Star } from "lucide-react";
+import { LocateFixed, Star, X } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Pandal } from "@/data/types";
 import { areas } from "@/data/areas";
@@ -198,9 +197,27 @@ export function MapView({
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
   const routeIds = new Set(routeStops.map((p) => p.id));
+  const [adDismissed, setAdDismissed] = useState(false);
 
   return (
     <div className="relative h-full w-full">
+      {!adDismissed && (
+        <div className="absolute bottom-3 left-3 z-[1010] flex max-w-[calc(100%-5.5rem)] items-center gap-2 rounded-lg bg-[var(--color-bg-secondary)] px-3 py-2 shadow-lg ring-1 ring-[var(--color-border)] sm:max-w-xs">
+          <span className="shrink-0 rounded bg-[var(--color-gold)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+            Ad
+          </span>
+          <p className="flex-1 text-xs text-[var(--color-text-primary)]">
+            Feeling hungry or craving a dough kebab? Kitchen is there.
+          </p>
+          <button
+            onClick={() => setAdDismissed(true)}
+            aria-label="Dismiss ad"
+            className="shrink-0 text-[var(--color-text-light)] hover:text-[var(--color-red)]"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
       {onLocate && (
         <div className="absolute right-3 top-3 z-[1010] flex flex-col items-end gap-1.5">
           <button
