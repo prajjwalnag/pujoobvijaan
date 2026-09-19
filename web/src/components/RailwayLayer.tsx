@@ -3,7 +3,11 @@
 import { Polyline, CircleMarker, Tooltip, Popup } from "react-leaflet";
 import { railStations, railTracks } from "@/data/railway";
 
-const RAIL_COLOR = "#5A5A5A";
+// Real Indian Railways maps conventionally use brown for railway lines
+// (metro/subway lines get blue/green/etc.) — keeping that convention
+// here rather than inventing a division color-split we can't verify
+// from the raw OSM track data (no route relations to key off).
+const RAIL_COLOR = "#8B4513";
 
 export function RailwayLayer() {
   return (
@@ -12,7 +16,7 @@ export function RailwayLayer() {
         <Polyline
           key={i}
           positions={segment}
-          pathOptions={{ color: RAIL_COLOR, weight: 2, opacity: 0.6, dashArray: "1,5" }}
+          pathOptions={{ color: RAIL_COLOR, weight: 3, opacity: 0.85, dashArray: "1,6" }}
         />
       ))}
       {railStations.map((station, i) => (

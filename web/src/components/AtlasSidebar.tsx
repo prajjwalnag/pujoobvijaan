@@ -149,7 +149,7 @@ export function AtlasSidebar({
             className={clsx(
               "rounded-full border px-3 py-1 text-xs font-semibold",
               showRailway
-                ? "border-[#5A5A5A] bg-[#5A5A5A] text-white"
+                ? "border-[#8B4513] bg-[#8B4513] text-white"
                 : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
             )}
           >
