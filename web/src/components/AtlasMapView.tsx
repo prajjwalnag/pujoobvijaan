@@ -14,10 +14,19 @@ const areaByIdMap = (areasList: Area[]) => new Map(areasList.map((a) => [a.id, a
 
 const TILE_URLS = {
   light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  // CARTO's dark basemap now requires a paid-signup API key (as of Sept
+  // 2026) or shows an "API KEY REQUIRED" watermark. Esri's Dark Gray
+  // Canvas is free and keyless — base (fill) + reference (labels) layered
+  // together, same as CARTO's single dark_all tile used to look.
+  darkBase:
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+  darkLabels:
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
 };
-const TILE_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+const TILE_ATTRIBUTION_LIGHT =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const TILE_ATTRIBUTION_DARK =
+  "Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community";
 
 const tierSize: Record<Pandal["crowdLevel"], number> = {
   high: 34,
@@ -116,7 +125,14 @@ export function AtlasMapView({
 
   return (
     <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom className="h-full w-full">
-      <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
+      {theme === "dark" ? (
+        <>
+          <TileLayer key="dark-base" attribution={TILE_ATTRIBUTION_DARK} url={TILE_URLS.darkBase} />
+          <TileLayer key="dark-labels" url={TILE_URLS.darkLabels} />
+        </>
+      ) : (
+        <TileLayer key="light" attribution={TILE_ATTRIBUTION_LIGHT} url={TILE_URLS.light} />
+      )}
 
       {showRoads && <RoadLayer />}
       {showRailway && <RailwayLayer />}
