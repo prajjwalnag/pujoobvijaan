@@ -8,7 +8,7 @@ import { Button } from "@/components/Button";
 function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || "/partners";
+  const next = searchParams.get("next") || "/admin";
 
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);

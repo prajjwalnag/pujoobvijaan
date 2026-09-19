@@ -33,7 +33,7 @@ function PartnersRow() {
             Our Partners
           </p>
           <Link
-            href="/partners"
+            href="/admin/partners"
             className="text-xs font-semibold text-[var(--color-red)] hover:underline"
           >
             + Add a partner

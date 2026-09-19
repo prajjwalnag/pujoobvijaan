@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Handshake, Trash2, LogOut } from "lucide-react";
+import { Handshake, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { usePartners } from "@/components/usePartners";
 import { Button } from "@/components/Button";
 import type { Partner } from "@/data/types";
@@ -14,15 +13,8 @@ const CATEGORIES: { value: Partner["category"]; label: string }[] = [
   { value: "other", label: "Other" },
 ];
 
-export default function PartnersPage() {
-  const router = useRouter();
+export default function AdminPartnersPage() {
   const { allPartners, addedPartners, addPartner, removePartner } = usePartners();
-
-  async function handleLogout() {
-    await fetch("/api/admin/login", { method: "DELETE" });
-    router.push("/");
-    router.refresh();
-  }
 
   const [name, setName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
@@ -52,18 +44,9 @@ export default function PartnersPage() {
 
   return (
     <div className="mx-auto max-w-[700px] px-4 py-8 sm:px-6">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Handshake className="text-[var(--color-red)]" size={28} />
-          <h1 className="text-[32px] font-bold text-[var(--color-text-primary)]">Add a Partner</h1>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-1.5 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-red)]"
-        >
-          <LogOut size={15} />
-          Log out
-        </button>
+      <div className="flex items-center gap-2">
+        <Handshake className="text-[var(--color-red)]" size={28} />
+        <h1 className="text-[32px] font-bold text-[var(--color-text-primary)]">Partners</h1>
       </div>
       <p className="mt-1 text-[var(--color-text-secondary)]">
         Add a partner logo to show in the site footer. There&apos;s no backend behind this app yet,
@@ -204,10 +187,10 @@ export default function PartnersPage() {
       </div>
 
       <Link
-        href="/"
+        href="/admin"
         className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-dashed border-[var(--color-border)] p-3 text-sm font-semibold text-[var(--color-text-secondary)] hover:border-[var(--color-red)] hover:text-[var(--color-red)]"
       >
-        Back to home
+        Back to Admin
       </Link>
     </div>
   );
