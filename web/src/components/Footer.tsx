@@ -1,3 +1,5 @@
+import { partners } from "@/data/partners";
+
 function FacebookIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -16,10 +18,60 @@ function InstagramIcon() {
   );
 }
 
+function PartnersRow() {
+  const hasPartners = partners.length > 0;
+
+  return (
+    <div className="border-b border-[var(--color-border)] py-8">
+      <div className="mx-auto max-w-[1400px] px-4 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-text-light)]">
+          Our Partners
+        </p>
+
+        {hasPartners ? (
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+            {partners.map((partner) => {
+              const logo = (
+                <img
+                  src={partner.logoUrl}
+                  alt={partner.name}
+                  loading="lazy"
+                  className="h-10 w-auto grayscale transition-all duration-300 hover:grayscale-0"
+                />
+              );
+              return partner.website ? (
+                <a
+                  key={partner.id}
+                  href={partner.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={partner.name}
+                >
+                  {logo}
+                </a>
+              ) : (
+                <span key={partner.id} aria-label={partner.name}>
+                  {logo}
+                </span>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="mx-auto mt-3 max-w-md text-sm text-[var(--color-text-secondary)]">
+            We&apos;re onboarding our first partner brands for Puja 2026 — food spots and jewellery
+            brands wanting free early-access visibility, say hello on Instagram or Facebook below.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg-main)] py-8">
-      <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 text-center sm:flex-row sm:justify-between sm:text-left">
+    <footer className="bg-[var(--color-bg-main)]">
+      <PartnersRow />
+      <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <p className="text-sm text-[var(--color-text-secondary)]">
           Made with ❤️ by <span className="font-semibold text-[var(--color-red)]">MWR Agency</span>
         </p>

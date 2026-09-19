@@ -62,6 +62,15 @@ export interface Itinerary {
   stops: { pandalId: string; scheduledTime: string }[];
 }
 
+export interface Partner {
+  id: string;
+  name: string;
+  /** Path under /public (e.g. "/partners/xyz.svg") or an external URL. */
+  logoUrl: string;
+  website?: string;
+  category: "food" | "jewellery" | "other";
+}
+
 export interface LeaderboardEntry {
   userId: string;
   /** Display name, e.g. "Anwesha Roy". */
