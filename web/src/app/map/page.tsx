@@ -7,7 +7,7 @@ import { pandals } from "@/data/pandals";
 import { usePoints, POINTS } from "@/components/PointsProvider";
 import { useMyItineraries } from "@/components/useMyItineraries";
 import { haversineKm } from "@/data/graph";
-import type { Pandal, Itinerary } from "@/data/types";
+import type { Pandal, Itinerary, CrowdLevel } from "@/data/types";
 
 const MapView = dynamic(() => import("@/components/MapView").then((m) => m.MapView), {
   ssr: false,
@@ -59,6 +59,11 @@ export default function MapPage() {
     railway: false,
     roads: false,
   });
+  const [sizeFilters, setSizeFilters] = useState<Record<CrowdLevel, boolean>>({
+    high: true,
+    medium: true,
+    low: true,
+  });
   const { checkedIn, award } = usePoints();
   const { addItinerary } = useMyItineraries();
   const [routeStops, setRouteStops] = useState<Pandal[]>([]);
@@ -67,6 +72,15 @@ export default function MapPage() {
     key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads"
   ) {
     setCategories((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  function toggleSize(level: CrowdLevel) {
+    setSizeFilters((prev) => ({ ...prev, [level]: !prev[level] }));
+  }
+
+  function toggleAllSizes() {
+    const allOn = sizeFilters.high && sizeFilters.medium && sizeFilters.low;
+    setSizeFilters({ high: !allOn, medium: !allOn, low: !allOn });
   }
 
   function addToRoute(pandal: Pandal) {
@@ -104,13 +118,16 @@ export default function MapPage() {
     setRouteStops([]);
   }
 
-  const visible = categories.pandals ? pandals : [];
+  const visible = categories.pandals ? pandals.filter((p) => sizeFilters[p.crowdLevel]) : [];
 
   return (
     <div className="flex h-[calc(100vh-64px)] flex-col lg:flex-row">
       <MapSidebar
         categories={categories}
         onCategoryToggle={toggleCategory}
+        sizeFilters={sizeFilters}
+        onSizeToggle={toggleSize}
+        onSizeToggleAll={toggleAllSizes}
         checkedInCount={checkedIn.size}
         routeStops={routeStops}
         onRouteRemove={removeFromRoute}

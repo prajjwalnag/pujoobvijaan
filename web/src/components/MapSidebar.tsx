@@ -7,8 +7,16 @@ import { areas } from "@/data/areas";
 import { metroLines } from "@/data/metro";
 import { railStations } from "@/data/railway";
 import { roadSegments } from "@/data/roads";
+import { tierColor, tierLabel } from "@/data/tiers";
 import { RouteBuilderPanel } from "./RouteBuilderPanel";
-import type { Pandal } from "@/data/types";
+import type { Pandal, CrowdLevel } from "@/data/types";
+
+const SIZE_LEVELS: CrowdLevel[] = ["high", "medium", "low"];
+const sizeCount: Record<CrowdLevel, number> = {
+  high: pandalStats.highCrowd,
+  medium: pandalStats.mediumCrowd,
+  low: pandalStats.lowCrowd,
+};
 
 const sortedAreas = [...areas].sort((a, b) => b.pandalCount - a.pandalCount);
 const metroStationCount = metroLines.reduce((sum, l) => sum + l.stations.length, 0);
@@ -25,6 +33,9 @@ interface MapSidebarProps {
   onCategoryToggle: (
     key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads"
   ) => void;
+  sizeFilters: Record<CrowdLevel, boolean>;
+  onSizeToggle: (level: CrowdLevel) => void;
+  onSizeToggleAll: () => void;
   checkedInCount: number;
   routeStops: Pandal[];
   onRouteRemove: (id: string) => void;
@@ -37,6 +48,9 @@ interface MapSidebarProps {
 export function MapSidebar({
   categories,
   onCategoryToggle,
+  sizeFilters,
+  onSizeToggle,
+  onSizeToggleAll,
   checkedInCount,
   routeStops,
   onRouteRemove,
@@ -120,6 +134,47 @@ export function MapSidebar({
           </span>
           <span className="text-[var(--color-text-light)]">{roadSegments.length}</span>
         </label>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
+          Size
+        </h3>
+        <label className="flex items-center justify-between py-1.5 text-sm font-semibold">
+          <span className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={SIZE_LEVELS.every((l) => sizeFilters[l])}
+              ref={(el) => {
+                if (el) {
+                  const allOn = SIZE_LEVELS.every((l) => sizeFilters[l]);
+                  const allOff = SIZE_LEVELS.every((l) => !sizeFilters[l]);
+                  el.indeterminate = !allOn && !allOff;
+                }
+              }}
+              onChange={onSizeToggleAll}
+            />
+            All
+          </span>
+          <span className="text-[var(--color-text-light)]">{pandalStats.total}</span>
+        </label>
+        {SIZE_LEVELS.map((level) => (
+          <label key={level} className="flex items-center justify-between py-1.5 text-sm">
+            <span className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={sizeFilters[level]}
+                onChange={() => onSizeToggle(level)}
+              />
+              <span
+                className="inline-block h-2.5 w-2.5 rounded-full"
+                style={{ background: tierColor[level] }}
+              />
+              {tierLabel[level]}
+            </span>
+            <span className="text-[var(--color-text-light)]">{sizeCount[level]}</span>
+          </label>
+        ))}
       </div>
 
       <div>
