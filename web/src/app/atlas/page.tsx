@@ -32,6 +32,7 @@ export default function AtlasPage() {
   const [selectedPandal, setSelectedPandal] = useState<Pandal | null>(null);
   const [showFood, setShowFood] = useState(true);
   const [showMetro, setShowMetro] = useState(true);
+  const [showRailway, setShowRailway] = useState(false);
 
   const visibleAreas = useMemo(
     () => areas.filter((a) => enabledAreas.has(a.id)),
@@ -112,6 +113,8 @@ export default function AtlasPage() {
         onShowFoodChange={setShowFood}
         showMetro={showMetro}
         onShowMetroChange={setShowMetro}
+        showRailway={showRailway}
+        onShowRailwayChange={setShowRailway}
         stats={stats}
       />
       <div className="flex-1 p-4">
@@ -124,6 +127,7 @@ export default function AtlasPage() {
             onSelectArea={toggleFocus}
             showFood={showFood}
             showMetro={showMetro}
+            showRailway={showRailway}
           />
         </div>
       </div>

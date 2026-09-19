@@ -21,10 +21,11 @@ export default function MapPage() {
     foodStalls: false,
     itinerary: false,
     metro: true,
+    railway: false,
   });
   const { checkedIn } = usePoints();
 
-  function toggleCategory(key: "pandals" | "foodStalls" | "itinerary" | "metro") {
+  function toggleCategory(key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway") {
     setCategories((prev) => ({ ...prev, [key]: !prev[key] }));
   }
 
@@ -39,7 +40,7 @@ export default function MapPage() {
       />
       <div className="flex-1 p-4">
         <div className="h-full w-full overflow-hidden rounded-lg shadow-[var(--shadow-light)]">
-          <MapView pandalsList={visible} showMetro={categories.metro} />
+          <MapView pandalsList={visible} showMetro={categories.metro} showRailway={categories.railway} />
         </div>
       </div>
     </div>

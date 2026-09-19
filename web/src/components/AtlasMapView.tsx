@@ -7,6 +7,7 @@ import type { Pandal, Area } from "@/data/types";
 import { tierColor, tierLabel } from "@/data/tiers";
 import { useTheme } from "./ThemeProvider";
 import { MetroLayer } from "./MetroLayer";
+import { RailwayLayer } from "./RailwayLayer";
 
 const areaByIdMap = (areasList: Area[]) => new Map(areasList.map((a) => [a.id, a]));
 
@@ -96,6 +97,7 @@ export function AtlasMapView({
   onSelectArea,
   showFood = true,
   showMetro = true,
+  showRailway = false,
 }: {
   pandalsList: Pandal[];
   areasList: Area[];
@@ -104,6 +106,7 @@ export function AtlasMapView({
   onSelectArea: (id: string) => void;
   showFood?: boolean;
   showMetro?: boolean;
+  showRailway?: boolean;
 }) {
   const areaById = areaByIdMap(areasList);
   const { theme } = useTheme();
@@ -112,6 +115,7 @@ export function AtlasMapView({
     <MapContainer center={[22.565, 88.35]} zoom={12} scrollWheelZoom className="h-full w-full">
       <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
 
+      {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
 
       {areasList.map((area) => {

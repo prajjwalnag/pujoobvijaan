@@ -10,6 +10,7 @@ import { areas } from "@/data/areas";
 import { useTheme } from "./ThemeProvider";
 import { usePoints, checkinPointsFor, POINTS } from "./PointsProvider";
 import { MetroLayer } from "./MetroLayer";
+import { RailwayLayer } from "./RailwayLayer";
 
 const areaById = new Map(areas.map((a) => [a.id, a]));
 
@@ -77,9 +78,11 @@ function StarRow({ pandal }: { pandal: Pandal }) {
 export function MapView({
   pandalsList,
   showMetro = true,
+  showRailway = false,
 }: {
   pandalsList: Pandal[];
   showMetro?: boolean;
+  showRailway?: boolean;
 }) {
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
@@ -92,6 +95,7 @@ export function MapView({
       className="h-full w-full"
     >
       <TileLayer key={theme} attribution={TILE_ATTRIBUTION} url={TILE_URLS[theme]} />
+      {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
       {pandalsList.map((pandal) => {
         const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
