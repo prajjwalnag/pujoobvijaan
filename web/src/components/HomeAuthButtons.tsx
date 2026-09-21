@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
-import { useAuth } from "./AuthProvider";
+import { useAuth, getDisplayName } from "./AuthProvider";
 import { Button } from "./Button";
 
 export function HomeAuthButtons() {
@@ -14,7 +14,7 @@ export function HomeAuthButtons() {
     return (
       <p className="mt-6 flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--color-text-secondary)]">
         <Sparkles size={14} className="text-[var(--color-gold)]" />
-        Welcome back — head to the{" "}
+        Welcome back, {getDisplayName(user)} — head to the{" "}
         <Link href="/map" className="text-[var(--color-red)] hover:underline">
           map
         </Link>{" "}

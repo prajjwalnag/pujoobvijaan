@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Mail, User, Flame, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { Button } from "@/components/Button";
+import { GoogleButton } from "@/components/GoogleButton";
 
 export default function SignupPage() {
   const { signInWithMagicLink } = useAuth();
@@ -47,7 +48,18 @@ export default function SignupPage() {
           </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-6 flex w-full flex-col gap-3">
+        <>
+        <div className="mt-6 w-full">
+          <GoogleButton label="Sign up with Google" />
+        </div>
+
+        <div className="mt-5 flex w-full items-center gap-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-light)]">
+          <div className="h-px flex-1 bg-[var(--color-border)]" />
+          or
+          <div className="h-px flex-1 bg-[var(--color-border)]" />
+        </div>
+
+        <form onSubmit={handleSubmit} className="mt-5 flex w-full flex-col gap-3">
           <div className="relative">
             <User
               size={16}
@@ -82,6 +94,7 @@ export default function SignupPage() {
             <p className="text-center text-xs text-[var(--color-red)]">{error}</p>
           )}
         </form>
+        </>
       )}
 
       <p className="mt-6 text-sm text-[var(--color-text-secondary)]">

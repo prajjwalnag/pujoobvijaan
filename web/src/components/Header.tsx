@@ -20,7 +20,7 @@ import clsx from "clsx";
 import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
 import { usePoints } from "./PointsProvider";
-import { useAuth } from "./AuthProvider";
+import { useAuth, getDisplayName } from "./AuthProvider";
 
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
@@ -80,9 +80,14 @@ export function Header() {
           </span>
           <ThemeToggle />
           {user ? (
-            <Button size="sm" variant="secondary" onClick={() => signOut()}>
-              Sign Out
-            </Button>
+            <>
+              <span className="max-w-[140px] truncate text-sm font-semibold text-[var(--color-text-primary)]">
+                Hi, {getDisplayName(user)}
+              </span>
+              <Button size="sm" variant="secondary" onClick={() => signOut()}>
+                Sign Out
+              </Button>
+            </>
           ) : (
             <Link href="/login">
               <Button size="sm">Sign In</Button>
@@ -129,9 +134,14 @@ export function Header() {
             );
           })}
           {user ? (
-            <Button size="sm" variant="secondary" className="mt-2 w-full" onClick={() => signOut()}>
-              Sign Out
-            </Button>
+            <>
+              <span className="px-3 py-1 text-sm font-semibold text-[var(--color-text-primary)]">
+                Hi, {getDisplayName(user)}
+              </span>
+              <Button size="sm" variant="secondary" className="mt-1 w-full" onClick={() => signOut()}>
+                Sign Out
+              </Button>
+            </>
           ) : (
             <Link href="/login" onClick={() => setMobileOpen(false)}>
               <Button size="sm" className="mt-2 w-full">

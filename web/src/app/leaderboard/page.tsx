@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Trophy, MapPinned, Crown } from "lucide-react";
 import clsx from "clsx";
-import { leaderboard, currentUser } from "@/data/leaderboard";
 import { Badge } from "@/components/Badge";
 import { ReferralPanel } from "@/components/ReferralPanel";
+import { createClient } from "@/lib/supabase/server";
 import type { LeaderboardEntry } from "@/data/types";
 
 function rankColor(rank: number) {
@@ -87,8 +87,34 @@ function PyramidCard({ entry, rowIndex }: { entry: LeaderboardEntry; rowIndex: n
   );
 }
 
-export default function LeaderboardPage() {
-  const rows = pyramidRows(leaderboard);
+export default async function LeaderboardPage() {
+  const supabase = await createClient();
+  const [{ data: rows }, { data: userData }] = await Promise.all([
+    supabase.from("leaderboard").select("*").order("rank", { ascending: true }).limit(100),
+    supabase.auth.getUser(),
+  ]);
+  const user = userData.user;
+
+  // Real accounts only — every row here comes from a signed-up user's
+  // actual points via the `leaderboard` DB view, computed server-side by
+  // the points_ledger triggers (see PointsProvider). Rank comes straight
+  // from Postgres RANK(), so it's always in sync with real point totals.
+  const entries: LeaderboardEntry[] = (rows ?? [])
+    .filter((r) => r.user_id && r.rank !== null)
+    .map((r) => ({
+      userId: r.user_id!,
+      name: r.name ?? "Pujo Explorer",
+      username: r.username ?? r.user_id!,
+      avatarInitials: r.avatar_initials ?? "PO",
+      points: r.points ?? 0,
+      pandalsVisited: r.pandals_visited ?? 0,
+      region: "All" as const,
+      rank: r.rank!,
+      badges: [],
+    }));
+
+  const currentEntry = user ? entries.find((e) => e.userId === user.id) ?? null : null;
+  const rowsByTier = pyramidRows(entries);
 
   return (
     <div className="mx-auto max-w-[900px] px-4 py-8 sm:px-6">
@@ -117,13 +143,13 @@ export default function LeaderboardPage() {
         <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
           <p className="text-sm font-bold text-[var(--color-text-primary)]">Rate a pandal</p>
           <p className="text-xs text-[var(--color-text-secondary)]">
-            +5 flat, once per pandal. Rate any pandal — you don't have to check in first.
+            +5 flat, once per pandal. Rate any pandal — you don&apos;t have to check in first.
           </p>
         </div>
         <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
           <p className="text-sm font-bold text-[var(--color-text-primary)]">New area</p>
           <p className="text-xs text-[var(--color-text-secondary)]">
-            +15 bonus the first time you check in anywhere within an Area you haven't visited
+            +15 bonus the first time you check in anywhere within an Area you haven&apos;t visited
             yet — rewards spreading out, not just one cluster.
           </p>
         </div>
@@ -135,39 +161,66 @@ export default function LeaderboardPage() {
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-red)] text-sm font-bold text-white">
-            {currentUser.avatarInitials}
+      {user ? (
+        currentEntry ? (
+          <div className="mt-6 flex items-center justify-between rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-red)] text-sm font-bold text-white">
+                {currentEntry.avatarInitials}
+              </div>
+              <div>
+                <p className="font-semibold text-[var(--color-text-primary)]">
+                  You · Rank #{currentEntry.rank}
+                </p>
+                <p className="text-xs text-[var(--color-text-light)]">@{currentEntry.username}</p>
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  {currentEntry.pandalsVisited} pandals visited
+                </p>
+              </div>
+            </div>
+            <p className="text-xl font-bold text-[var(--color-red)]">{currentEntry.points} pts</p>
           </div>
-          <div>
-            <p className="font-semibold text-[var(--color-text-primary)]">
-              You · Rank #{currentUser.rank}
-            </p>
-            <p className="text-xs text-[var(--color-text-light)]">@{currentUser.username}</p>
-            <p className="text-sm text-[var(--color-text-secondary)]">
-              {currentUser.pandalsVisited} pandals visited
-            </p>
-          </div>
-        </div>
-        <p className="text-xl font-bold text-[var(--color-red)]">
-          {currentUser.points} pts
+        ) : (
+          <p className="mt-6 rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-center text-sm text-[var(--color-text-secondary)]">
+            You&apos;re signed in but haven&apos;t earned any points yet — check in on the{" "}
+            <Link href="/map" className="text-[var(--color-red)] underline">
+              map
+            </Link>{" "}
+            to get on the board.
+          </p>
+        )
+      ) : (
+        <p className="mt-6 rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-center text-sm text-[var(--color-text-secondary)]">
+          <Link href="/login" className="font-semibold text-[var(--color-red)] underline">
+            Sign in
+          </Link>{" "}
+          to see your rank here.
         </p>
-      </div>
+      )}
 
       <div className="mt-4">
         <ReferralPanel />
       </div>
 
-      <div className="mt-10 flex flex-col items-center gap-5 sm:gap-6">
-        {rows.map((row, rowIndex) => (
-          <div key={rowIndex} className="flex w-full flex-wrap items-start justify-center gap-3 sm:gap-4">
-            {row.map((entry) => (
-              <PyramidCard key={entry.userId} entry={entry} rowIndex={rowIndex} />
-            ))}
-          </div>
-        ))}
-      </div>
+      {entries.length === 0 ? (
+        <p className="mt-10 text-center text-sm text-[var(--color-text-secondary)]">
+          No one&apos;s on the board yet —{" "}
+          <Link href="/signup" className="text-[var(--color-red)] underline">
+            sign up
+          </Link>{" "}
+          and be the first to check in.
+        </p>
+      ) : (
+        <div className="mt-10 flex flex-col items-center gap-5 sm:gap-6">
+          {rowsByTier.map((row, rowIndex) => (
+            <div key={rowIndex} className="flex w-full flex-wrap items-start justify-center gap-3 sm:gap-4">
+              {row.map((entry) => (
+                <PyramidCard key={entry.userId} entry={entry} rowIndex={rowIndex} />
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

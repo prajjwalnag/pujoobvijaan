@@ -15,6 +15,7 @@ interface AuthContextValue {
   user: User | null;
   loading: boolean;
   signInWithMagicLink: (email: string, opts?: MagicLinkOptions) => Promise<{ error: string | null }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -24,6 +25,16 @@ export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
+}
+
+// Best-effort display name: our own signup flow stores `display_name`;
+// Google OAuth instead populates `full_name`/`name` on the user metadata.
+// Falls back to the part of the email before the @ if neither is set.
+export function getDisplayName(user: User): string {
+  const meta = user.user_metadata as Record<string, unknown> | undefined;
+  const name = meta?.display_name || meta?.full_name || meta?.name;
+  if (typeof name === "string" && name.trim()) return name.trim();
+  return user.email?.split("@")[0] ?? "there";
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -67,6 +78,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error: error?.message ?? null };
   }
 
+  async function signInWithGoogle() {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    // On success the browser is redirected to Google immediately, so this
+    // only ever returns with an error (e.g. Google provider not enabled).
+    return { error: error?.message ?? null };
+  }
+
   async function signOut() {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -74,7 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithMagicLink, signOut }}>
+    <AuthContext.Provider
+      value={{ user, loading, signInWithMagicLink, signInWithGoogle, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
