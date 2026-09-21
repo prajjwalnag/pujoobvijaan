@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePartners } from "./usePartners";
 
 function FacebookIcon() {
@@ -94,9 +95,20 @@ export function Footer() {
             <InstagramIcon />
           </a>
         </div>
-        <p className="text-sm text-[var(--color-text-light)]">
-          Copyright © 2026 Pujo Obhijaan
-        </p>
+        <div className="flex flex-col items-center gap-1 sm:items-end">
+          <div className="flex items-center gap-3 text-xs text-[var(--color-text-light)]">
+            <Link href="/privacy" className="hover:text-[var(--color-red)] hover:underline">
+              Privacy Policy
+            </Link>
+            <span aria-hidden>·</span>
+            <Link href="/terms" className="hover:text-[var(--color-red)] hover:underline">
+              Terms of Service
+            </Link>
+          </div>
+          <p className="text-sm text-[var(--color-text-light)]">
+            Copyright © 2026 Pujo Obhijaan
+          </p>
+        </div>
       </div>
     </footer>
   );
