@@ -436,3 +436,23 @@ body {
     animation: none !important;
   }
 }
+
+/* Contributions page — continuous horizontal name ticker. Track holds two
+   back-to-back copies of the name list; scrolling exactly -50% loops it
+   seamlessly since the second copy lines up where the first started. */
+.contrib-ticker-track {
+  animation: contrib-scroll 28s linear infinite;
+}
+@keyframes contrib-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contrib-ticker-track {
+    animation: none !important;
+  }
+}
