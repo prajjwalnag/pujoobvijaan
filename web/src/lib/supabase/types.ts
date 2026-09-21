@@ -341,23 +341,32 @@ export type Database = {
       ratings: {
         Row: {
           created_at: string
+          crowd_stars: number
+          decoration_stars: number
+          food_vibe_stars: number
           id: string
+          location_stars: number
           pandal_id: string
-          stars: number
           user_id: string
         }
         Insert: {
           created_at?: string
+          crowd_stars: number
+          decoration_stars: number
+          food_vibe_stars: number
           id?: string
+          location_stars: number
           pandal_id: string
-          stars: number
           user_id: string
         }
         Update: {
           created_at?: string
+          crowd_stars?: number
+          decoration_stars?: number
+          food_vibe_stars?: number
           id?: string
+          location_stars?: number
           pandal_id?: string
-          stars?: number
           user_id?: string
         }
         Relationships: [

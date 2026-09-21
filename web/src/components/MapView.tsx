@@ -11,7 +11,7 @@ import { areas } from "@/data/areas";
 import { haversineKm } from "@/data/graph";
 import { MapAdBanner } from "./MapAdBanner";
 import { useTheme } from "./ThemeProvider";
-import { usePoints, checkinPointsFor, POINTS } from "./PointsProvider";
+import { usePoints, checkinPointsFor, POINTS, type CategoryRating } from "./PointsProvider";
 import { MetroLayer } from "./MetroLayer";
 import { RailwayLayer } from "./RailwayLayer";
 import { RoadLayer } from "./RoadLayer";
@@ -140,32 +140,91 @@ function routeMarkerIcon(index: number) {
   return L.divIcon({ html, className: "", iconSize: [24, 24], iconAnchor: [12, 12] });
 }
 
-function StarRow({ pandal }: { pandal: Pandal }) {
-  const { ratings, rate } = usePoints();
+const RATING_CATEGORIES: { key: keyof CategoryRating; label: string }[] = [
+  { key: "location", label: "Location" },
+  { key: "decoration", label: "Decoration" },
+  { key: "crowd", label: "Crowd" },
+  { key: "foodVibe", label: "Food & Vibe" },
+];
+
+function MiniStarRow({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (n: number) => void;
+}) {
   const [hover, setHover] = useState(0);
-  const current = ratings[pandal.id] ?? 0;
-  const alreadyRated = pandal.id in ratings;
+  return (
+    <div className="flex" onMouseLeave={() => setHover(0)}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onChange(n)}
+          onMouseEnter={() => setHover(n)}
+          aria-label={`${n} star${n > 1 ? "s" : ""}`}
+          className="p-0.5"
+        >
+          <Star
+            size={13}
+            className={(hover || value) >= n ? "text-[#FFB700]" : "text-gray-300"}
+            fill={(hover || value) >= n ? "#FFB700" : "none"}
+          />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function RatingPanel({ pandal }: { pandal: Pandal }) {
+  const { ratings, rate } = usePoints();
+  const saved = ratings[pandal.id];
+  const [draft, setDraft] = useState<CategoryRating>(
+    saved ?? { location: 0, decoration: 0, crowd: 0, foodVibe: 0 }
+  );
+  const [editing, setEditing] = useState(!saved);
+
+  const complete = RATING_CATEGORIES.every((c) => draft[c.key] > 0);
+
+  if (saved && !editing) {
+    const avg = (saved.location + saved.decoration + saved.crowd + saved.foodVibe) / 4;
+    return (
+      <div className="mt-2 flex items-center justify-between">
+        <span className="flex items-center gap-1 text-xs text-gray-600">
+          <Star size={13} className="text-[#FFB700]" fill="#FFB700" />
+          {avg.toFixed(1)} avg · rated
+        </span>
+        <button
+          type="button"
+          onClick={() => setEditing(true)}
+          className="text-[10px] font-semibold text-[#8b0000] underline"
+        >
+          Edit
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="mt-2 flex items-center gap-2">
-      <div className="flex" onMouseLeave={() => setHover(0)}>
-        {[1, 2, 3, 4, 5].map((n) => (
-          <button
-            key={n}
-            onClick={() => rate(pandal, n)}
-            onMouseEnter={() => setHover(n)}
-            aria-label={`Rate ${n} star${n > 1 ? "s" : ""}`}
-            className="p-0.5"
-          >
-            <Star
-              size={16}
-              className={(hover || current) >= n ? "text-[#FFB700]" : "text-gray-300"}
-              fill={(hover || current) >= n ? "#FFB700" : "none"}
-            />
-          </button>
-        ))}
-      </div>
-      <span className="text-[10px] text-gray-500">{alreadyRated ? "rated" : `+${POINTS.RATING} pts`}</span>
+    <div className="mt-2 rounded border border-gray-200 p-2">
+      {RATING_CATEGORIES.map((c) => (
+        <div key={c.key} className="flex items-center justify-between py-0.5">
+          <span className="text-[11px] text-gray-600">{c.label}</span>
+          <MiniStarRow value={draft[c.key]} onChange={(n) => setDraft({ ...draft, [c.key]: n })} />
+        </div>
+      ))}
+      <button
+        type="button"
+        disabled={!complete}
+        onClick={() => {
+          rate(pandal, draft);
+          setEditing(false);
+        }}
+        className="mt-1.5 w-full rounded bg-[#8b0000] px-2 py-1 text-[11px] font-semibold text-white disabled:opacity-40"
+      >
+        {saved ? "Update rating" : `Submit rating (+${POINTS.RATING} pts)`}
+      </button>
     </div>
   );
 }
@@ -322,7 +381,7 @@ export function MapView({
                     {visited ? "Checked in ✓" : `Check in (+${checkinPointsFor(pandal)} pts)`}
                   </button>
 
-                  <StarRow pandal={pandal} />
+                  <RatingPanel pandal={pandal} />
 
                   {onAddToRoute && (
                     <button

@@ -6,11 +6,20 @@ import type { Pandal } from "@/data/types";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "./AuthProvider";
 
+export interface CategoryRating {
+  location: number;
+  decoration: number;
+  crowd: number;
+  foodVibe: number;
+}
+
 // --- Point scheme -----------------------------------------------------
 // Sign up:       +50 flat, once, the moment the account is created.
 // Check-in:      +10 base, plus a "hidden gem" bonus for smaller pandals
 //                so exploring beyond the famous ones pays off.
-// Rating:        +5 flat, once per pandal (can't farm the same one).
+// Rating:        +5 flat, once per pandal — a single rating covers all
+//                four categories (location, decoration, crowd, food &
+//                vibe) at once, so it still can't be farmed per category.
 // New area:      +15 the first time you check in anywhere within an
 //                Area you haven't visited before — rewards spreading
 //                out rather than clustering all your check-ins.
@@ -51,13 +60,13 @@ export function checkinPointsFor(pandal: Pandal) {
 interface PointsState {
   points: number;
   checkedIn: Set<string>;
-  ratings: Record<string, number>;
+  ratings: Record<string, CategoryRating>;
   lastGain: { amount: number; reason: string; at: number } | null;
 }
 
 interface PointsContextValue extends PointsState {
   checkIn: (pandal: Pandal) => Promise<void>;
-  rate: (pandal: Pandal, stars: number) => Promise<void>;
+  rate: (pandal: Pandal, rating: CategoryRating) => Promise<void>;
   // Re-pulls points from the server — call after any action elsewhere
   // (like creating an itinerary) that awards points via a DB trigger this
   // provider doesn't know about directly.
@@ -93,13 +102,26 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
     const [{ data: profile }, { data: checkIns }, { data: ratingsRows }] = await Promise.all([
       supabase.from("profiles").select("points").eq("id", user.id).single(),
       supabase.from("check_ins").select("pandal_id").eq("user_id", user.id),
-      supabase.from("ratings").select("pandal_id, stars").eq("user_id", user.id),
+      supabase
+        .from("ratings")
+        .select("pandal_id, location_stars, decoration_stars, crowd_stars, food_vibe_stars")
+        .eq("user_id", user.id),
     ]);
     setState((prev) => ({
       ...prev,
       points: profile?.points ?? 0,
       checkedIn: new Set((checkIns ?? []).map((c) => c.pandal_id)),
-      ratings: Object.fromEntries((ratingsRows ?? []).map((r) => [r.pandal_id, r.stars])),
+      ratings: Object.fromEntries(
+        (ratingsRows ?? []).map((r) => [
+          r.pandal_id,
+          {
+            location: r.location_stars,
+            decoration: r.decoration_stars,
+            crowd: r.crowd_stars,
+            foodVibe: r.food_vibe_stars,
+          },
+        ])
+      ),
     }));
   }, [user]);
 
@@ -139,30 +161,36 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
   );
 
   const rate = useCallback(
-    async (pandal: Pandal, stars: number) => {
+    async (pandal: Pandal, rating: CategoryRating) => {
       if (!user) {
         router.push("/login");
         return;
       }
       const alreadyRated = pandal.id in state.ratings;
       const supabase = createClient();
+      const row = {
+        location_stars: rating.location,
+        decoration_stars: rating.decoration,
+        crowd_stars: rating.crowd,
+        food_vibe_stars: rating.foodVibe,
+      };
       if (alreadyRated) {
         await supabase
           .from("ratings")
-          .update({ stars })
+          .update(row)
           .eq("user_id", user.id)
           .eq("pandal_id", pandal.id);
-        setState((prev) => ({ ...prev, ratings: { ...prev.ratings, [pandal.id]: stars } }));
+        setState((prev) => ({ ...prev, ratings: { ...prev.ratings, [pandal.id]: rating } }));
         return;
       }
       const { error } = await supabase
         .from("ratings")
-        .insert({ user_id: user.id, pandal_id: pandal.id, stars });
+        .insert({ user_id: user.id, pandal_id: pandal.id, ...row });
       if (error) return;
       setState((prev) => ({
         ...prev,
         points: prev.points + POINTS.RATING,
-        ratings: { ...prev.ratings, [pandal.id]: stars },
+        ratings: { ...prev.ratings, [pandal.id]: rating },
         lastGain: { amount: POINTS.RATING, reason: "Rating", at: Date.now() },
       }));
     },
