@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Trophy, MapPinned, Crown } from "lucide-react";
+import { Trophy, MapPinned, Crown, Coins } from "lucide-react";
 import clsx from "clsx";
 import { Badge } from "@/components/Badge";
-import { ReferralPanel } from "@/components/ReferralPanel";
 import { createClient } from "@/lib/supabase/server";
 import type { LeaderboardEntry } from "@/data/types";
 
@@ -129,37 +128,12 @@ export default async function LeaderboardPage() {
         <Link href="/map" className="text-[var(--color-red)] underline">
           map
         </Link>
-        .
+        .{" "}
+        <Link href="/earn" className="inline-flex items-center gap-1 text-[var(--color-red)] underline">
+          <Coins size={13} />
+          See every way to earn points
+        </Link>
       </p>
-
-      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
-          <p className="text-sm font-bold text-[var(--color-text-primary)]">Check in</p>
-          <p className="text-xs text-[var(--color-text-secondary)]">
-            +10 base, +5 for Medium pandals, +10 for Small ones — hidden gems pay off more than
-            the famous ones.
-          </p>
-        </div>
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
-          <p className="text-sm font-bold text-[var(--color-text-primary)]">Rate a pandal</p>
-          <p className="text-xs text-[var(--color-text-secondary)]">
-            +5 flat, once per pandal. Rate any pandal — you don&apos;t have to check in first.
-          </p>
-        </div>
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
-          <p className="text-sm font-bold text-[var(--color-text-primary)]">New area</p>
-          <p className="text-xs text-[var(--color-text-secondary)]">
-            +15 bonus the first time you check in anywhere within an Area you haven&apos;t visited
-            yet — rewards spreading out, not just one cluster.
-          </p>
-        </div>
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3">
-          <p className="text-sm font-bold text-[var(--color-text-primary)]">Invite a friend</p>
-          <p className="text-xs text-[var(--color-text-secondary)]">
-            +15 flat, once per name — self-reported, see below.
-          </p>
-        </div>
-      </div>
 
       {user ? (
         currentEntry ? (
@@ -197,10 +171,6 @@ export default async function LeaderboardPage() {
           to see your rank here.
         </p>
       )}
-
-      <div className="mt-4">
-        <ReferralPanel />
-      </div>
 
       {entries.length === 0 ? (
         <p className="mt-10 text-center text-sm text-[var(--color-text-secondary)]">

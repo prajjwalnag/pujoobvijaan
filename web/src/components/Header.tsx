@@ -11,6 +11,7 @@ import {
   MessageCircle,
   CalendarDays,
   Trophy,
+  Coins,
   Menu,
   X,
   Flame,
@@ -28,6 +29,7 @@ const navItems = [
   { label: "Atlas", href: "/atlas", icon: Compass },
   { label: "Network", href: "/network", icon: Network },
   { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
+  { label: "Earn", href: "/earn", icon: Coins },
   { label: "Chat", href: "/chat", icon: MessageCircle },
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },
 ];
