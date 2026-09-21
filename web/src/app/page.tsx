@@ -4,6 +4,7 @@ import { pandalStats } from "@/data/pandals";
 import { Countdown } from "@/components/Countdown";
 import { PujaFlashOverlay } from "@/components/PujaFlashOverlay";
 import { NetworkBackground } from "@/components/NetworkBackground";
+import { HomeAuthButtons } from "@/components/HomeAuthButtons";
 
 const highlights = [
   {
@@ -43,6 +44,8 @@ export default function Home() {
         </p>
 
         <Countdown />
+
+        <HomeAuthButtons />
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {highlights.map((item) => {

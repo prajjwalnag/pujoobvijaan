@@ -20,6 +20,7 @@ import clsx from "clsx";
 import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
 import { usePoints } from "./PointsProvider";
+import { useAuth } from "./AuthProvider";
 
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
@@ -31,14 +32,11 @@ const navItems = [
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },
 ];
 
-// Auth is still mocked for Phase 1 UI, but points are real — tracked
-// client-side (localStorage) via PointsProvider from check-ins and ratings.
-const isAuthenticated = false;
-
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { points } = usePoints();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--color-bg-secondary)] shadow-[var(--shadow-light)]">
@@ -81,7 +79,15 @@ export function Header() {
             {points} pts
           </span>
           <ThemeToggle />
-          {!isAuthenticated && <Button size="sm">Sign In</Button>}
+          {user ? (
+            <Button size="sm" variant="secondary" onClick={() => signOut()}>
+              Sign Out
+            </Button>
+          ) : (
+            <Link href="/login">
+              <Button size="sm">Sign In</Button>
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -122,9 +128,17 @@ export function Header() {
               </Link>
             );
           })}
-          <Button size="sm" className="mt-2 w-full">
-            Sign In
-          </Button>
+          {user ? (
+            <Button size="sm" variant="secondary" className="mt-2 w-full" onClick={() => signOut()}>
+              Sign Out
+            </Button>
+          ) : (
+            <Link href="/login" onClick={() => setMobileOpen(false)}>
+              <Button size="sm" className="mt-2 w-full">
+                Sign In
+              </Button>
+            </Link>
+          )}
         </nav>
       )}
     </header>

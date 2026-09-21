@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { MapSidebar } from "@/components/MapSidebar";
 import { pandals } from "@/data/pandals";
-import { usePoints, POINTS } from "@/components/PointsProvider";
+import { usePoints } from "@/components/PointsProvider";
 import { useMyItineraries } from "@/components/useMyItineraries";
 import { haversineKm, nearestPandalsToPoint } from "@/data/graph";
 import type { Pandal, Itinerary, CrowdLevel } from "@/data/types";
@@ -65,7 +65,7 @@ export default function MapPage() {
     medium: true,
     low: true,
   });
-  const { checkedIn, award } = usePoints();
+  const { checkedIn, refreshPoints } = usePoints();
   const { addItinerary } = useMyItineraries();
   const [routeStops, setRouteStops] = useState<Pandal[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -75,11 +75,18 @@ export default function MapPage() {
 
   // Real device GPS via the browser Geolocation API — works on Android and
   // iPhone alike (it's the browser, not this app, that talks to the phone's
-  // location hardware). Needs HTTPS in production and an explicit
-  // permission grant; localhost is exempt from the HTTPS requirement.
+  // location hardware). iOS Safari in particular refuses to even show the
+  // permission dialog on a non-HTTPS origin, so that's checked explicitly
+  // below instead of surfacing as a confusing generic failure.
   const locateMe = useCallback(() => {
     if (!navigator.geolocation) {
       setLocationError("Geolocation isn't supported on this device/browser.");
+      return;
+    }
+    if (!window.isSecureContext) {
+      setLocationError(
+        "Location requires a secure (https://) connection — it won't work on iPhone over plain http."
+      );
       return;
     }
     setLocating(true);
@@ -90,14 +97,19 @@ export default function MapPage() {
         setLocating(false);
       },
       (err) => {
-        setLocationError(
-          err.code === err.PERMISSION_DENIED
-            ? "Location permission denied — enable it in your browser/site settings."
-            : "Couldn't get your location. Try again."
-        );
+        let message = "Couldn't get your location. Try again.";
+        if (err.code === err.PERMISSION_DENIED) {
+          message =
+            "Location permission denied. On iPhone: Settings → Privacy & Security → Location Services → Safari Websites → set to \"While Using the App\" (or Ask Next Time), then reload this page.";
+        } else if (err.code === err.TIMEOUT) {
+          message = "Location request timed out — check your signal and try again.";
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          message = "Your device couldn't determine a location right now. Try again in a moment.";
+        }
+        setLocationError(message);
         setLocating(false);
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
     );
   }, []);
 
@@ -138,7 +150,7 @@ export default function MapPage() {
     setRouteStops((prev) => nearestNeighborOrder(prev));
   }
 
-  function saveRoute(title: string) {
+  async function saveRoute(title: string) {
     const itinerary: Itinerary = {
       id: `custom-${Date.now()}`,
       title,
@@ -146,8 +158,8 @@ export default function MapPage() {
       mode: "walk",
       stops: routeStops.map((p, i) => ({ pandalId: p.id, scheduledTime: nextTime(i) })),
     };
-    addItinerary(itinerary);
-    award(POINTS.CREATE_ITINERARY, "Created itinerary");
+    await addItinerary(itinerary);
+    await refreshPoints();
     setRouteStops([]);
   }
 

@@ -10,9 +10,9 @@ export function ReferralPanel() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const added = addReferral(name);
+    const added = await addReferral(name);
     setMessage(added ? `+${POINTS.REFERRAL} points — thanks for inviting ${name.trim()}!` : "Already added that name.");
     if (added) setName("");
   }
@@ -25,8 +25,8 @@ export function ReferralPanel() {
       </div>
       <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
         Get someone else onto Pujo Obhijaan and log their name here for +{POINTS.REFERRAL} points.
-        This is self-reported — there's no account system to verify signups against — so it's an
-        honor-system bonus, once per name.
+        This is self-reported &mdash; there&apos;s no way to verify the signup against &mdash; so
+        it&apos;s an honor-system bonus, once per name.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-3 flex gap-2">

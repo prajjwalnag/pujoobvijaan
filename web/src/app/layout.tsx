@@ -5,8 +5,10 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/ThemeProvider";
+import { AuthProvider } from "@/components/AuthProvider";
 import { PointsProvider } from "@/components/PointsProvider";
 import { PointsToast } from "@/components/PointsToast";
+import { SosButton } from "@/components/SosButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,12 +43,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {THEME_INIT_SCRIPT}
         </Script>
         <ThemeProvider>
-          <PointsProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <PointsToast />
-          </PointsProvider>
+          <AuthProvider>
+            <PointsProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <PointsToast />
+              <SosButton />
+            </PointsProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

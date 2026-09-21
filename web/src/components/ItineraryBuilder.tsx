@@ -17,7 +17,7 @@ function nextTime(index: number) {
 }
 
 export function ItineraryBuilder({ onCreate }: { onCreate: (itinerary: Itinerary) => void }) {
-  const { award } = usePoints();
+  const { refreshPoints } = usePoints();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [mode, setMode] = useState<"walk" | "transit">("walk");
@@ -59,7 +59,7 @@ export function ItineraryBuilder({ onCreate }: { onCreate: (itinerary: Itinerary
     setOpen(false);
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!title.trim() || stopIds.length < 2) return;
     const itinerary: Itinerary = {
       id: `custom-${Date.now()}`,
@@ -68,8 +68,8 @@ export function ItineraryBuilder({ onCreate }: { onCreate: (itinerary: Itinerary
       mode,
       stops: stopIds.map((pandalId, i) => ({ pandalId, scheduledTime: nextTime(i) })),
     };
-    onCreate(itinerary);
-    award(POINTS.CREATE_ITINERARY, "Created itinerary");
+    await onCreate(itinerary);
+    await refreshPoints();
     reset();
   }
 
