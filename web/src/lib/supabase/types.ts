@@ -443,6 +443,26 @@ export type Database = {
         }
         Relationships: []
       }
+      pandal_rating_summary: {
+        Row: {
+          crowd_avg: number | null
+          decoration_avg: number | null
+          food_vibe_avg: number | null
+          location_avg: number | null
+          overall_avg: number | null
+          pandal_id: string | null
+          rating_count: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_pandal_id_fkey"
+            columns: ["pandal_id"]
+            isOneToOne: false
+            referencedRelation: "pandals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       award_points: {

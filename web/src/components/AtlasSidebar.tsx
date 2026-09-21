@@ -4,6 +4,7 @@ import { ChevronDown, Eye, EyeOff } from "lucide-react";
 import clsx from "clsx";
 import type { Pandal, Area, CrowdLevel } from "@/data/types";
 import { tierColor, tierLabel } from "@/data/tiers";
+import { PandalRatingSection, usePandalRatingSummaries } from "./PandalRating";
 
 interface AtlasSidebarProps {
   areasList: Area[];
@@ -68,6 +69,7 @@ export function AtlasSidebar({
   const selectedAreaData = selectedPandal?.areaId
     ? areasList.find((a) => a.id === selectedPandal.areaId)
     : undefined;
+  const ratingSummaries = usePandalRatingSummaries();
   const allOn = enabledAreas.size === areasList.length && showUngrouped;
   const allOff = enabledAreas.size === 0 && !showUngrouped;
 
@@ -190,6 +192,9 @@ export function AtlasSidebar({
             >
               {tierLabel[selectedPandal.crowdLevel]}
             </span>
+
+            <PandalRatingSection pandal={selectedPandal} summary={ratingSummaries[selectedPandal.id]} />
+
             {selectedAreaData && (
               <div className="mt-2 space-y-1 border-t border-[var(--color-border)] pt-2 text-xs text-[var(--color-text-secondary)]">
                 {!selectedPandal.geocoded && (
@@ -231,7 +236,7 @@ export function AtlasSidebar({
                 </ul>
                 {!selectedPandal.geocoded && (
                   <p className="mt-1 text-[10px] italic text-[var(--color-text-light)]">
-                    Approximate — this pandal's own location isn't geocoded yet.
+                    Approximate — this pandal&apos;s own location isn&apos;t geocoded yet.
                   </p>
                 )}
               </div>
