@@ -35,7 +35,13 @@ export function ReferralPanel() {
       .then(({ count }) => setReferredCount(count ?? 0));
   }, [user]);
 
-  const link = referralCode ? `${window.location.origin}/signup?ref=${referralCode}` : null;
+  // Always builds off the real production domain, not wherever this is
+  // being viewed from — a referral link is meant to be shared publicly,
+  // so it should work the same whether generated from prod or from a
+  // local dev server. Falls back to window.location.origin only if
+  // NEXT_PUBLIC_SITE_URL isn't set (e.g. a fresh local checkout).
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
+  const link = referralCode ? `${siteUrl}/signup?ref=${referralCode}` : null;
 
   async function handleCopy() {
     if (!link) return;
