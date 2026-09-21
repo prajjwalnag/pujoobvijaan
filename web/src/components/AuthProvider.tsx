@@ -37,6 +37,8 @@ export function getDisplayName(user: User): string {
   return user.email?.split("@")[0] ?? "there";
 }
 
+export const REFERRAL_STORAGE_KEY = "pujo-pending-referral-code";
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,8 +53,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      // Best-effort: attribute this sign-in to whoever's referral link
+      // was used to get here (see /signup capturing ?ref= into storage).
+      // The server-side claim_referral() function is the real guard — it
+      // only pays out for a genuinely new account within its first few
+      // minutes, so a stale/foreign code left in storage is a harmless
+      // no-op here.
+      if (event === "SIGNED_IN") {
+        try {
+          const code = localStorage.getItem(REFERRAL_STORAGE_KEY);
+          if (code) {
+            void Promise.resolve(supabase.rpc("claim_referral", { p_code: code })).finally(() => {
+              localStorage.removeItem(REFERRAL_STORAGE_KEY);
+            });
+          }
+        } catch {
+          // private browsing / storage blocked — skip attribution
+        }
+      }
     });
 
     return () => subscription.unsubscribe();

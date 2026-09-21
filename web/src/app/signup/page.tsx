@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Mail, User, Flame, CheckCircle2 } from "lucide-react";
-import { useAuth } from "@/components/AuthProvider";
+import { Mail, User, Flame, CheckCircle2, Sparkles } from "lucide-react";
+import { useAuth, REFERRAL_STORAGE_KEY } from "@/components/AuthProvider";
+import { POINTS } from "@/components/PointsProvider";
 import { Button } from "@/components/Button";
 import { GoogleButton } from "@/components/GoogleButton";
 
@@ -13,6 +14,20 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+
+  // Not useSearchParams() — plain window.location avoids a Suspense
+  // boundary requirement for something this simple (a one-time read on
+  // mount to stash the code before the user completes sign-up).
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get("ref");
+    if (code) {
+      try {
+        localStorage.setItem(REFERRAL_STORAGE_KEY, code);
+      } catch {
+        // private browsing / storage blocked — referral just won't attribute
+      }
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -38,6 +53,9 @@ export default function SignupPage() {
       <h1 className="mt-4 text-2xl font-bold text-[var(--color-text-primary)]">Create your account</h1>
       <p className="mt-1 text-center text-sm text-[var(--color-text-secondary)]">
         No password to set — we&apos;ll email you a link to finish signing up.
+      </p>
+      <p className="mt-2 flex items-center gap-1.5 rounded-full bg-[var(--color-bg-tertiary)] px-3 py-1 text-xs font-semibold text-[var(--color-red)]">
+        <Sparkles size={13} className="text-[var(--color-gold)]" />+{POINTS.SIGNUP} points just for signing up
       </p>
 
       {status === "sent" ? (

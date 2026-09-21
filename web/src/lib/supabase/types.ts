@@ -297,6 +297,8 @@ export type Database = {
           display_name: string | null
           id: string
           points: number
+          referral_code: string
+          referred_by: string | null
           username: string | null
         }
         Insert: {
@@ -305,6 +307,8 @@ export type Database = {
           display_name?: string | null
           id: string
           points?: number
+          referral_code: string
+          referred_by?: string | null
           username?: string | null
         }
         Update: {
@@ -313,9 +317,26 @@ export type Database = {
           display_name?: string | null
           id?: string
           points?: number
+          referral_code?: string
+          referred_by?: string | null
           username?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "profiles_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ratings: {
         Row: {
@@ -417,6 +438,10 @@ export type Database = {
     Functions: {
       award_points: {
         Args: { p_amount: number; p_reason: string; p_user: string }
+        Returns: undefined
+      }
+      claim_referral: {
+        Args: { p_code: string }
         Returns: undefined
       }
     }

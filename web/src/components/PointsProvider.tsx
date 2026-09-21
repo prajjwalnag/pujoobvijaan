@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "./AuthProvider";
 
 // --- Point scheme -----------------------------------------------------
+// Sign up:       +50 flat, once, the moment the account is created.
 // Check-in:      +10 base, plus a "hidden gem" bonus for smaller pandals
 //                so exploring beyond the famous ones pays off.
 // Rating:        +5 flat, once per pandal (can't farm the same one).
@@ -15,14 +16,18 @@ import { useAuth } from "./AuthProvider";
 //                out rather than clustering all your check-ins.
 // Itinerary:     +20 flat for building and saving your own itinerary
 //                (see /itinerary) — one-time per itinerary created.
-// Referral:      +15 flat per friend you bring onto the app, once per
-//                name. Self-reported — same honor-system basis as before.
+// Referral:      +15 flat, paid to the REFERRER once a friend actually
+//                signs up through their personal /signup?ref= link (see
+//                ReferralPanel + claim_referral() in the DB) — server
+//                verified against a real new account, not self-reported.
 //
-// All of the above is now computed and awarded server-side (Postgres
-// triggers in the Supabase schema — see award_points()/handle_check_in()
-// etc.), not trusted from the client. This provider just reflects that
-// server state; it never sets points itself.
+// All of the above is computed and awarded server-side (Postgres
+// triggers/functions in the Supabase schema — see award_points(),
+// handle_new_user(), handle_check_in(), claim_referral()), not trusted
+// from the client. This provider just reflects that server state; it
+// never sets points itself.
 export const POINTS = {
+  SIGNUP: 50,
   CHECKIN_BASE: 10,
   CHECKIN_BONUS_SMALL: 10,
   CHECKIN_BONUS_MEDIUM: 5,
@@ -47,14 +52,12 @@ interface PointsState {
   points: number;
   checkedIn: Set<string>;
   ratings: Record<string, number>;
-  referrals: string[];
   lastGain: { amount: number; reason: string; at: number } | null;
 }
 
 interface PointsContextValue extends PointsState {
   checkIn: (pandal: Pandal) => Promise<void>;
   rate: (pandal: Pandal, stars: number) => Promise<void>;
-  addReferral: (name: string) => Promise<boolean>;
   // Re-pulls points from the server — call after any action elsewhere
   // (like creating an itinerary) that awards points via a DB trigger this
   // provider doesn't know about directly.
@@ -73,7 +76,6 @@ const EMPTY_STATE: PointsState = {
   points: 0,
   checkedIn: new Set(),
   ratings: {},
-  referrals: [],
   lastGain: null,
 };
 
@@ -88,19 +90,16 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     const supabase = createClient();
-    const [{ data: profile }, { data: checkIns }, { data: ratingsRows }, { data: referralsRows }] =
-      await Promise.all([
-        supabase.from("profiles").select("points").eq("id", user.id).single(),
-        supabase.from("check_ins").select("pandal_id").eq("user_id", user.id),
-        supabase.from("ratings").select("pandal_id, stars").eq("user_id", user.id),
-        supabase.from("referrals").select("referred_name").eq("user_id", user.id),
-      ]);
+    const [{ data: profile }, { data: checkIns }, { data: ratingsRows }] = await Promise.all([
+      supabase.from("profiles").select("points").eq("id", user.id).single(),
+      supabase.from("check_ins").select("pandal_id").eq("user_id", user.id),
+      supabase.from("ratings").select("pandal_id, stars").eq("user_id", user.id),
+    ]);
     setState((prev) => ({
       ...prev,
       points: profile?.points ?? 0,
       checkedIn: new Set((checkIns ?? []).map((c) => c.pandal_id)),
       ratings: Object.fromEntries((ratingsRows ?? []).map((r) => [r.pandal_id, r.stars])),
-      referrals: (referralsRows ?? []).map((r) => r.referred_name),
     }));
   }, [user]);
 
@@ -170,32 +169,8 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
     [user, state.ratings, router]
   );
 
-  const addReferral = useCallback(
-    async (name: string) => {
-      if (!user) {
-        router.push("/login");
-        return false;
-      }
-      const trimmed = name.trim();
-      if (!trimmed) return false;
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("referrals")
-        .insert({ user_id: user.id, referred_name: trimmed });
-      if (error) return false; // unique violation — already referred this name
-      setState((prev) => ({
-        ...prev,
-        points: prev.points + POINTS.REFERRAL,
-        referrals: [...prev.referrals, trimmed],
-        lastGain: { amount: POINTS.REFERRAL, reason: "Invited a friend", at: Date.now() },
-      }));
-      return true;
-    },
-    [user, router]
-  );
-
   return (
-    <PointsContext.Provider value={{ ...state, checkIn, rate, addReferral, refreshPoints: refetch }}>
+    <PointsContext.Provider value={{ ...state, checkIn, rate, refreshPoints: refetch }}>
       {children}
     </PointsContext.Provider>
   );
