@@ -9,13 +9,15 @@ interface MagicLinkOptions {
   name?: string;
   /** false = sign-in only, rejects unknown emails instead of creating an account. */
   shouldCreateUser?: boolean;
+  /** Referral code to attribute — carried in the emailed link itself, not localStorage (see below). */
+  referralCode?: string;
 }
 
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
   signInWithMagicLink: (email: string, opts?: MagicLinkOptions) => Promise<{ error: string | null }>;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
+  signInWithGoogle: (opts?: { referralCode?: string }) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -55,12 +57,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      // Best-effort: attribute this sign-in to whoever's referral link
-      // was used to get here (see /signup capturing ?ref= into storage).
-      // The server-side claim_referral() function is the real guard — it
-      // only pays out for a genuinely new account within its first few
-      // minutes, so a stale/foreign code left in storage is a harmless
-      // no-op here.
+      // Fallback attribution path — the primary one now is /auth/callback
+      // reading `?ref=` straight off the confirmed link (see
+      // signInWithMagicLink/signInWithGoogle below), which survives the
+      // magic-link email being opened in a different browser/app context
+      // than the one that has this localStorage. This client-side path
+      // still catches anything that lands here some other way. The
+      // server-side claim_referral() function is the real guard — it's a
+      // no-op for a stale/foreign/already-claimed code either way.
       if (event === "SIGNED_IN") {
         try {
           const code = localStorage.getItem(REFERRAL_STORAGE_KEY);
@@ -78,13 +82,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Carries the referral code in the callback URL itself rather than
+  // relying only on localStorage — the emailed magic link is very often
+  // opened in a different browser context (Gmail/Outlook's in-app
+  // webview) than the one that started the sign-up, which silently loses
+  // anything stashed in storage. A query param on the link survives that.
+  function callbackUrl(referralCode?: string) {
+    const url = `${window.location.origin}/auth/callback`;
+    return referralCode ? `${url}?ref=${encodeURIComponent(referralCode)}` : url;
+  }
+
   async function signInWithMagicLink(email: string, opts: MagicLinkOptions = {}) {
     const supabase = createClient();
     const shouldCreateUser = opts.shouldCreateUser ?? true;
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: callbackUrl(opts.referralCode),
         shouldCreateUser,
         data: opts.name ? { display_name: opts.name } : undefined,
       },
@@ -98,11 +112,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error: error?.message ?? null };
   }
 
-  async function signInWithGoogle() {
+  async function signInWithGoogle(opts: { referralCode?: string } = {}) {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: callbackUrl(opts.referralCode) },
     });
     // On success the browser is redirected to Google immediately, so this
     // only ever returns with an error (e.g. Google provider not enabled).

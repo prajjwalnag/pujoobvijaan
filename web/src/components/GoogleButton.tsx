@@ -26,14 +26,20 @@ function GoogleIcon() {
   );
 }
 
-export function GoogleButton({ label = "Continue with Google" }: { label?: string }) {
+export function GoogleButton({
+  label = "Continue with Google",
+  referralCode,
+}: {
+  label?: string;
+  referralCode?: string;
+}) {
   const { signInWithGoogle } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
     setLoading(true);
-    const { error } = await signInWithGoogle();
+    const { error } = await signInWithGoogle({ referralCode });
     if (error) {
       setError(error);
       setLoading(false);

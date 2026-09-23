@@ -14,17 +14,22 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [referralCode, setReferralCode] = useState<string | undefined>(undefined);
 
   // Not useSearchParams() — plain window.location avoids a Suspense
   // boundary requirement for something this simple (a one-time read on
-  // mount to stash the code before the user completes sign-up).
+  // mount). Kept in state so it can be passed straight through to
+  // signInWithMagicLink/GoogleButton (the primary attribution path — see
+  // AuthProvider); also stashed in localStorage as a fallback for
+  // whatever else might read REFERRAL_STORAGE_KEY.
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("ref");
     if (code) {
+      setReferralCode(code);
       try {
         localStorage.setItem(REFERRAL_STORAGE_KEY, code);
       } catch {
-        // private browsing / storage blocked — referral just won't attribute
+        // private browsing / storage blocked — the URL-based path still works
       }
     }
   }, []);
@@ -36,6 +41,7 @@ export default function SignupPage() {
     const { error } = await signInWithMagicLink(email.trim(), {
       name: name.trim() || undefined,
       shouldCreateUser: true,
+      referralCode,
     });
     if (error) {
       setError(error);
@@ -68,7 +74,7 @@ export default function SignupPage() {
       ) : (
         <>
         <div className="mt-6 w-full">
-          <GoogleButton label="Sign up with Google" />
+          <GoogleButton label="Sign up with Google" referralCode={referralCode} />
         </div>
 
         <div className="mt-5 flex w-full items-center gap-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-light)]">
