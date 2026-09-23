@@ -54,15 +54,15 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "/",
     siteName: "Pujo Obhijaan",
-    title: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
+    title: "Turn YOUR Pandal-Hopping into a GAME",
     description:
-      "Turn your pandal-hopping into a game — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
+      "Pujo Obhijaan — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
+    title: "Turn YOUR Pandal-Hopping into a GAME",
     description:
-      "Turn your pandal-hopping into a game — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
+      "Pujo Obhijaan — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
   },
   robots: {
     index: true,
