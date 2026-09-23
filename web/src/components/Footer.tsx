@@ -112,6 +112,10 @@ export function Footer() {
             <Link href="/terms" className="hover:text-[var(--color-red)] hover:underline">
               Terms of Service
             </Link>
+            <span aria-hidden>·</span>
+            <Link href="/sitemap" className="hover:text-[var(--color-red)] hover:underline">
+              Sitemap
+            </Link>
           </div>
           <p className="text-sm text-[var(--color-text-light)]">
             Copyright © 2026 Pujo Obhijaan
