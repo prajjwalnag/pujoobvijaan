@@ -186,9 +186,16 @@ export function MapView({
             <LocateFixed size={20} className={locating ? "animate-pulse" : ""} />
           </button>
           {locationError && (
-            <p className="max-w-[180px] rounded-md bg-[var(--color-bg-secondary)] px-2 py-1 text-right text-[11px] text-[var(--color-red)] shadow-lg">
-              {locationError}
-            </p>
+            <div className="max-w-[220px] rounded-md bg-[var(--color-bg-secondary)] px-2 py-1.5 text-right shadow-lg">
+              <p className="text-[11px] text-[var(--color-red)]">{locationError}</p>
+              <button
+                onClick={onLocate}
+                disabled={locating}
+                className="mt-1 text-[11px] font-semibold text-[var(--color-red)] underline disabled:opacity-60"
+              >
+                Try again
+              </button>
+            </div>
           )}
         </div>
       )}

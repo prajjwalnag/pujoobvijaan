@@ -31,6 +31,26 @@ function nextTime(index: number) {
   return `${hour12}:00 ${suffix}`;
 }
 
+// There's no API for a website to open the OS Settings app — on iOS or
+// Android, no browser exposes that to web content, by design. Best we
+// can do is point at the right *place* to fix it, which differs by
+// browser: iOS treats each browser as a separate location client, so
+// "Settings → Privacy → Location Services → Safari Websites" is wrong
+// advice if this loaded in Chrome/Firefox/Edge for iOS — those show up
+// as their own named app in that same list instead.
+function permissionDeniedMessage(): string {
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (ua.includes("Mac") && navigator.maxTouchPoints > 1);
+  if (!isIOS) {
+    return "Location permission denied. Check your browser's site settings (usually the icon next to the address bar) and allow Location for this site, then reload.";
+  }
+  let appName = "Safari Websites";
+  if (/CriOS/.test(ua)) appName = "Chrome";
+  else if (/FxiOS/.test(ua)) appName = "Firefox";
+  else if (/EdgiOS/.test(ua)) appName = "Edge";
+  return `Location permission denied. On iPhone: Settings → Privacy & Security → Location Services → ${appName} → set to "While Using the App" (or Ask Next Time), then reload this page.`;
+}
+
 function nearestNeighborOrder(stops: Pandal[]): Pandal[] {
   if (stops.length < 3) return stops;
   const remaining = [...stops];
@@ -99,8 +119,7 @@ export default function MapPage() {
       (err) => {
         let message = "Couldn't get your location. Try again.";
         if (err.code === err.PERMISSION_DENIED) {
-          message =
-            "Location permission denied. On iPhone: Settings → Privacy & Security → Location Services → Safari Websites → set to \"While Using the App\" (or Ask Next Time), then reload this page.";
+          message = permissionDeniedMessage();
         } else if (err.code === err.TIMEOUT) {
           message = "Location request timed out — check your signal and try again.";
         } else if (err.code === err.POSITION_UNAVAILABLE) {

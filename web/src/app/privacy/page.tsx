@@ -21,7 +21,7 @@ export default function PrivacyPage() {
           <h2 className="mb-1 text-base font-bold text-[var(--color-text-primary)]">1. What this covers</h2>
           <p>
             This policy explains what Pujo Obhijaan (&quot;we&quot;, &quot;the app&quot;) collects
-            when you use the site at pujoobhijaan.vercel.app, and how it&apos;s used. Pujo Obhijaan
+            when you use the site at pujoobhijaan.online, and how it&apos;s used. Pujo Obhijaan
             is a pandal-hopping companion for Kolkata&apos;s Durga Puja — a map, itinerary planner,
             and a points/leaderboard game layered on top.
           </p>

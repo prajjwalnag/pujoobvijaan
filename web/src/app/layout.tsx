@@ -26,12 +26,12 @@ const abrilFatface = Abril_Fatface({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pujoobhijaan.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.pujoobhijaan.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Pujo Obhijaan — Kolkata Durga Puja Pandal Guide 2026",
+    default: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
     template: "%s — Pujo Obhijaan",
   },
   description:
@@ -54,13 +54,13 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "/",
     siteName: "Pujo Obhijaan",
-    title: "Pujo Obhijaan — Kolkata Durga Puja Pandal Guide 2026",
+    title: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
     description:
       "Plan, explore, and navigate Kolkata's Durga Puja pandals with an interactive map, itinerary builder, and pandal-hopping leaderboard.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pujo Obhijaan — Kolkata Durga Puja Pandal Guide 2026",
+    title: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
     description:
       "Plan, explore, and navigate Kolkata's Durga Puja pandals with an interactive map, itinerary builder, and pandal-hopping leaderboard.",
   },

@@ -19,7 +19,7 @@ export default function TermsPage() {
         <section>
           <h2 className="mb-1 text-base font-bold text-[var(--color-text-primary)]">1. Using Pujo Obhijaan</h2>
           <p>
-            By creating an account or using pujoobhijaan.vercel.app (&quot;the app&quot;), you agree
+            By creating an account or using pujoobhijaan.online (&quot;the app&quot;), you agree
             to these terms. The app is a free companion for exploring Kolkata&apos;s Durga Puja
             pandals — a map, an itinerary planner, and a points/leaderboard game. It&apos;s a
             personal/independent project, not affiliated with any puja committee, government body,
