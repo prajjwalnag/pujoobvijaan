@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import { Trophy, MapPinned, Crown, Coins } from "lucide-react";
 import clsx from "clsx";
 import { Badge } from "@/components/Badge";
+import { EarnSlider } from "@/components/EarnSlider";
+import { UsernameEditor } from "@/components/UsernameEditor";
+import { ReferralShareButton } from "@/components/ReferralShareButton";
+import { WAYS_TO_EARN } from "@/data/waysToEarn";
 import { createClient } from "@/lib/supabase/server";
 import type { LeaderboardEntry } from "@/data/types";
 
@@ -70,9 +74,8 @@ function PyramidCard({ entry, rowIndex }: { entry: LeaderboardEntry; rowIndex: n
         {entry.avatarInitials}
       </div>
       <p className={clsx("mt-2 truncate font-semibold text-[var(--color-text-primary)]", style.name)}>
-        {entry.name}
+        @{entry.username}
       </p>
-      <p className="truncate text-[10px] text-[var(--color-text-light)]">@{entry.username}</p>
       <p className={clsx("mt-1 font-bold text-[var(--color-red)]", style.points)}>
         {entry.points}
         <span className="ml-0.5 text-[10px] font-normal text-[var(--color-text-light)]">pts</span>
@@ -101,6 +104,16 @@ export default async function LeaderboardPage() {
     supabase.auth.getUser(),
   ]);
   const user = userData.user;
+
+  // Own referral code only — the `leaderboard` view is public (names,
+  // points, ranks) and doesn't carry referral_code, so this is a separate,
+  // RLS-scoped lookup against the caller's own profile row, same as
+  // ReferralPanel on /earn.
+  const referralCode = user
+    ? (
+        await supabase.from("profiles").select("referral_code").eq("id", user.id).single()
+      ).data?.referral_code ?? null
+    : null;
 
   // Real accounts only — every row here comes from a signed-up user's
   // actual points via the `leaderboard` DB view, computed server-side by
@@ -136,11 +149,7 @@ export default async function LeaderboardPage() {
         <Link href="/map" className="text-[var(--color-red)] underline">
           map
         </Link>
-        .{" "}
-        <Link href="/earn" className="inline-flex items-center gap-1 text-[var(--color-red)] underline">
-          <Coins size={13} />
-          See every way to earn points
-        </Link>
+        .
       </p>
 
       {user ? (
@@ -154,22 +163,32 @@ export default async function LeaderboardPage() {
                 <p className="font-semibold text-[var(--color-text-primary)]">
                   You · Rank #{currentEntry.rank}
                 </p>
-                <p className="text-xs text-[var(--color-text-light)]">@{currentEntry.username}</p>
+                <UsernameEditor userId={user.id} username={currentEntry.username} />
                 <p className="text-sm text-[var(--color-text-secondary)]">
                   {currentEntry.pandalsVisited} pandals visited
                 </p>
+                {referralCode && (
+                  <div>
+                    <ReferralShareButton referralCode={referralCode} />
+                  </div>
+                )}
               </div>
             </div>
             <p className="text-xl font-bold text-[var(--color-red)]">{currentEntry.points} pts</p>
           </div>
         ) : (
-          <p className="mt-6 rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-center text-sm text-[var(--color-text-secondary)]">
+          <div className="mt-6 rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-center text-sm text-[var(--color-text-secondary)]">
             You&apos;re signed in but haven&apos;t earned any points yet — check in on the{" "}
             <Link href="/map" className="text-[var(--color-red)] underline">
               map
             </Link>{" "}
             to get on the board.
-          </p>
+            {referralCode && (
+              <div className="mt-2 flex justify-center">
+                <ReferralShareButton referralCode={referralCode} />
+              </div>
+            )}
+          </div>
         )
       ) : (
         <p className="mt-6 rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-center text-sm text-[var(--color-text-secondary)]">
@@ -179,6 +198,14 @@ export default async function LeaderboardPage() {
           to see your rank here.
         </p>
       )}
+
+      <div className="mt-8">
+        <div className="flex items-center gap-2">
+          <Coins className="text-[var(--color-red)]" size={20} />
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)]">How to Earn Points</h2>
+        </div>
+        <EarnSlider ways={WAYS_TO_EARN} />
+      </div>
 
       {entries.length === 0 ? (
         <p className="mt-10 text-center text-sm text-[var(--color-text-secondary)]">
