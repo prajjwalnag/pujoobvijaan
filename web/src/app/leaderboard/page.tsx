@@ -116,6 +116,17 @@ export default async function LeaderboardPage() {
       ).data?.referral_code ?? null
     : null;
 
+  // How many people the signed-in user has referred — same RLS-scoped
+  // count ReferralPanel already shows on /earn.
+  const referredCount = user
+    ? (
+        await supabase
+          .from("profiles")
+          .select("id", { count: "exact", head: true })
+          .eq("referred_by", user.id)
+      ).count ?? 0
+    : 0;
+
   // Real referral events, not fabricated activity — `profiles` is publicly
   // readable (unlike points_ledger, which is locked to each user's own
   // rows), so this reads straight off who actually referred whom.
@@ -183,6 +194,9 @@ export default async function LeaderboardPage() {
                 <UsernameEditor userId={user.id} username={currentEntry.username} />
                 <p className="text-sm text-[var(--color-text-secondary)]">
                   {currentEntry.pandalsVisited} pandals visited
+                  {referredCount > 0 && (
+                    <> · {referredCount} friend{referredCount === 1 ? "" : "s"} referred</>
+                  )}
                 </p>
                 {referralCode && (
                   <div>
