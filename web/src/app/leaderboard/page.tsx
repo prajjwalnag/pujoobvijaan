@@ -1,9 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Trophy, MapPinned, Crown, Coins } from "lucide-react";
 import clsx from "clsx";
 import { Badge } from "@/components/Badge";
 import { createClient } from "@/lib/supabase/server";
 import type { LeaderboardEntry } from "@/data/types";
+
+export const metadata: Metadata = {
+  title: "Leaderboard",
+  description:
+    "See who's covered the most Durga Puja pandals in Kolkata. Earn points for every pandal you check into and climb the Pujo Obhijaan leaderboard.",
+  alternates: { canonical: "/leaderboard" },
+};
 
 function rankColor(rank: number) {
   if (rank === 1) return "text-[#FFB700]";

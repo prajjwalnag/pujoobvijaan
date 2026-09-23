@@ -77,7 +77,15 @@ export function Footer() {
       <PartnersRow />
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <p className="text-sm text-[var(--color-text-secondary)]">
-          Made with ❤️ by <span className="font-semibold text-[var(--color-red)]">MWR Agency</span>
+          Made with ❤️ by{" "}
+          <a
+            href="https://mwragency.vercel.app/"
+            target="_blank"
+            rel="noopener"
+            className="font-semibold text-[var(--color-red)] hover:underline"
+          >
+            MWR Agency
+          </a>
         </p>
         <div className="flex items-center gap-4">
           <a

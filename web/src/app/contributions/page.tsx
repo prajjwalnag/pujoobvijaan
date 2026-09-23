@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Users } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contributions",
+  description: "The people who helped map, build, and grow Pujo Obhijaan's Durga Puja pandal guide.",
+  alternates: { canonical: "/contributions" },
+};
 
 const CONTRIBUTORS = [
   "Goutam Saha",

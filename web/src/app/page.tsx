@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { LayoutGrid, Map, Trophy } from "lucide-react";
+import type { Metadata } from "next";
+import { LayoutGrid, Map, Trophy, Users } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { Countdown } from "@/components/Countdown";
 import { PujaFlashOverlay } from "@/components/PujaFlashOverlay";
 import { NetworkBackground } from "@/components/NetworkBackground";
 import { HomeAuthButtons } from "@/components/HomeAuthButtons";
+import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const highlights = [
   {
@@ -27,7 +33,17 @@ const highlights = [
   },
 ];
 
-export default function Home() {
+async function getUserCount() {
+  const supabase = await createClient();
+  const { count } = await supabase
+    .from("profiles")
+    .select("id", { count: "exact", head: true });
+  return count ?? 0;
+}
+
+export default async function Home() {
+  const userCount = await getUserCount();
+
   return (
     <div>
       <div className="relative mx-auto max-w-[1000px] overflow-hidden px-4 py-16 text-center sm:px-6">
@@ -42,6 +58,13 @@ export default function Home() {
           Plan, explore, and navigate Kolkata&apos;s Durga Puja pandals — with a
           leaderboard that turns pandal hopping into a game.
         </p>
+
+        {userCount > 0 && (
+          <div className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-secondary)]">
+            <Users size={13} className="text-[var(--color-red)]" />
+            {userCount.toLocaleString()} explorer{userCount === 1 ? "" : "s"} already on board
+          </div>
+        )}
 
         <Countdown />
 

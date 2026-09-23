@@ -8,7 +8,6 @@ import {
   Map,
   Compass,
   Network,
-  MessageCircle,
   CalendarDays,
   Trophy,
   Users,
@@ -29,7 +28,6 @@ const navItems = [
   { label: "Atlas", href: "/atlas", icon: Compass },
   { label: "Network", href: "/network", icon: Network },
   { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
-  { label: "Chat", href: "/chat", icon: MessageCircle },
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },
   { label: "Contributions", href: "/contributions", icon: Users },
 ];

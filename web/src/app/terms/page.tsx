@@ -1,8 +1,9 @@
 import { FileText } from "lucide-react";
 
 export const metadata = {
-  title: "Terms of Service — Pujo Obhijaan",
+  title: "Terms of Service",
   description: "The terms that govern using Pujo Obhijaan.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

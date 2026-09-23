@@ -2,8 +2,9 @@ import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
 export const metadata = {
-  title: "Privacy Policy — Pujo Obhijaan",
+  title: "Privacy Policy",
   description: "How Pujo Obhijaan collects, uses, and protects your data.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {

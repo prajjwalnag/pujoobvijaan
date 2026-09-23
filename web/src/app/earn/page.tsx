@@ -1,6 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Coins, MapPin, Star, Compass, CalendarDays, UserPlus } from "lucide-react";
 import { ReferralPanel } from "@/components/ReferralPanel";
+
+export const metadata: Metadata = {
+  title: "How to Earn Points",
+  description:
+    "Every way to earn points on Pujo Obhijaan — sign up, check in to pandals, rate them, build itineraries, and refer friends during Durga Puja 2026.",
+  alternates: { canonical: "/earn" },
+};
 
 const WAYS_TO_EARN = [
   {

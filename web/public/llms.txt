@@ -1,0 +1,21 @@
+# Pujo Obhijaan
+
+> Pujo Obhijaan is a web app for planning, exploring, and navigating Kolkata's Durga Puja pandals. It lists 300+ pandals across North, South, Central, East, and West Kolkata, plus Howrah and the 24 Parganas, with an interactive map, an atlas of pandal neighbourhoods, itinerary planning, and a points-based leaderboard for pandal hopping.
+
+Durga Puja 2026 in Kolkata runs from Maha Shashthi (16 October 2026) through Vijaya Dashami. Pandal-hopping is the tradition of visiting multiple pandals (temporary shrines with artistic themes) over these days.
+
+## Key pages
+
+- [Home](/): Overview, countdown to Durga Puja 2026, and entry points to the main features.
+- [Pandals](/pandals): Browse and filter all pandals by region, crowd level, and search.
+- [Map](/map): Interactive map of every pandal with check-in.
+- [Atlas](/atlas): Pandal clusters by neighbourhood, with nearby cafes and restaurants.
+- [Itinerary](/itinerary): Sample and custom pandal-hopping routes with real distances.
+- [Leaderboard](/leaderboard): Points-based ranking for pandal check-ins.
+- [How to earn points](/earn): Full list of ways to earn points (sign up, check in, rate, refer friends).
+
+## Notes for AI agents
+
+- Pandal data (name, region, coordinates, crowd level, rating, theme) is rendered client-side from a static dataset; the /pandals page reflects the current, complete list.
+- Coordinates for most pandals are approximate (region-centroid based) unless marked as geocoded in the underlying data.
+- Points, leaderboard rank, and check-ins require a signed-in account; /login and /signup are not indexed.
