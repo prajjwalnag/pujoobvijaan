@@ -154,12 +154,12 @@ export default async function LeaderboardPage() {
 
       {user ? (
         currentEntry ? (
-          <div className="mt-6 flex items-center justify-between rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-red)] text-sm font-bold text-white">
+          <div className="mt-6 flex flex-col gap-3 rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-red)] text-sm font-bold text-white">
                 {currentEntry.avatarInitials}
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="font-semibold text-[var(--color-text-primary)]">
                   You · Rank #{currentEntry.rank}
                 </p>
@@ -174,7 +174,9 @@ export default async function LeaderboardPage() {
                 )}
               </div>
             </div>
-            <p className="text-xl font-bold text-[var(--color-red)]">{currentEntry.points} pts</p>
+            <p className="flex-shrink-0 text-xl font-bold text-[var(--color-red)] sm:self-center">
+              {currentEntry.points} pts
+            </p>
           </div>
         ) : (
           <div className="mt-6 rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-center text-sm text-[var(--color-text-secondary)]">

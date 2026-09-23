@@ -39,18 +39,18 @@ export function ReferralShareButton({ referralCode }: { referralCode: string }) 
   }
 
   return (
-    <div className="mt-1 flex items-center gap-1.5">
+    <div className="mt-1 flex flex-wrap items-center gap-1.5">
       <input
         readOnly
         value={link}
         onFocus={(e) => e.currentTarget.select()}
-        className="w-32 truncate rounded border border-[var(--color-border)] bg-[var(--color-bg-main)] px-1.5 py-0.5 text-[11px] text-[var(--color-text-secondary)] outline-none sm:w-40"
+        className="min-w-0 flex-1 basis-24 truncate rounded border border-[var(--color-border)] bg-[var(--color-bg-main)] px-1.5 py-0.5 text-[11px] text-[var(--color-text-secondary)] outline-none"
       />
       <button
         type="button"
         onClick={handleCopy}
         aria-label="Copy referral link"
-        className="flex items-center gap-1 rounded-full bg-[var(--color-red)] px-2 py-0.5 text-[11px] font-semibold text-white transition-transform hover:scale-[1.02]"
+        className="flex flex-shrink-0 items-center gap-1 rounded-full bg-[var(--color-red)] px-2 py-0.5 text-[11px] font-semibold text-white transition-transform hover:scale-[1.02]"
       >
         {copied ? <Check size={12} /> : <Copy size={12} />}
         {copied ? "Copied" : "Copy"}
@@ -60,7 +60,7 @@ export function ReferralShareButton({ referralCode }: { referralCode: string }) 
           type="button"
           onClick={handleShare}
           aria-label="Share referral link"
-          className="flex items-center gap-1 rounded-full border border-[var(--color-red)] px-2 py-0.5 text-[11px] font-semibold text-[var(--color-red)] transition-transform hover:scale-[1.02]"
+          className="flex flex-shrink-0 items-center gap-1 rounded-full border border-[var(--color-red)] px-2 py-0.5 text-[11px] font-semibold text-[var(--color-red)] transition-transform hover:scale-[1.02]"
         >
           <Share2 size={12} />
           Share
