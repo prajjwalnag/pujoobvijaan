@@ -54,9 +54,13 @@ export default async function Home() {
           Pujo <span className="text-[var(--color-gold-dark)]">Obhijaan</span>
         </h1>
         <div className="gold-rule mx-auto mt-3 w-24" />
-        <p className="mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
-          Plan, explore, and navigate Kolkata&apos;s Durga Puja pandals — with a
-          leaderboard that turns pandal hopping into a game.
+        <p className="mt-4 text-lg font-bold uppercase tracking-wide text-[var(--color-text-primary)] sm:text-xl">
+          Turn <span className="text-[var(--color-red)]">YOUR</span> Pandal-Hopping into a{" "}
+          <span className="text-[var(--color-gold-dark)]">GAME</span>
+        </p>
+        <p className="mx-auto mt-2 max-w-xl text-[var(--color-text-secondary)]">
+          Plan, explore, and navigate Kolkata&apos;s Durga Puja pandals — check in,
+          earn points, and climb the leaderboard.
         </p>
 
         {userCount > 0 && (
