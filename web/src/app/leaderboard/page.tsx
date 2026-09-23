@@ -6,6 +6,7 @@ import { Badge } from "@/components/Badge";
 import { EarnSlider } from "@/components/EarnSlider";
 import { UsernameEditor } from "@/components/UsernameEditor";
 import { ReferralShareButton } from "@/components/ReferralShareButton";
+import { ReferralActivityAlert } from "@/components/ReferralActivityAlert";
 import { WAYS_TO_EARN } from "@/data/waysToEarn";
 import { createClient } from "@/lib/supabase/server";
 import type { LeaderboardEntry } from "@/data/types";
@@ -115,6 +116,19 @@ export default async function LeaderboardPage() {
       ).data?.referral_code ?? null
     : null;
 
+  // Real referral events, not fabricated activity — `profiles` is publicly
+  // readable (unlike points_ledger, which is locked to each user's own
+  // rows), so this reads straight off who actually referred whom.
+  const { data: referralRows } = await supabase
+    .from("profiles")
+    .select("created_at, referrer:referred_by(display_name)")
+    .not("referred_by", "is", null)
+    .order("created_at", { ascending: false })
+    .limit(20);
+  const referralEvents = (referralRows ?? [])
+    .map((r) => (r.referrer as { display_name: string | null } | null)?.display_name)
+    .filter((name): name is string => !!name);
+
   // Real accounts only — every row here comes from a signed-up user's
   // actual points via the `leaderboard` DB view, computed server-side by
   // the points_ledger triggers (see PointsProvider). Rank comes straight
@@ -154,7 +168,10 @@ export default async function LeaderboardPage() {
 
       {user ? (
         currentEntry ? (
-          <div className="mt-6 flex flex-col gap-3 rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div
+            id="your-rank"
+            className="mt-6 flex flex-col gap-3 rounded-lg border-2 border-[var(--color-red)] bg-[var(--color-bg-secondary)] p-4 sm:flex-row sm:items-center sm:justify-between"
+          >
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-red)] text-sm font-bold text-white">
                 {currentEntry.avatarInitials}
@@ -228,6 +245,9 @@ export default async function LeaderboardPage() {
           ))}
         </div>
       )}
+
+      <ReferralActivityAlert names={referralEvents} />
     </div>
   );
 }
+
