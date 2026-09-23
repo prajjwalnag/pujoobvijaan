@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     template: "%s — Pujo Obhijaan",
   },
   description:
-    "Plan, explore, and navigate Kolkata's Durga Puja pandals. Browse 300+ pandals with an interactive map, build a pandal-hopping itinerary, and earn points on the leaderboard for Durga Puja 2026.",
+    "Turn your pandal-hopping into a game. Browse 300+ Durga Puja pandals across Kolkata with an interactive map, build an itinerary, and earn points on the leaderboard for Durga Puja 2026.",
   keywords: [
     "Durga Puja",
     "Kolkata pandals",
@@ -56,13 +56,13 @@ export const metadata: Metadata = {
     siteName: "Pujo Obhijaan",
     title: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
     description:
-      "Plan, explore, and navigate Kolkata's Durga Puja pandals with an interactive map, itinerary builder, and pandal-hopping leaderboard.",
+      "Turn your pandal-hopping into a game — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
     description:
-      "Plan, explore, and navigate Kolkata's Durga Puja pandals with an interactive map, itinerary builder, and pandal-hopping leaderboard.",
+      "Turn your pandal-hopping into a game — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
   },
   robots: {
     index: true,
