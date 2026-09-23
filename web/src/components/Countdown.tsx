@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Flame } from "lucide-react";
-
-// Maha Shashthi 2026 — the day pandal-hopping traditionally begins.
-const PUJA_START = new Date("2026-10-16T00:00:00+05:30").getTime();
+import { PUJA_START } from "@/data/pujaDate";
 
 function getRemaining() {
   const diff = Math.max(PUJA_START - Date.now(), 0);

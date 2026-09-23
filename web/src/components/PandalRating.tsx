@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import type { Pandal } from "@/data/types";
 import { usePoints, POINTS, type CategoryRating } from "./PointsProvider";
+import { usePujaLock } from "./usePujaLock";
 import { createClient } from "@/lib/supabase/client";
 
 export const RATING_CATEGORIES: { key: keyof CategoryRating; label: string }[] = [
@@ -103,6 +104,7 @@ function MiniStarRow({ value, onChange }: { value: number; onChange: (n: number)
 
 export function RatingPanel({ pandal }: { pandal: Pandal }) {
   const { ratings, rate } = usePoints();
+  const { locked, unlockLabel } = usePujaLock();
   const saved = ratings[pandal.id];
   const [draft, setDraft] = useState<CategoryRating>(
     saved ?? { location: 0, decoration: 0, crowd: 0, foodVibe: 0 }
@@ -111,17 +113,23 @@ export function RatingPanel({ pandal }: { pandal: Pandal }) {
 
   const complete = RATING_CATEGORIES.every((c) => draft[c.key] > 0);
 
+  if (locked && !saved) {
+    return <p className="mt-1 text-[11px] text-gray-500">Ratings unlock in {unlockLabel}</p>;
+  }
+
   if (saved && !editing) {
     return (
       <div className="mt-1 flex items-center justify-between">
         <span className="text-[11px] text-gray-600">You rated this pandal</span>
-        <button
-          type="button"
-          onClick={() => setEditing(true)}
-          className="text-[10px] font-semibold text-[#8b0000] underline"
-        >
-          Edit
-        </button>
+        {!locked && (
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            className="text-[10px] font-semibold text-[#8b0000] underline"
+          >
+            Edit
+          </button>
+        )}
       </div>
     );
   }
@@ -136,14 +144,18 @@ export function RatingPanel({ pandal }: { pandal: Pandal }) {
       ))}
       <button
         type="button"
-        disabled={!complete}
+        disabled={!complete || locked}
         onClick={() => {
           rate(pandal, draft);
           setEditing(false);
         }}
         className="mt-1.5 w-full rounded bg-[#8b0000] px-2 py-1 text-[11px] font-semibold text-white disabled:opacity-40"
       >
-        {saved ? "Update rating" : `Submit rating (+${POINTS.RATING} pts)`}
+        {locked
+          ? `Unlocks in ${unlockLabel}`
+          : saved
+            ? "Update rating"
+            : `Submit rating (+${POINTS.RATING} pts)`}
       </button>
     </div>
   );

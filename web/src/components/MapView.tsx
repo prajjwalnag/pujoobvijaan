@@ -13,11 +13,16 @@ import { MapAdBanner } from "./MapAdBanner";
 import { useTheme } from "./ThemeProvider";
 import { usePoints, checkinPointsFor } from "./PointsProvider";
 import { PandalRatingSection, usePandalRatingSummaries } from "./PandalRating";
+import { usePujaLock } from "./usePujaLock";
 import { MetroLayer } from "./MetroLayer";
 import { RailwayLayer } from "./RailwayLayer";
 import { RoadLayer } from "./RoadLayer";
 
 const areaById = new Map(areas.map((a) => [a.id, a]));
+
+// How close (real GPS distance) you need to be to a pandal to check in —
+// prevents checking in from across the city.
+const CHECKIN_RADIUS_KM = 0.1;
 
 const TILE_URLS = {
   light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -169,6 +174,7 @@ export function MapView({
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
   const ratingSummaries = usePandalRatingSummaries();
+  const { locked: pujaLocked, unlockLabel } = usePujaLock();
   const routeIds = new Set(routeStops.map((p) => p.id));
 
   return (
@@ -279,6 +285,26 @@ export function MapView({
         {pandalsList.map((pandal) => {
           const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;
           const visited = checkedIn.has(pandal.id);
+          const distanceKm = userLocation ? haversineKm(userLocation, pandal.coordinates) : null;
+          const inRange = distanceKm !== null && distanceKm <= CHECKIN_RADIUS_KM;
+          const canCheckIn = !visited && !pujaLocked && inRange;
+
+          let checkInLabel: string;
+          if (visited) {
+            checkInLabel = "Checked in ✓";
+          } else if (pujaLocked) {
+            checkInLabel = `Unlocks in ${unlockLabel}`;
+          } else if (!userLocation) {
+            checkInLabel = "Enable location to check in";
+          } else if (!inRange) {
+            checkInLabel =
+              distanceKm! < 1
+                ? `Get within 100m (${Math.round(distanceKm! * 1000)}m away)`
+                : `Get within 100m (${distanceKm!.toFixed(1)}km away)`;
+          } else {
+            checkInLabel = `Check in (+${checkinPointsFor(pandal)} pts)`;
+          }
+
           return (
             <Marker
               key={pandal.id}
@@ -294,11 +320,13 @@ export function MapView({
                     {pandal.rating !== undefined ? ` · ⭐ ${pandal.rating}` : ""}
                   </p>
                   <button
-                    onClick={() => checkIn(pandal)}
-                    disabled={visited}
+                    onClick={() =>
+                      canCheckIn ? checkIn(pandal, userLocation ?? undefined) : onLocate?.()
+                    }
+                    disabled={visited || pujaLocked || (!!userLocation && !inRange)}
                     className="mt-2 w-full rounded bg-[#8b0000] px-2 py-1 text-xs font-semibold text-white disabled:opacity-50"
                   >
-                    {visited ? "Checked in ✓" : `Check in (+${checkinPointsFor(pandal)} pts)`}
+                    {checkInLabel}
                   </button>
 
                   <PandalRatingSection pandal={pandal} summary={ratingSummaries[pandal.id]} />

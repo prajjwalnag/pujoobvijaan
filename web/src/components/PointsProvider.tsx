@@ -65,7 +65,7 @@ interface PointsState {
 }
 
 interface PointsContextValue extends PointsState {
-  checkIn: (pandal: Pandal) => Promise<void>;
+  checkIn: (pandal: Pandal, location?: { lat: number; lng: number }) => Promise<void>;
   rate: (pandal: Pandal, rating: CategoryRating) => Promise<void>;
   // Re-pulls points from the server — call after any action elsewhere
   // (like creating an itinerary) that awards points via a DB trigger this
@@ -133,7 +133,7 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
   }, [refetch]);
 
   const checkIn = useCallback(
-    async (pandal: Pandal) => {
+    async (pandal: Pandal, location?: { lat: number; lng: number }) => {
       if (!user) {
         router.push("/login");
         return;
@@ -142,7 +142,12 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("check_ins")
-        .insert({ user_id: user.id, pandal_id: pandal.id })
+        .insert({
+          user_id: user.id,
+          pandal_id: pandal.id,
+          user_lat: location?.lat,
+          user_lng: location?.lng,
+        })
         .select("points_awarded")
         .single();
       if (error || !data) return;
