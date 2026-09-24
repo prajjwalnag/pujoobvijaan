@@ -36,7 +36,7 @@ const highlights = [
 // Floor, not a fabricated fixed number — shows this while the real count is
 // still below it, then switches over to the true count automatically once
 // signups actually pass it. Never displays a number lower than reality.
-const EXPLORER_COUNT_FLOOR = 50;
+const EXPLORER_COUNT_FLOOR = 100;
 
 async function getUserCount() {
   const supabase = await createClient();
