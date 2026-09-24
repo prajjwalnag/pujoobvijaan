@@ -7,6 +7,7 @@ import { EarnSlider } from "@/components/EarnSlider";
 import { UsernameEditor } from "@/components/UsernameEditor";
 import { ReferralShareButton } from "@/components/ReferralShareButton";
 import { ReferralActivityAlert } from "@/components/ReferralActivityAlert";
+import { LeaderboardRest } from "@/components/LeaderboardRest";
 import { WAYS_TO_EARN } from "@/data/waysToEarn";
 import { createClient } from "@/lib/supabase/server";
 import type { LeaderboardEntry } from "@/data/types";
@@ -23,21 +24,6 @@ function rankColor(rank: number) {
   if (rank === 2) return "text-[#A0A0A0]";
   if (rank === 3) return "text-[#CD7F32]";
   return "text-[var(--color-text-secondary)]";
-}
-
-// Row sizes grow 1, 2, 3, 4, ... so rank 1 sits alone at the apex and the
-// crowd widens the further down the pyramid you go — fewer people at the
-// top makes the ranking read at a glance instead of scanning a long list.
-function pyramidRows<T>(items: T[]): T[][] {
-  const rows: T[][] = [];
-  let i = 0;
-  let size = 1;
-  while (i < items.length) {
-    rows.push(items.slice(i, i + size));
-    i += size;
-    size++;
-  }
-  return rows;
 }
 
 const TIER_STYLE = [
@@ -159,7 +145,17 @@ export default async function LeaderboardPage() {
     }));
 
   const currentEntry = user ? entries.find((e) => e.userId === user.id) ?? null : null;
-  const rowsByTier = pyramidRows(entries);
+
+  // Podium = actual rank 1-3, grouped by rank value (not array position) so
+  // a tie at #3 stays together in one row instead of spilling into a
+  // mis-sized "row 3" the generic pyramidRows() slicing would produce.
+  const podiumEntries = entries.filter((e) => e.rank <= 3);
+  const restEntries = entries.filter((e) => e.rank > 3);
+  const podiumByRank = new Map<number, LeaderboardEntry[]>();
+  for (const e of podiumEntries) {
+    podiumByRank.set(e.rank, [...(podiumByRank.get(e.rank) ?? []), e]);
+  }
+  const podiumRows = [...podiumByRank.entries()].sort(([a], [b]) => a - b).map(([, group]) => group);
 
   return (
     <div className="mx-auto max-w-[900px] px-4 py-8 sm:px-6">
@@ -249,15 +245,18 @@ export default async function LeaderboardPage() {
           and be the first to check in.
         </p>
       ) : (
-        <div className="mt-10 flex flex-col items-center gap-5 sm:gap-6">
-          {rowsByTier.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex w-full flex-wrap items-start justify-center gap-3 sm:gap-4">
-              {row.map((entry) => (
-                <PyramidCard key={entry.userId} entry={entry} rowIndex={rowIndex} />
-              ))}
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="mt-10 flex flex-col items-center gap-5 sm:gap-6">
+            {podiumRows.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex w-full flex-wrap items-start justify-center gap-3 sm:gap-4">
+                {row.map((entry) => (
+                  <PyramidCard key={entry.userId} entry={entry} rowIndex={rowIndex} />
+                ))}
+              </div>
+            ))}
+          </div>
+          <LeaderboardRest entries={restEntries} />
+        </>
       )}
 
       <ReferralActivityAlert names={referralEvents} />
