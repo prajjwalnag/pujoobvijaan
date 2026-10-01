@@ -98,3 +98,23 @@ export interface PublicToilet {
   /** Area or landmark nearby for easy identification */
   nearbyLandmark?: string;
 }
+
+export interface ParkingSpace {
+  id: string;
+  name: string;
+  coordinates: { lat: number; lng: number };
+  /** Type of parking: "multi-level", "surface", "street" */
+  type: "multi-level" | "surface" | "street";
+  /** Estimated number of spaces available */
+  capacity?: number;
+  /** Whether parking fee is charged */
+  hasFee: boolean;
+  /** Hourly rate if available */
+  hourlyRate?: string;
+  /** Whether it's open 24/7 or daytime only */
+  available24h: boolean;
+  /** Notable features like "covered", "secure", "EV charging", etc. */
+  features?: string[];
+  /** Area or landmark nearby for easy identification */
+  nearbyLandmark?: string;
+}

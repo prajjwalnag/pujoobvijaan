@@ -30,15 +30,17 @@ interface MapSidebarProps {
     railway: boolean;
     roads: boolean;
     toilets: boolean;
+    parking: boolean;
   };
   onCategoryToggle: (
-    key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads" | "toilets"
+    key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads" | "toilets" | "parking"
   ) => void;
   sizeFilters: Record<CrowdLevel, boolean>;
   onSizeToggle: (level: CrowdLevel) => void;
   onSizeToggleAll: () => void;
   checkedInCount: number;
   toiletCount?: number;
+  parkingCount?: number;
   routeStops: Pandal[];
   onRouteRemove: (id: string) => void;
   onRouteMove: (index: number, dir: -1 | 1) => void;
@@ -58,6 +60,7 @@ export function MapSidebar({
   onSizeToggleAll,
   checkedInCount,
   toiletCount = 0,
+  parkingCount = 0,
   routeStops,
   onRouteRemove,
   onRouteMove,
@@ -153,6 +156,17 @@ export function MapSidebar({
             Public toilets
           </span>
           <span className="text-[var(--color-text-light)]">{toiletCount}</span>
+        </label>
+        <label className="flex items-center justify-between py-1.5 text-sm">
+          <span className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={categories.parking}
+              onChange={() => onCategoryToggle("parking")}
+            />
+            Parking spaces
+          </span>
+          <span className="text-[var(--color-text-light)]">{parkingCount}</span>
         </label>
       </div>
 

@@ -4,9 +4,9 @@ import { Fragment, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
-import { LocateFixed, Star, Droplet } from "lucide-react";
+import { LocateFixed, Star, Droplet, ParkingCircle } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
-import type { Pandal, PublicToilet } from "@/data/types";
+import type { Pandal, PublicToilet, ParkingSpace } from "@/data/types";
 import { areas } from "@/data/areas";
 import { haversineKm } from "@/data/graph";
 import { MapAdBanner } from "./MapAdBanner";
@@ -167,6 +167,30 @@ function toiletIcon() {
   return L.divIcon({ html, className: "", iconSize: [20, 20], iconAnchor: [10, 10] });
 }
 
+function parkingIcon() {
+  const html = renderToStaticMarkup(
+    <div
+      style={{
+        width: 22,
+        height: 22,
+        borderRadius: "50%",
+        background: "#FF9800",
+        border: "2.5px solid white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+        fontWeight: "bold",
+        fontSize: 12,
+        color: "white",
+      }}
+    >
+      P
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [22, 22], iconAnchor: [11, 11] });
+}
+
 export function MapView({
   pandalsList,
   showMetro = true,
@@ -174,6 +198,8 @@ export function MapView({
   showRoads = false,
   showToilets = false,
   toiletsList = [],
+  showParking = false,
+  parkingList = [],
   routeStops = [],
   onAddToRoute,
   userLocation = null,
@@ -188,6 +214,8 @@ export function MapView({
   showRoads?: boolean;
   showToilets?: boolean;
   toiletsList?: PublicToilet[];
+  showParking?: boolean;
+  parkingList?: ParkingSpace[];
   routeStops?: Pandal[];
   onAddToRoute?: (pandal: Pandal) => void;
   userLocation?: { lat: number; lng: number } | null;
@@ -332,6 +360,47 @@ export function MapView({
                 {toilet.features && toilet.features.length > 0 && (
                   <p>
                     <span className="font-semibold">Features:</span> {toilet.features.join(", ")}
+                  </p>
+                )}
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+
+      {showParking && parkingList.map((parking) => (
+        <Marker
+          key={`parking-${parking.id}`}
+          position={[parking.coordinates.lat, parking.coordinates.lng]}
+          icon={parkingIcon()}
+          zIndexOffset={400}
+        >
+          <Popup>
+            <div className="min-w-[180px] max-w-[240px]">
+              <p className="font-bold">🅿️ {parking.name}</p>
+              <div className="mt-1 space-y-1 text-xs text-gray-600">
+                <p>
+                  <span className="font-semibold">Type:</span> {parking.type.replace("-", " ")}
+                </p>
+                {parking.capacity && (
+                  <p>
+                    <span className="font-semibold">Capacity:</span> ~{parking.capacity} spaces
+                  </p>
+                )}
+                <p>
+                  <span className="font-semibold">Hours:</span> {parking.available24h ? "24/7" : "Daytime"}
+                </p>
+                <p>
+                  <span className="font-semibold">Fee:</span> {parking.hasFee ? `Yes - ${parking.hourlyRate || "Variable"}` : "Free"}
+                </p>
+                {parking.nearbyLandmark && (
+                  <p>
+                    <span className="font-semibold">Near:</span> {parking.nearbyLandmark}
+                  </p>
+                )}
+                {parking.features && parking.features.length > 0 && (
+                  <p>
+                    <span className="font-semibold">Features:</span> {parking.features.join(", ")}
                   </p>
                 )}
               </div>
