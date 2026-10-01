@@ -1,0 +1,67 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Home Page Screenshot -->
+  <defs>
+    <style>
+      .screenshot-title { font-size: 20px; font-weight: bold; fill: #8b0000; }
+      .screenshot-text { font-size: 14px; fill: #333; }
+      .screenshot-bg { fill: #f5f5f5; }
+    </style>
+  </defs>
+
+  <!-- Home Screenshot -->
+  <rect x="0" y="0" width="350" height="600" rx="20" class="screenshot-bg" stroke="#ccc" stroke-width="2"/>
+  <text x="175" y="50" text-anchor="middle" class="screenshot-title">Home Page</text>
+  <rect x="20" y="80" width="310" height="80" fill="#8b0000" rx="8"/>
+  <text x="175" y="130" text-anchor="middle" font-size="32" font-weight="bold" fill="white">Pujo Obhijaan</text>
+  <circle cx="175" cy="200" r="60" fill="#d4a017"/>
+  <text x="175" y="290" text-anchor="middle" class="screenshot-text">Browse Pandals</text>
+  <text x="175" y="320" text-anchor="middle" class="screenshot-text">Interactive Map</text>
+  <text x="175" y="350" text-anchor="middle" class="screenshot-text">Leaderboard</text>
+  <text x="175" y="400" text-anchor="middle" font-size="16" font-weight="bold" fill="#8b0000">500+ Explorers Online</text>
+
+  <!-- Map Screenshot -->
+  <rect x="420" y="0" width="350" height="600" rx="20" class="screenshot-bg" stroke="#ccc" stroke-width="2"/>
+  <text x="595" y="50" text-anchor="middle" class="screenshot-title">Interactive Map</text>
+  <rect x="440" y="80" width="310" height="300" fill="#4a90e2" rx="8"/>
+  <circle cx="460" cy="120" r="8" fill="#d4a017"/>
+  <circle cx="510" cy="160" r="8" fill="#d4a017"/>
+  <circle cx="480" cy="220" r="8" fill="#d4a017"/>
+  <circle cx="550" cy="200" r="8" fill="#4A90E2"/>
+  <circle cx="600" cy="280" r="8" fill="#FF9800"/>
+  <text x="595" y="420" text-anchor="middle" class="screenshot-text">🗺️ Pandals · 🚻 Toilets · 🅿️ Parking</text>
+  <rect x="450" y="450" width="150" height="35" fill="#d4a017" rx="5"/>
+  <text x="525" y="475" text-anchor="middle" fill="white" font-weight="bold">Optimize Route</text>
+  <rect x="620" y="450" width="120" height="35" fill="white" stroke="#8b0000" stroke-width="2" rx="5"/>
+  <text x="680" y="475" text-anchor="middle" fill="#8b0000" font-weight="bold">Save Route</text>
+
+  <!-- Leaderboard Screenshot -->
+  <rect x="840" y="0" width="350" height="600" rx="20" class="screenshot-bg" stroke="#ccc" stroke-width="2"/>
+  <text x="1015" y="50" text-anchor="middle" class="screenshot-title">Leaderboard</text>
+  <rect x="860" y="80" width="310" height="60" fill="#d4a017" rx="5"/>
+  <text x="1015" y="100" text-anchor="middle" fill="white" font-weight="bold">🏆 Top Explorers</text>
+  <text x="1015" y="125" text-anchor="middle" font-size="12" fill="white">This Week</text>
+
+  <!-- Rankings -->
+  <rect x="860" y="160" width="310" height="40" fill="#f0f0f0" rx="3"/>
+  <text x="880" y="185" class="screenshot-text">1. Anwesha · 2500 pts</text>
+  <text x="1150" y="185" text-anchor="end" class="screenshot-text">🥇</text>
+
+  <rect x="860" y="210" width="310" height="40" fill="#f9f9f9" rx="3"/>
+  <text x="880" y="235" class="screenshot-text">2. Rahul · 2100 pts</text>
+  <text x="1150" y="235" text-anchor="end" class="screenshot-text">🥈</text>
+
+  <rect x="860" y="260" width="310" height="40" fill="#f9f9f9" rx="3"/>
+  <text x="880" y="285" class="screenshot-text">3. Priya · 1850 pts</text>
+  <text x="1150" y="285" text-anchor="end" class="screenshot-text">🥉</text>
+
+  <rect x="860" y="310" width="310" height="40" fill="#f9f9f9" rx="3"/>
+  <text x="880" y="335" class="screenshot-text">4. Dev · 1620 pts</text>
+  <text x="1150" y="335" text-anchor="end" class="screenshot-text">⭐</text>
+
+  <rect x="860" y="360" width="310" height="40" fill="#f9f9f9" rx="3"/>
+  <text x="880" y="385" class="screenshot-text">5. You · 850 pts</text>
+  <text x="1150" y="385" text-anchor="end" class="screenshot-text">📈</text>
+
+  <text x="1015" y="480" text-anchor="middle" class="screenshot-text" font-weight="bold">42 pandals visited</text>
+  <text x="1015" y="510" text-anchor="middle" class="screenshot-text">Next rank: 1000 pts</text>
+</svg>
