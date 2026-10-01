@@ -4,9 +4,9 @@ import { Fragment, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
-import { LocateFixed, Star } from "lucide-react";
+import { LocateFixed, Star, Droplet } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
-import type { Pandal } from "@/data/types";
+import type { Pandal, PublicToilet } from "@/data/types";
 import { areas } from "@/data/areas";
 import { haversineKm } from "@/data/graph";
 import { MapAdBanner } from "./MapAdBanner";
@@ -146,11 +146,34 @@ function routeMarkerIcon(index: number) {
   return L.divIcon({ html, className: "", iconSize: [24, 24], iconAnchor: [12, 12] });
 }
 
+function toiletIcon() {
+  const html = renderToStaticMarkup(
+    <div
+      style={{
+        width: 20,
+        height: 20,
+        borderRadius: "50%",
+        background: "#4A90E2",
+        border: "2px solid white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+      }}
+    >
+      <Droplet size={10} color="white" fill="white" />
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [20, 20], iconAnchor: [10, 10] });
+}
+
 export function MapView({
   pandalsList,
   showMetro = true,
   showRailway = false,
   showRoads = false,
+  showToilets = false,
+  toiletsList = [],
   routeStops = [],
   onAddToRoute,
   userLocation = null,
@@ -163,6 +186,8 @@ export function MapView({
   showMetro?: boolean;
   showRailway?: boolean;
   showRoads?: boolean;
+  showToilets?: boolean;
+  toiletsList?: PublicToilet[];
   routeStops?: Pandal[];
   onAddToRoute?: (pandal: Pandal) => void;
   userLocation?: { lat: number; lng: number } | null;
@@ -281,6 +306,40 @@ export function MapView({
           zIndexOffset={1000}
         />
       ))}
+
+      {showToilets && toiletsList.map((toilet) => (
+        <Marker
+          key={`toilet-${toilet.id}`}
+          position={[toilet.coordinates.lat, toilet.coordinates.lng]}
+          icon={toiletIcon()}
+          zIndexOffset={500}
+        >
+          <Popup>
+            <div className="min-w-[180px] max-w-[240px]">
+              <p className="font-bold">🚻 {toilet.name}</p>
+              <div className="mt-1 space-y-1 text-xs text-gray-600">
+                <p>
+                  <span className="font-semibold">Hours:</span> {toilet.availability}
+                </p>
+                <p>
+                  <span className="font-semibold">Fee:</span> {toilet.hasFee ? "Yes" : "Free"}
+                </p>
+                {toilet.nearbyLandmark && (
+                  <p>
+                    <span className="font-semibold">Near:</span> {toilet.nearbyLandmark}
+                  </p>
+                )}
+                {toilet.features && toilet.features.length > 0 && (
+                  <p>
+                    <span className="font-semibold">Features:</span> {toilet.features.join(", ")}
+                  </p>
+                )}
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+
       <MarkerClusterGroup chunkedLoading maxClusterRadius={50} disableClusteringAtZoom={16}>
         {pandalsList.map((pandal) => {
           const area = pandal.areaId ? areaById.get(pandal.areaId) : undefined;

@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { MapSidebar } from "@/components/MapSidebar";
 import { pandals } from "@/data/pandals";
+import { publicToilets } from "@/data/toilets";
 import { usePoints } from "@/components/PointsProvider";
 import { useMyItineraries } from "@/components/useMyItineraries";
 import { haversineKm, nearestPandalsToPoint } from "@/data/graph";
@@ -79,6 +80,7 @@ export default function MapPage() {
     metro: true,
     railway: false,
     roads: false,
+    toilets: false,
   });
   const [sizeFilters, setSizeFilters] = useState<Record<CrowdLevel, boolean>>({
     high: true,
@@ -133,7 +135,7 @@ export default function MapPage() {
   }, []);
 
   function toggleCategory(
-    key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads"
+    key: "pandals" | "foodStalls" | "itinerary" | "metro" | "railway" | "roads" | "toilets"
   ) {
     setCategories((prev) => ({ ...prev, [key]: !prev[key] }));
   }
@@ -219,6 +221,7 @@ export default function MapPage() {
           onSizeToggle={toggleSize}
           onSizeToggleAll={toggleAllSizes}
           checkedInCount={checkedIn.size}
+          toiletCount={publicToilets.length}
           routeStops={routeStops}
           onRouteRemove={removeFromRoute}
           onRouteMove={moveRouteStop}
@@ -246,6 +249,8 @@ export default function MapPage() {
             showMetro={categories.metro}
             showRailway={categories.railway}
             showRoads={categories.roads}
+            showToilets={categories.toilets}
+            toiletsList={publicToilets}
             routeStops={routeStops}
             onAddToRoute={addToRoute}
             userLocation={userLocation}

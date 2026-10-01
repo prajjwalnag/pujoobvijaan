@@ -84,3 +84,17 @@ export interface LeaderboardEntry {
   rank: number;
   badges: string[];
 }
+
+export interface PublicToilet {
+  id: string;
+  name: string;
+  coordinates: { lat: number; lng: number };
+  /** Estimated availability: "24/7", "daytime", or "limited" */
+  availability: "24/7" | "daytime" | "limited";
+  /** Whether entry fee is typically charged */
+  hasFee: boolean;
+  /** Notable features like "wheelchair accessible", "clean", etc. */
+  features?: string[];
+  /** Area or landmark nearby for easy identification */
+  nearbyLandmark?: string;
+}
