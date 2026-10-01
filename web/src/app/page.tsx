@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { LayoutGrid, Map, Trophy, Users } from "lucide-react";
+import { LayoutGrid, Map, Trophy, Users, Zap, MapPin, Droplet, ParkingCircle } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
+import { publicToilets } from "@/data/toilets";
+import { parkingSpaces } from "@/data/parking";
 import { Countdown } from "@/components/Countdown";
 import { PujaFlashOverlay } from "@/components/PujaFlashOverlay";
 import { NetworkBackground } from "@/components/NetworkBackground";
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const highlights = [
+const mainFeatures = [
   {
     href: "/pandals",
     icon: LayoutGrid,
@@ -23,13 +25,40 @@ const highlights = [
     href: "/map",
     icon: Map,
     title: "Interactive Map",
-    description: "See every pandal on the map and check in as you visit.",
+    description: "Navigate with route optimization, find pandals, toilets, and parking.",
   },
   {
     href: "/leaderboard",
     icon: Trophy,
     title: "Leaderboard",
     description: "Earn points for every pandal you hop to and climb the ranks.",
+  },
+];
+
+const mapFeatures = [
+  {
+    icon: Zap,
+    title: "Smart Route Optimizer",
+    description: "Select multiple pandals and auto-optimize your route using AI.",
+    stat: "Saves time",
+  },
+  {
+    icon: Droplet,
+    title: "Public Toilets",
+    description: `Find ${publicToilets.length}+ public toilets with hours, fees & features.`,
+    stat: "24/7 access",
+  },
+  {
+    icon: ParkingCircle,
+    title: "Parking Spaces",
+    description: `Locate ${parkingSpaces.length}+ parking options with rates & capacity.`,
+    stat: "Multi-level & street",
+  },
+  {
+    icon: MapPin,
+    title: "Real-time Check-ins",
+    description: "Verify your location and check in at pandals you visit.",
+    stat: "GPS enabled",
   },
 ];
 
@@ -81,7 +110,7 @@ export default async function Home() {
         <HomeAuthButtons />
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {highlights.map((item) => {
+          {mainFeatures.map((item) => {
             const Icon = item.icon;
             return (
               <Link
@@ -101,6 +130,51 @@ export default async function Home() {
               </Link>
             );
           })}
+        </div>
+
+        <div className="mt-16">
+          <h2 className="mb-2 text-center text-2xl font-bold text-[var(--color-text-primary)]">
+            Smart Map Features
+          </h2>
+          <p className="mx-auto mb-8 max-w-xl text-center text-[var(--color-text-secondary)]">
+            Everything you need to plan and execute the perfect pandal-hopping adventure
+          </p>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {mapFeatures.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={feature.title}
+                  className="rounded-lg border border-[var(--color-border)] bg-gradient-to-br from-[var(--color-bg-secondary)] to-[var(--color-bg-tertiary)] p-5 shadow-[var(--shadow-light)] transition-all hover:border-[var(--color-red)] hover:shadow-[var(--shadow-medium)]"
+                >
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-red)] text-white">
+                    <Icon size={20} />
+                  </div>
+                  <h3 className="mb-2 font-bold text-[var(--color-text-primary)]">
+                    {feature.title}
+                  </h3>
+                  <p className="mb-3 text-xs text-[var(--color-text-secondary)]">
+                    {feature.description}
+                  </p>
+                  <div className="inline-block rounded-full bg-[var(--color-bg-main)] px-2.5 py-1 text-[10px] font-semibold text-[var(--color-red)]">
+                    {feature.stat}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-16 rounded-2xl border-2 border-[var(--color-red)] bg-gradient-to-r from-[var(--color-red)]/10 to-[var(--color-gold)]/10 p-8 text-center">
+          <h3 className="mb-2 text-xl font-bold text-[var(--color-red)]">
+            🎮 Gamified Experience
+          </h3>
+          <p className="mx-auto max-w-2xl text-[var(--color-text-secondary)]">
+            Earn points for every pandal you visit, unlock badges, and compete on the leaderboard.
+            Build custom itineraries, optimize your route, and track your progress through Kolkata's
+            best Durga Puja celebrations.
+          </p>
         </div>
       </div>
 
