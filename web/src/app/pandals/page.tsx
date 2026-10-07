@@ -1,9 +1,17 @@
 "use client";
 
+import type { Metadata } from "next";
 import { useMemo, useState } from "react";
 import { FilterBar } from "@/components/FilterBar";
 import { PandalCard } from "@/components/PandalCard";
 import { pandals, regions } from "@/data/pandals";
+
+export const metadata: Metadata = {
+  title: "Browse Pandals",
+  description:
+    "Browse and filter all 1900+ Durga Puja pandals across Kolkata. Filter by region, crowd level, and theme to find the perfect pandals to visit.",
+  alternates: { canonical: "/pandals" },
+};
 
 export default function PandalsPage() {
   const [region, setRegion] = useState("all");

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Interactive Durga Puja Pandal Map — Kolkata",
+  title: "Interactive Map",
   description:
-    "See every Durga Puja pandal in Kolkata on an interactive map, filter by region and crowd level, and check in as you visit.",
+    "Explore Durga Puja pandals on an interactive map with route optimization, parking finder, toilet locator, and real-time check-ins for Kolkata.",
   alternates: { canonical: "/map" },
 };
 
