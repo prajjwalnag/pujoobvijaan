@@ -13,19 +13,27 @@ const SECTIONS: { heading: string; links: { href: string; label: string }[] }[] 
     heading: "Explore",
     links: [
       { href: "/", label: "Home" },
-      { href: "/pandals", label: "Pandals" },
+      { href: "/pandals", label: "Browse Pandals" },
       { href: "/map", label: "Interactive Map" },
+      { href: "/guide", label: "Durga Puja Guide" },
       { href: "/atlas", label: "Atlas" },
       { href: "/network", label: "Network" },
-      { href: "/itinerary", label: "Itinerary" },
+      { href: "/itinerary", label: "Itineraries" },
     ],
   },
   {
-    heading: "Play",
+    heading: "Play & Compete",
     links: [
       { href: "/leaderboard", label: "Leaderboard" },
       { href: "/earn", label: "How to Earn Points" },
-      { href: "/contributions", label: "Contributions" },
+      { href: "/contributions", label: "Contributors" },
+    ],
+  },
+  {
+    heading: "Community",
+    links: [
+      { href: "/chat", label: "Chat" },
+      { href: "/network", label: "Network" },
     ],
   },
   {
@@ -55,7 +63,7 @@ export default function SitemapPage() {
         Every page on Pujo Obhijaan.
       </p>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {SECTIONS.map((section) => (
           <div key={section.heading}>
             <h2 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-light)]">
