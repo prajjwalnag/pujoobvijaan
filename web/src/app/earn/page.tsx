@@ -31,6 +31,24 @@ export default function EarnPage() {
 
       <EarnSlider ways={WAYS_TO_EARN} />
 
+      <div className="mt-8 rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
+        <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Get Started Earning Points</h2>
+        <div className="space-y-3 text-sm text-[var(--color-text-secondary)]">
+          <p>
+            📍 <Link href="/pandals" className="text-[var(--color-red)] hover:underline font-semibold">Browse pandals</Link> to find places to visit
+          </p>
+          <p>
+            🗺️ Use the <Link href="/map" className="text-[var(--color-red)] hover:underline font-semibold">interactive map</Link> to plan your route
+          </p>
+          <p>
+            📖 Check out our <Link href="/guide" className="text-[var(--color-red)] hover:underline font-semibold">Durga Puja guide</Link> for pandal hopping tips
+          </p>
+          <p>
+            🏆 Track your progress on the <Link href="/leaderboard" className="text-[var(--color-red)] hover:underline font-semibold">leaderboard</Link>
+          </p>
+        </div>
+      </div>
+
       <div className="mt-6">
         <ReferralPanel />
       </div>

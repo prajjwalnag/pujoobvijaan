@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { Metadata } from "next";
 import { useMemo, useState } from "react";
 import { FilterBar } from "@/components/FilterBar";
@@ -39,12 +40,23 @@ export default function PandalsPage() {
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6">
-      <h1 className="text-[32px] font-bold text-[var(--color-text-primary)]">
-        Pandals
-      </h1>
-      <p className="mt-1 text-[var(--color-text-secondary)]">
-        Browse and filter Durga Puja pandals across Kolkata
-      </p>
+      <div className="mb-6 flex flex-col gap-2">
+        <h1 className="text-[32px] font-bold text-[var(--color-text-primary)]">
+          Pandals
+        </h1>
+        <p className="text-[var(--color-text-secondary)]">
+          Browse and filter Durga Puja pandals across Kolkata
+        </p>
+        <div className="flex flex-wrap gap-2 text-sm">
+          <Link href="/map" className="text-[var(--color-red)] hover:underline">
+            View on interactive map →
+          </Link>
+          <span className="text-[var(--color-border)]">•</span>
+          <Link href="/guide" className="text-[var(--color-red)] hover:underline">
+            Pandal hopping tips →
+          </Link>
+        </div>
+      </div>
 
       <div className="mt-6">
         <FilterBar

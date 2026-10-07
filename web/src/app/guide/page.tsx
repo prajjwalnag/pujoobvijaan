@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -70,7 +71,7 @@ export default function GuidePage() {
           <div className="rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
             <h3 className="font-bold text-[var(--color-red)] mb-2">📍 Use the Interactive Map</h3>
             <p className="text-[var(--color-text-secondary)]">
-              Open Pujo Obhijaan's interactive map to discover all 1900+ pandals across Kolkata. Filter by region, crowd level, and theme to find pandals that interest you.
+              Open <Link href="/map" className="text-[var(--color-red)] hover:underline font-semibold">Pujo Obhijaan's interactive map</Link> to discover all 1900+ pandals across Kolkata. Filter by region, crowd level, and theme to find pandals that interest you.
             </p>
           </div>
           <div className="rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
@@ -86,7 +87,13 @@ export default function GuidePage() {
             </p>
           </div>
           <div className="rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
-            <h3 className="font-bold text-[var(--color-red)] mb-2">🎫 Wear Comfortable Clothes</h3>
+            <h3 className="font-bold text-[var(--color-red)] mb-2">🎫 Browse Pandals First</h3>
+            <p className="text-[var(--color-text-secondary)]">
+              Start by <Link href="/pandals" className="text-[var(--color-red)] hover:underline font-semibold">browsing all pandals</Link> to get a sense of what's available. Read descriptions, check crowd levels, and save your favorites.
+            </p>
+          </div>
+          <div className="rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
+            <h3 className="font-bold text-[var(--color-red)] mb-2">👕 Wear Comfortable Clothes</h3>
             <p className="text-[var(--color-text-secondary)]">
               Pandals can get crowded. Wear comfortable shoes and light clothing. Carry water and a small backpack for essentials.
             </p>
@@ -158,13 +165,13 @@ export default function GuidePage() {
           <li className="rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
             <span className="font-bold text-[var(--color-red)]">4. Check In & Earn Points</span>
             <p className="text-[var(--color-text-secondary)] mt-2">
-              Visit each pandal and check in using GPS verification. Earn points for every pandal you visit and unlock achievements.
+              Visit each pandal and check in using GPS verification. <Link href="/earn" className="text-[var(--color-red)] hover:underline font-semibold">Earn points</Link> for every pandal you visit and unlock achievements.
             </p>
           </li>
           <li className="rounded-lg bg-[var(--color-bg-secondary)] p-6 border border-[var(--color-border)]">
             <span className="font-bold text-[var(--color-red)]">5. Compete & Share</span>
             <p className="text-[var(--color-text-secondary)] mt-2">
-              Climb the leaderboard and compete with other Puja explorers. Share your itineraries and challenge friends to beat your records.
+              Climb the <Link href="/leaderboard" className="text-[var(--color-red)] hover:underline font-semibold">leaderboard</Link> and compete with other Puja explorers. Share your itineraries and challenge friends to beat your records.
             </p>
           </li>
         </ol>
