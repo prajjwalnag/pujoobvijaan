@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { LayoutGrid, Map, Trophy, Users } from "lucide-react";
+import { LayoutGrid, Map, Trophy, Users, BookOpen } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { Countdown } from "@/components/Countdown";
 import { PujaFlashOverlay } from "@/components/PujaFlashOverlay";
@@ -30,6 +30,12 @@ const highlights = [
     icon: Trophy,
     title: "Leaderboard",
     description: "Earn points for every pandal you hop to and climb the ranks.",
+  },
+  {
+    href: "/guide",
+    icon: BookOpen,
+    title: "Pujo Guide",
+    description: "Learn about Durga Puja, pandal hopping tips, and best practices.",
   },
 ];
 
@@ -80,7 +86,7 @@ export default async function Home() {
 
         <HomeAuthButtons />
 
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {highlights.map((item) => {
             const Icon = item.icon;
             return (
