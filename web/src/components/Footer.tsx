@@ -75,6 +75,41 @@ export function Footer() {
   return (
     <footer className="bg-[var(--color-bg-main)]">
       <PartnersRow />
+
+      <div className="border-b border-[var(--color-border)] py-8">
+        <div className="mx-auto max-w-[1400px] px-4">
+          <p className="text-sm font-bold uppercase tracking-wide text-[var(--color-text-secondary)] mb-4">
+            Explore
+          </p>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 text-sm">
+            <Link href="/" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Home
+            </Link>
+            <Link href="/pandals" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Browse Pandals
+            </Link>
+            <Link href="/map" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Interactive Map
+            </Link>
+            <Link href="/leaderboard" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Leaderboard
+            </Link>
+            <Link href="/earn" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              How to Earn
+            </Link>
+            <Link href="/guide" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Pujo Guide
+            </Link>
+            <Link href="/itinerary" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Itineraries
+            </Link>
+            <Link href="/contributions" className="text-[var(--color-text-secondary)] hover:text-[var(--color-red)]">
+              Contributors
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <p className="text-sm text-[var(--color-text-secondary)]">
           Made with ❤️ by{" "}

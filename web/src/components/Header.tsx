@@ -15,6 +15,7 @@ import {
   X,
   Flame,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "./Button";
@@ -25,11 +26,11 @@ import { useAuth, getDisplayName } from "./AuthProvider";
 const navItems = [
   { label: "Pandals", href: "/pandals", icon: LayoutGrid },
   { label: "Map", href: "/map", icon: Map },
+  { label: "Guide", href: "/guide", icon: BookOpen },
+  { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { label: "Atlas", href: "/atlas", icon: Compass },
   { label: "Network", href: "/network", icon: Network },
-  { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { label: "Itinerary", href: "/itinerary", icon: CalendarDays },
-  { label: "Contributions", href: "/contributions", icon: Users },
 ];
 
 export function Header() {

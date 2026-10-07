@@ -22,8 +22,11 @@ export default function ItineraryPage() {
         <Link href="/map" className="text-[var(--color-red)] underline">
           Route Builder on the map
         </Link>{" "}
-        to build one by clicking pandals directly. Either way earns points.
+        to build one by clicking pandals directly. <Link href="/earn" className="text-[var(--color-red)] underline">Either way earns points</Link>.
       </p>
+      <div className="mt-3 text-sm text-[var(--color-text-secondary)]">
+        <p>💡 <Link href="/guide" className="text-[var(--color-red)] hover:underline">Read our pandal hopping tips</Link> before planning your route</p>
+      </div>
 
       <div className="mt-6">
         <ItineraryBuilder onCreate={addItinerary} />

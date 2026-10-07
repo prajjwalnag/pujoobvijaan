@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { LayoutGrid, Map, Trophy, Users, Zap, MapPin, Droplet, ParkingCircle } from "lucide-react";
+import { LayoutGrid, Map, Trophy, Users, BookOpen, Zap, MapPin, Droplet, ParkingCircle } from "lucide-react";
 import { pandalStats } from "@/data/pandals";
 import { publicToilets } from "@/data/toilets";
 import { parkingSpaces } from "@/data/parking";
@@ -32,6 +32,12 @@ const mainFeatures = [
     icon: Trophy,
     title: "Leaderboard",
     description: "Earn points for every pandal you hop to and climb the ranks.",
+  },
+  {
+    href: "/guide",
+    icon: BookOpen,
+    title: "Pujo Guide",
+    description: "Learn about Durga Puja, pandal hopping tips, and best practices.",
   },
 ];
 
@@ -109,7 +115,7 @@ export default async function Home() {
 
         <HomeAuthButtons />
 
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {mainFeatures.map((item) => {
             const Icon = item.icon;
             return (

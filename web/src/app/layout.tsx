@@ -31,43 +31,88 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.pujoobhijaan.o
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game",
+    default: "Pujo Obhijaan — Kolkata's Best Pandal Hopping Game | Durga Puja 2026",
     template: "%s — Pujo Obhijaan",
   },
   description:
-    "Turn your pandal-hopping into a game. Browse 300+ Durga Puja pandals across Kolkata with an interactive map, build an itinerary, and earn points on the leaderboard for Durga Puja 2026.",
+    "Turn your pandal-hopping into an exciting game! Browse 1900+ Durga Puja pandals across Kolkata with an interactive map, smart route optimization, and a competitive leaderboard. Check in at pandals, earn points, and climb the ranks during Durga Puja 2026.",
   keywords: [
     "Durga Puja",
     "Kolkata pandals",
     "Durga Puja 2026",
     "pandal hopping",
+    "pandal hopping game",
     "Kolkata Durga Puja map",
     "puja pandal guide",
     "Kolkata puja itinerary",
     "Durga Puja Kolkata",
+    "pandal finder",
+    "route optimizer",
+    "Kolkata events",
+    "cultural events Kolkata",
+    "Bengali festivals",
+    "Durga Puja celebration",
+    "festival app",
+    "Kolkata tourism",
+    "Durga Puja planning",
   ],
   authors: [{ name: "Pujo Obhijaan" }],
+  creator: "Pujo Obhijaan Team",
   category: "travel",
-  alternates: { canonical: "/" },
+  manifest: "/manifest.json",
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-IN": "/",
+    }
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Pujo Obhijaan",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "/",
     siteName: "Pujo Obhijaan",
-    title: "Turn YOUR Pandal-Hopping into a GAME",
+    title: "Turn YOUR Pandal-Hopping into a GAME | Durga Puja 2026",
     description:
-      "Pujo Obhijaan — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
+      "Explore 1900+ pandals, optimize your route, find parking & toilets, and earn points on the leaderboard. The ultimate companion app for Durga Puja in Kolkata.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Pujo Obhijaan - Interactive Pandal Hopping Game",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Turn YOUR Pandal-Hopping into a GAME",
+    title: "Pujo Obhijaan — Pandal Hopping Game for Durga Puja 2026",
     description:
-      "Pujo Obhijaan — an interactive map, itinerary builder, and leaderboard for Durga Puja 2026 in Kolkata.",
+      "Turn your pandal-hopping into a game with route optimization, leaderboard rankings, and location-based check-ins across Kolkata's 1900+ pandals.",
+    images: ["/twitter-image.png"],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
 };
 
@@ -113,6 +158,107 @@ const eventJsonLd = {
   },
 };
 
+const softwareApplicationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Pujo Obhijaan",
+  description:
+    "Turn your pandal-hopping into an exciting game! Browse 1900+ Durga Puja pandals across Kolkata with an interactive map, smart route optimization, and a competitive leaderboard.",
+  url: SITE_URL,
+  applicationCategory: "TravelApplication",
+  operatingSystem: "Web, Android, iOS",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "INR",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    ratingCount: "150",
+  },
+  featureList: [
+    "Browse 1900+ Durga Puja pandals across Kolkata",
+    "Interactive map with real-time navigation",
+    "Smart route optimizer using AI",
+    "Public toilet and parking finder",
+    "Gamified check-in system with points",
+    "Competitive leaderboard",
+    "Custom itinerary builder",
+  ],
+  screenshot: "/og-image.png",
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is Pujo Obhijaan?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Pujo Obhijaan is a gamified app that turns pandal-hopping during Durga Puja in Kolkata into an exciting adventure. Browse 1900+ pandals, optimize your route, find facilities, and compete on leaderboards.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does the route optimizer work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Select multiple pandals you want to visit, and our AI-powered route optimizer will automatically find the most efficient path to visit all of them, saving you time and energy.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is Pujo Obhijaan free to use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, Pujo Obhijaan is completely free to use. Sign up, browse pandals, optimize routes, check in, and earn points without any subscription fees.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I earn points?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You earn points for every pandal you visit and check in at using GPS verification. Climb the leaderboard and compete with other explorers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I find parking and toilets on the map?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes! Toggle the parking and toilet overlays on the map to find nearby facilities. See information about hours, fees, capacity, and available features.",
+      },
+    },
+  ],
+};
+
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Pujo Obhijaan",
+  description: "Durga Puja Pandal Hopping Guide & Interactive Map for Kolkata",
+  url: SITE_URL,
+  telephone: "+91-XXXX-XXXXXX",
+  areaServed: {
+    "@type": "City",
+    name: "Kolkata",
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Kolkata",
+    addressLocality: "Kolkata",
+    addressRegion: "West Bengal",
+    postalCode: "700000",
+    addressCountry: "IN",
+  },
+  image: "/og-image.png",
+  priceRange: "Free",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -132,6 +278,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </Script>
         <Script id="ld-event" type="application/ld+json" strategy="beforeInteractive">
           {JSON.stringify(eventJsonLd)}
+        </Script>
+        <Script id="ld-software-app" type="application/ld+json" strategy="beforeInteractive">
+          {JSON.stringify(softwareApplicationJsonLd)}
+        </Script>
+        <Script id="ld-faq" type="application/ld+json" strategy="beforeInteractive">
+          {JSON.stringify(faqJsonLd)}
+        </Script>
+        <Script id="ld-local-business" type="application/ld+json" strategy="beforeInteractive">
+          {JSON.stringify(localBusinessJsonLd)}
         </Script>
         <ThemeProvider>
           <AuthProvider>

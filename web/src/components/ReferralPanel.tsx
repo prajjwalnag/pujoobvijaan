@@ -11,6 +11,7 @@ export function ReferralPanel() {
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referredCount, setReferredCount] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [siteUrl, setSiteUrl] = useState<string>("");
 
   // Syncs local state from the server (Supabase) whenever the signed-in
   // user changes — including clearing it back out on sign-out.
@@ -40,8 +41,11 @@ export function ReferralPanel() {
   // so it should work the same whether generated from prod or from a
   // local dev server. Falls back to window.location.origin only if
   // NEXT_PUBLIC_SITE_URL isn't set (e.g. a fresh local checkout).
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
-  const link = referralCode ? `${siteUrl}/signup?ref=${referralCode}` : null;
+  useEffect(() => {
+    setSiteUrl(process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin);
+  }, []);
+
+  const link = referralCode && siteUrl ? `${siteUrl}/signup?ref=${referralCode}` : null;
 
   async function handleCopy() {
     if (!link) return;
