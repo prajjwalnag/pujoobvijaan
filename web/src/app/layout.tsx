@@ -236,6 +236,29 @@ const faqJsonLd = {
   ],
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Pujo Obhijaan",
+  description: "Durga Puja Pandal Hopping Guide & Interactive Map for Kolkata",
+  url: SITE_URL,
+  telephone: "+91-XXXX-XXXXXX",
+  areaServed: {
+    "@type": "City",
+    name: "Kolkata",
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Kolkata",
+    addressLocality: "Kolkata",
+    addressRegion: "West Bengal",
+    postalCode: "700000",
+    addressCountry: "IN",
+  },
+  image: "/og-image.png",
+  priceRange: "Free",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -261,6 +284,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </Script>
         <Script id="ld-faq" type="application/ld+json" strategy="beforeInteractive">
           {JSON.stringify(faqJsonLd)}
+        </Script>
+        <Script id="ld-local-business" type="application/ld+json" strategy="beforeInteractive">
+          {JSON.stringify(localBusinessJsonLd)}
         </Script>
         <ThemeProvider>
           <AuthProvider>
