@@ -74,11 +74,16 @@ const mapFeatures = [
 const EXPLORER_COUNT_FLOOR = 500;
 
 async function getUserCount() {
-  const supabase = await createClient();
-  const { count } = await supabase
-    .from("profiles")
-    .select("id", { count: "exact", head: true });
-  return count ?? 0;
+  try {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true });
+    return count ?? 0;
+  } catch {
+    // Return 0 if database is unavailable during build
+    return 0;
+  }
 }
 
 export default async function Home() {
