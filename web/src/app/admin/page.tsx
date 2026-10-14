@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Handshake, ChevronRight } from "lucide-react";
+import { Handshake, MapPinPlus, ChevronRight } from "lucide-react";
 import { partners } from "@/data/partners";
+import { pandals } from "@/data/pandals";
 
 // New admin sections belong here as more cards — Partners is the first,
 // not the only one this page is built for.
@@ -12,6 +13,14 @@ const SECTIONS = [
     description: "Add and review brand partners shown in the site footer.",
     count: partners.length,
     countLabel: "committed",
+  },
+  {
+    href: "/admin/pandals",
+    icon: MapPinPlus,
+    title: "Pandals",
+    description: "Add new pandal locations to the map. Admin only.",
+    count: pandals.length,
+    countLabel: "listed",
   },
 ];
 

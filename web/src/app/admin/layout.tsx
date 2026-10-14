@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Handshake, LogOut } from "lucide-react";
+import { LayoutDashboard, Handshake, MapPinPlus, LogOut } from "lucide-react";
 import clsx from "clsx";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/partners", label: "Partners", icon: Handshake },
+  { href: "/admin/pandals", label: "Pandals", icon: MapPinPlus },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

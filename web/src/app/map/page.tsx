@@ -8,6 +8,7 @@ import { pandals } from "@/data/pandals";
 import { publicToilets } from "@/data/toilets";
 import { parkingSpaces } from "@/data/parking";
 import { usePoints } from "@/components/PointsProvider";
+import { useAddedPandals } from "@/components/useAddedPandals";
 import { useMyItineraries } from "@/components/useMyItineraries";
 import { haversineKm, nearestPandalsToPoint, planRouteNearPoint } from "@/data/graph";
 import type { Pandal, Itinerary, CrowdLevel, MarketPin } from "@/data/types";
@@ -91,6 +92,8 @@ export default function MapPage() {
   });
   const { checkedIn, refreshPoints } = usePoints();
   const { addItinerary } = useMyItineraries();
+  const { addedPandals } = useAddedPandals();
+  const allPandals = useMemo(() => [...pandals, ...addedPandals], [addedPandals]);
   const [routeStops, setRouteStops] = useState<Pandal[]>([]);
   const [market, setMarket] = useState<MarketPin | null>(null);
   const [placingMarket, setPlacingMarket] = useState(false);
@@ -182,7 +185,7 @@ export default function MapPage() {
 
   function planFromMarket(opts: { radiusKm: number; maxStops: number }) {
     if (!market) return;
-    const stops = planRouteNearPoint(market, opts);
+    const stops = planRouteNearPoint(market, opts, allPandals);
     if (stops.length === 0) {
       setMarketPlanMessage(
         `No big or medium pujas within ${opts.radiusKm} km of ${market.name}. Try a wider radius.`
@@ -221,7 +224,7 @@ export default function MapPage() {
     clearRoute();
   }
 
-  const visible = categories.pandals ? pandals.filter((p) => sizeFilters[p.crowdLevel]) : [];
+  const visible = categories.pandals ? allPandals.filter((p) => sizeFilters[p.crowdLevel]) : [];
 
   // Real nearest-by-distance suggestions off the device's actual GPS fix —
   // recomputes whenever locateMe() gets a new position.

@@ -138,9 +138,10 @@ export function nearestPandalsToPoint(
 // "near" is only meaningful for the former.
 export function planRouteNearPoint(
   point: { lat: number; lng: number },
-  { radiusKm, maxStops }: { radiusKm: number; maxStops: number }
+  { radiusKm, maxStops }: { radiusKm: number; maxStops: number },
+  pool: Pandal[] = pandals
 ): Pandal[] {
-  const candidates = pandals
+  const candidates = pool
     .filter((p) => p.crowdLevel === "high" || p.crowdLevel === "medium")
     .map((p) => ({ pandal: p, distanceKm: haversineKm(point, p.coordinates) }))
     .filter((c) => c.distanceKm <= radiusKm)
