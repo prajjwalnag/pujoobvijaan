@@ -21,7 +21,7 @@ const areaById = new Map(areas.map((a) => [a.id, a]));
 
 // How close (real GPS distance) you need to be to a pandal to check in —
 // prevents checking in from across the city.
-const CHECKIN_RADIUS_KM = 0.1;
+const CHECKIN_RADIUS_KM = 0.5;
 
 const TILE_URLS = {
   light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -525,8 +525,8 @@ export function MapView({
           } else if (!inRange) {
             checkInLabel =
               distanceKm! < 1
-                ? `Get within 100m (${Math.round(distanceKm! * 1000)}m away)`
-                : `Get within 100m (${distanceKm!.toFixed(1)}km away)`;
+                ? `Get within 500m (${Math.round(distanceKm! * 1000)}m away)`
+                : `Get within 500m (${distanceKm!.toFixed(1)}km away)`;
           } else {
             checkInLabel = `Check in (+${checkinPointsFor(pandal)} pts)`;
           }
