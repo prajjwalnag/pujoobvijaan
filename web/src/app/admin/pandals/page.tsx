@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MapPinPlus, Trash2, Copy, LocateFixed } from "lucide-react";
+import { MapPinPlus, Copy, LocateFixed } from "lucide-react";
 import { regions } from "@/data/pandals";
 import { tierLabel } from "@/data/tiers";
-import { useAddedPandals } from "@/components/useAddedPandals";
+import { useAddedPandals, submitPandal } from "@/components/useAddedPandals";
 import { Button } from "@/components/Button";
 import type { CrowdLevel, Pandal, Region } from "@/data/types";
 
@@ -27,7 +27,9 @@ function toSnippet(p: Pandal) {
 // Reachable only behind the admin password session (see src/proxy.ts) —
 // i.e. only Make with Rex can add pandal locations.
 export default function AdminPandalsPage() {
-  const { addedPandals, addPandal, removePandal } = useAddedPandals();
+  const { addedPandals, refresh } = useAddedPandals();
+  const [code, setCode] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const [name, setName] = useState("");
   const [region, setRegion] = useState<Region>(regions[0]);
@@ -52,7 +54,7 @@ export default function AdminPandalsPage() {
     );
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const latN = Number(lat);
     const lngN = Number(lng);
@@ -63,15 +65,20 @@ export default function AdminPandalsPage() {
     if (latN < 21.5 || latN > 23.5 || lngN < 87.5 || lngN > 89) {
       return setError("Those coordinates are outside the Kolkata area — check lat/lng order.");
     }
+    if (!code.trim()) return setError("Enter the add-pandal code.");
     setError(null);
-    addPandal({
-      id: `admin-${Date.now()}`,
+    setSaving(true);
+    const result = await submitPandal({
+      code: code.trim(),
       name: name.trim(),
       region,
-      coordinates: { lat: latN, lng: lngN },
       crowdLevel: tier,
-      geocoded: true,
+      lat: latN,
+      lng: lngN,
     });
+    setSaving(false);
+    if (!result.ok) return setError(result.error);
+    await refresh();
     setName("");
     setLat("");
     setLng("");
@@ -94,14 +101,10 @@ export default function AdminPandalsPage() {
         <h1 className="text-[32px] font-bold text-[var(--color-text-primary)]">Pandals</h1>
       </div>
       <p className="mt-1 text-[var(--color-text-secondary)]">
-        Add a new pandal location. Only Make with Rex can do this (this page needs the admin login).
-        Like partners, pandals added here are saved only in <strong>this browser</strong> and show on{" "}
-        <code className="rounded bg-[var(--color-bg-tertiary)] px-1.5 py-0.5 text-sm">/map</code>.
-        To publish one for everyone, use <b>Copy snippet</b> and paste it into{" "}
-        <code className="rounded bg-[var(--color-bg-tertiary)] px-1.5 py-0.5 text-sm">
-          src/data/pandals.ts
-        </code>
-        .
+        Add a new pandal location. Pandals are saved to the database, show on{" "}
+        <code className="rounded bg-[var(--color-bg-tertiary)] px-1.5 py-0.5 text-sm">/map</code> for
+        everyone and can be checked in to. The same add-pandal code is also needed to add pandals
+        straight from the map.
       </p>
 
       <form
@@ -198,13 +201,29 @@ export default function AdminPandalsPage() {
 
         {error && <p className="text-sm text-[var(--color-red)]">{error}</p>}
 
-        <Button type="submit">Add Pandal</Button>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="pandal-code" className="text-sm font-semibold text-[var(--color-text-primary)]">
+            Code
+          </label>
+          <input
+            id="pandal-code"
+            type="password"
+            inputMode="numeric"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className={inputClass}
+          />
+        </div>
+
+        <Button type="submit" disabled={saving}>
+          {saving ? "Saving…" : "Add Pandal"}
+        </Button>
       </form>
 
       {addedPandals.length > 0 && (
         <div className="mt-6">
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-secondary)]">
-            Added in this browser ({addedPandals.length})
+            Added by users ({addedPandals.length})
           </h2>
           <div className="flex flex-col gap-2">
             {addedPandals.map((p) => (
@@ -225,13 +244,6 @@ export default function AdminPandalsPage() {
                 >
                   <Copy size={14} />
                   {copied === p.id ? "Copied" : "Copy snippet"}
-                </button>
-                <button
-                  onClick={() => removePandal(p.id)}
-                  aria-label={`Remove ${p.name}`}
-                  className="text-[var(--color-text-light)] hover:text-[var(--color-red)]"
-                >
-                  <Trash2 size={16} />
                 </button>
               </div>
             ))}

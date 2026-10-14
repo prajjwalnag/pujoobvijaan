@@ -8,7 +8,7 @@ import { pandals } from "@/data/pandals";
 import { publicToilets } from "@/data/toilets";
 import { parkingSpaces } from "@/data/parking";
 import { usePoints } from "@/components/PointsProvider";
-import { useAddedPandals } from "@/components/useAddedPandals";
+import { useAddedPandals, submitPandal } from "@/components/useAddedPandals";
 import { useMyItineraries } from "@/components/useMyItineraries";
 import { haversineKm, nearestPandalsToPoint, planRouteNearPoint } from "@/data/graph";
 import type { Pandal, Itinerary, CrowdLevel, MarketPin } from "@/data/types";
@@ -92,13 +92,15 @@ export default function MapPage() {
   });
   const { checkedIn, refreshPoints } = usePoints();
   const { addItinerary } = useMyItineraries();
-  const { addedPandals } = useAddedPandals();
+  const { addedPandals, refresh: refreshPandals } = useAddedPandals();
   const allPandals = useMemo(() => [...pandals, ...addedPandals], [addedPandals]);
   const [routeStops, setRouteStops] = useState<Pandal[]>([]);
   const [market, setMarket] = useState<MarketPin | null>(null);
   const [placingMarket, setPlacingMarket] = useState(false);
   const [routeOrigin, setRouteOrigin] = useState<MarketPin | null>(null);
   const [marketPlanMessage, setMarketPlanMessage] = useState<string | null>(null);
+  const [placingPandal, setPlacingPandal] = useState(false);
+  const [draftPandal, setDraftPandal] = useState<{ lat: number; lng: number } | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
@@ -175,6 +177,26 @@ export default function MapPage() {
   function placeMarket(pos: { lat: number; lng: number }) {
     setMarket((prev) => ({ name: prev?.name ?? "My market", ...pos }));
     setPlacingMarket(false);
+  }
+
+  function placePandal(pos: { lat: number; lng: number }) {
+    setDraftPandal(pos);
+    setPlacingPandal(false);
+  }
+
+  function cancelPandal() {
+    setDraftPandal(null);
+    setPlacingPandal(false);
+  }
+
+  async function savePandal(input: Omit<Parameters<typeof submitPandal>[0], "lat" | "lng">) {
+    if (!draftPandal) return { ok: false as const, error: "Pick a spot on the map first." };
+    const result = await submitPandal({ ...input, ...draftPandal });
+    if (result.ok) {
+      await refreshPandals();
+      setDraftPandal(null);
+    }
+    return result;
   }
 
   function removeMarket() {
@@ -274,6 +296,11 @@ export default function MapPage() {
           onMarketPlaceToggle={() => setPlacingMarket((v) => !v)}
           onMarketRemove={removeMarket}
           onMarketPlan={planFromMarket}
+          placingPandal={placingPandal}
+          draftPandal={draftPandal}
+          onPandalPlaceToggle={() => setPlacingPandal((v) => !v)}
+          onPandalCancel={cancelPandal}
+          onPandalSave={savePandal}
           marketPlanMessage={marketPlanMessage}
           onRouteSave={saveRoute}
           onLocate={locateMe}
@@ -306,6 +333,9 @@ export default function MapPage() {
             market={market}
             placingMarket={placingMarket}
             onPlaceMarket={placeMarket}
+            placingPandal={placingPandal}
+            onPlacePandal={placePandal}
+            draftPandal={draftPandal}
             onAddToRoute={addToRoute}
             userLocation={userLocation}
             suggestedPandals={suggested}

@@ -13,7 +13,6 @@ import { MapAdBanner } from "./MapAdBanner";
 import { useTheme } from "./ThemeProvider";
 import { usePoints, checkinPointsFor } from "./PointsProvider";
 import { PandalRatingSection, usePandalRatingSummaries } from "./PandalRating";
-import { usePujaLock } from "./usePujaLock";
 import { MetroLayer } from "./MetroLayer";
 import { RailwayLayer } from "./RailwayLayer";
 import { RoadLayer } from "./RoadLayer";
@@ -249,6 +248,9 @@ export function MapView({
   market = null,
   placingMarket = false,
   onPlaceMarket,
+  placingPandal = false,
+  onPlacePandal,
+  draftPandal = null,
   onAddToRoute,
   userLocation = null,
   suggestedPandals = [],
@@ -269,6 +271,9 @@ export function MapView({
   market?: MarketPin | null;
   placingMarket?: boolean;
   onPlaceMarket?: (pos: { lat: number; lng: number }) => void;
+  placingPandal?: boolean;
+  onPlacePandal?: (pos: { lat: number; lng: number }) => void;
+  draftPandal?: { lat: number; lng: number } | null;
   onAddToRoute?: (pandal: Pandal) => void;
   userLocation?: { lat: number; lng: number } | null;
   suggestedPandals?: Pandal[];
@@ -279,7 +284,6 @@ export function MapView({
   const { theme } = useTheme();
   const { checkedIn, checkIn } = usePoints();
   const ratingSummaries = usePandalRatingSummaries();
-  const { locked: pujaLocked, unlockLabel } = usePujaLock();
   const routeIds = new Set(routeStops.map((p) => p.id));
 
   return (
@@ -329,7 +333,28 @@ export function MapView({
       {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
       <FlyToLocation location={userLocation} />
-      {onPlaceMarket && <MarketPlacer active={placingMarket} onPlace={onPlaceMarket} />}
+      {onPlaceMarket && (
+        <MarketPlacer
+          active={placingMarket || placingPandal}
+          onPlace={placingPandal && onPlacePandal ? onPlacePandal : onPlaceMarket}
+        />
+      )}
+      {draftPandal && (
+        <Marker
+          position={[draftPandal.lat, draftPandal.lng]}
+          icon={pinIcon(false)}
+          zIndexOffset={1900}
+          draggable
+          eventHandlers={{
+            dragend: (e) => {
+              const ll = (e.target as L.Marker).getLatLng();
+              onPlacePandal?.({ lat: ll.lat, lng: ll.lng });
+            },
+          }}
+        >
+          <Popup>New pandal — drag to adjust, then fill in the sidebar form.</Popup>
+        </Marker>
+      )}
       {market && (
         <Marker
           position={[market.lat, market.lng]}
@@ -490,13 +515,11 @@ export function MapView({
           const visited = checkedIn.has(pandal.id);
           const distanceKm = userLocation ? haversineKm(userLocation, pandal.coordinates) : null;
           const inRange = distanceKm !== null && distanceKm <= CHECKIN_RADIUS_KM;
-          const canCheckIn = !visited && !pujaLocked && inRange;
+          const canCheckIn = !visited && inRange;
 
           let checkInLabel: string;
           if (visited) {
             checkInLabel = "Checked in ✓";
-          } else if (pujaLocked) {
-            checkInLabel = `Unlocks in ${unlockLabel}`;
           } else if (!userLocation) {
             checkInLabel = "Enable location to check in";
           } else if (!inRange) {
@@ -526,7 +549,7 @@ export function MapView({
                     onClick={() =>
                       canCheckIn ? checkIn(pandal, userLocation ?? undefined) : onLocate?.()
                     }
-                    disabled={visited || pujaLocked || (!!userLocation && !inRange)}
+                    disabled={visited || (!!userLocation && !inRange)}
                     className="mt-2 w-full rounded bg-[#8b0000] px-2 py-1 text-xs font-semibold text-white disabled:opacity-50"
                   >
                     {checkInLabel}

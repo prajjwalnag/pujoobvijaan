@@ -9,6 +9,7 @@ import { railStations } from "@/data/railway";
 import { roadSegments } from "@/data/roads";
 import { tierColor, tierLabel } from "@/data/tiers";
 import { RouteBuilderPanel } from "./RouteBuilderPanel";
+import { AddPandalPanel, type PandalDraftInput } from "./AddPandalPanel";
 import { MarketPlannerPanel } from "./MarketPlannerPanel";
 import type { Pandal, CrowdLevel, MarketPin } from "@/data/types";
 
@@ -55,6 +56,11 @@ interface MapSidebarProps {
   onMarketRemove: () => void;
   onMarketPlan: (opts: { radiusKm: number; maxStops: number }) => void;
   marketPlanMessage: string | null;
+  placingPandal: boolean;
+  draftPandal: { lat: number; lng: number } | null;
+  onPandalPlaceToggle: () => void;
+  onPandalCancel: () => void;
+  onPandalSave: PandalDraftInput;
   onLocate: () => void;
   locating: boolean;
   locationError: string | null;
@@ -82,6 +88,11 @@ export function MapSidebar({
   onMarketRemove,
   onMarketPlan,
   marketPlanMessage,
+  placingPandal,
+  draftPandal,
+  onPandalPlaceToggle,
+  onPandalCancel,
+  onPandalSave,
   onLocate,
   locating,
   locationError,
@@ -241,6 +252,13 @@ export function MapSidebar({
         {locationError && (
           <p className="mb-2 text-xs text-[var(--color-red)]">{locationError}</p>
         )}
+        <AddPandalPanel
+          placing={placingPandal}
+          draft={draftPandal}
+          onPlaceToggle={onPandalPlaceToggle}
+          onCancel={onPandalCancel}
+          onSave={onPandalSave}
+        />
         <MarketPlannerPanel
           market={market}
           placing={placingMarket}

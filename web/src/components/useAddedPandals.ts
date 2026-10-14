@@ -1,45 +1,60 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { Pandal } from "@/data/types";
+import { useCallback, useEffect, useState } from "react";
+import type { CrowdLevel, Pandal, Region } from "@/data/types";
+import { createClient } from "@/lib/supabase/client";
 
-const STORAGE_KEY = "pujo-added-pandals-v1";
-
-// Pandal locations added by the admin (Make with Rex) via /admin/pandals.
-// Same trade-off as usePartners: there's no shared backend for pandals, so
-// these live in this browser's localStorage. To publish one for everyone,
-// copy its snippet from /admin/pandals into src/data/pandals.ts.
+// Pandals added through the map (or /admin/pandals) are stored in the
+// Supabase `pandals` table and shared with every visitor. The ~335 built-in
+// pandals ship with the app, so only rows with the "user-" id prefix that
+// POST /api/pandals generates are loaded here.
 export function useAddedPandals() {
   const [addedPandals, setAddedPandals] = useState<Pandal[]>([]);
-  const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate from localStorage after mount (SSR-safe)
-      if (raw) setAddedPandals(JSON.parse(raw));
-    } catch {
-      // ignore — start fresh
-    }
-    setHydrated(true);
+  const refresh = useCallback(async () => {
+    const { data, error } = await createClient()
+      .from("pandals")
+      .select("id, name, region, crowd_level, lat, lng, geocoded")
+      .like("id", "user-%");
+    if (error || !data) return;
+    setAddedPandals(
+      data.map((r) => ({
+        id: r.id,
+        name: r.name,
+        region: r.region as Region,
+        coordinates: { lat: r.lat, lng: r.lng },
+        crowdLevel: r.crowd_level as CrowdLevel,
+        geocoded: r.geocoded,
+      }))
+    );
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(addedPandals));
-    } catch {
-      // ignore (private browsing / storage blocked)
-    }
-  }, [addedPandals, hydrated]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    refresh();
+  }, [refresh]);
 
-  function addPandal(pandal: Pandal) {
-    setAddedPandals((prev) => [pandal, ...prev]);
+  return { addedPandals, refresh };
+}
+
+export async function submitPandal(input: {
+  code: string;
+  name: string;
+  region: Region;
+  crowdLevel: CrowdLevel;
+  lat: number;
+  lng: number;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    const res = await fetch("/api/pandals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: json.error ?? "Couldn't add the pandal." };
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Network error — try again." };
   }
-
-  function removePandal(id: string) {
-    setAddedPandals((prev) => prev.filter((p) => p.id !== id));
-  }
-
-  return { addedPandals, addPandal, removePandal };
 }
