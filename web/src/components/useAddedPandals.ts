@@ -57,7 +57,14 @@ export async function submitPandal(input: {
     p_lng: input.lng,
   });
   if (error) {
-    return { ok: false, error: /incorrect code/i.test(error.message) ? "Incorrect code." : "Couldn't add the pandal." };
+    if (/incorrect code/i.test(error.message)) return { ok: false, error: "Incorrect code." };
+    if (/could not find the function|schema cache/i.test(error.message)) {
+      return {
+        ok: false,
+        error: "Database isn't set up yet — run scripts/pandals_user_added.sql in Supabase.",
+      };
+    }
+    return { ok: false, error: `Couldn't add the pandal: ${error.message}` };
   }
   return { ok: true };
 }
