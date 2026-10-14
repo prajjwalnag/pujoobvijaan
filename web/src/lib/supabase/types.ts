@@ -469,6 +469,17 @@ export type Database = {
         Args: { p_amount: number; p_reason: string; p_user: string }
         Returns: undefined
       }
+      add_pandal: {
+        Args: {
+          p_code: string
+          p_name: string
+          p_region: string
+          p_crowd_level: string
+          p_lat: number
+          p_lng: number
+        }
+        Returns: string
+      }
       claim_referral: {
         Args: { p_code: string }
         Returns: undefined

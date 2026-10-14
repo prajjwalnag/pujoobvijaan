@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 // Pandals added through the map (or /admin/pandals) are stored in the
 // Supabase `pandals` table and shared with every visitor. The ~335 built-in
 // pandals ship with the app, so only rows with the "user-" id prefix that
-// POST /api/pandals generates are loaded here.
+// add_pandal() generates are loaded here.
 export function useAddedPandals() {
   const [addedPandals, setAddedPandals] = useState<Pandal[]>([]);
 
@@ -37,6 +37,9 @@ export function useAddedPandals() {
   return { addedPandals, refresh };
 }
 
+// Calls the add_pandal() Postgres function (see scripts/pandals_user_added.sql),
+// which checks the code inside the database and does the insert — so the
+// code never ships in the browser bundle and no server secret is needed.
 export async function submitPandal(input: {
   code: string;
   name: string;
@@ -45,16 +48,16 @@ export async function submitPandal(input: {
   lat: number;
   lng: number;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  try {
-    const res = await fetch("/api/pandals", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, error: json.error ?? "Couldn't add the pandal." };
-    return { ok: true };
-  } catch {
-    return { ok: false, error: "Network error — try again." };
+  const { error } = await createClient().rpc("add_pandal", {
+    p_code: input.code,
+    p_name: input.name,
+    p_region: input.region,
+    p_crowd_level: input.crowdLevel,
+    p_lat: input.lat,
+    p_lng: input.lng,
+  });
+  if (error) {
+    return { ok: false, error: /incorrect code/i.test(error.message) ? "Incorrect code." : "Couldn't add the pandal." };
   }
+  return { ok: true };
 }
