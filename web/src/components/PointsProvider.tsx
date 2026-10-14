@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import { useRouter } from "next/navigation";
 import type { Pandal } from "@/data/types";
 import { createClient } from "@/lib/supabase/client";
+import { setReturnTo } from "@/lib/returnTo";
 import { useAuth } from "./AuthProvider";
 
 export interface CategoryRating {
@@ -135,6 +136,7 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
   const checkIn = useCallback(
     async (pandal: Pandal, location?: { lat: number; lng: number }) => {
       if (!user) {
+        setReturnTo(window.location.pathname);
         router.push("/login");
         return;
       }
@@ -168,6 +170,7 @@ export function PointsProvider({ children }: { children: React.ReactNode }) {
   const rate = useCallback(
     async (pandal: Pandal, rating: CategoryRating) => {
       if (!user) {
+        setReturnTo(window.location.pathname);
         router.push("/login");
         return;
       }

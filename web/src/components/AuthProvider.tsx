@@ -1,5 +1,6 @@
 "use client";
 
+import { getReturnTo } from "@/lib/returnTo";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
@@ -88,8 +89,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // webview) than the one that started the sign-up, which silently loses
   // anything stashed in storage. A query param on the link survives that.
   function callbackUrl(referralCode?: string) {
-    const url = `${window.location.origin}/auth/callback`;
-    return referralCode ? `${url}?ref=${encodeURIComponent(referralCode)}` : url;
+    const params = new URLSearchParams();
+    if (referralCode) params.set("ref", referralCode);
+    const returnTo = getReturnTo();
+    if (returnTo) params.set("next", returnTo);
+    const query = params.toString();
+    return `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`;
   }
 
   async function signInWithMagicLink(email: string, opts: MagicLinkOptions = {}) {
