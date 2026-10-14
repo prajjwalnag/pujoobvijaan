@@ -9,7 +9,8 @@ import { railStations } from "@/data/railway";
 import { roadSegments } from "@/data/roads";
 import { tierColor, tierLabel } from "@/data/tiers";
 import { RouteBuilderPanel } from "./RouteBuilderPanel";
-import type { Pandal, CrowdLevel } from "@/data/types";
+import { MarketPlannerPanel } from "./MarketPlannerPanel";
+import type { Pandal, CrowdLevel, MarketPin } from "@/data/types";
 
 const SIZE_LEVELS: CrowdLevel[] = ["high", "medium", "low"];
 const sizeCount: Record<CrowdLevel, number> = {
@@ -47,6 +48,13 @@ interface MapSidebarProps {
   onRouteOptimize: () => void;
   onRouteClear: () => void;
   onRouteSave: (title: string) => void;
+  market: MarketPin | null;
+  placingMarket: boolean;
+  onMarketNameChange: (name: string) => void;
+  onMarketPlaceToggle: () => void;
+  onMarketRemove: () => void;
+  onMarketPlan: (opts: { radiusKm: number; maxStops: number }) => void;
+  marketPlanMessage: string | null;
   onLocate: () => void;
   locating: boolean;
   locationError: string | null;
@@ -67,6 +75,13 @@ export function MapSidebar({
   onRouteOptimize,
   onRouteClear,
   onRouteSave,
+  market,
+  placingMarket,
+  onMarketNameChange,
+  onMarketPlaceToggle,
+  onMarketRemove,
+  onMarketPlan,
+  marketPlanMessage,
   onLocate,
   locating,
   locationError,
@@ -226,6 +241,15 @@ export function MapSidebar({
         {locationError && (
           <p className="mb-2 text-xs text-[var(--color-red)]">{locationError}</p>
         )}
+        <MarketPlannerPanel
+          market={market}
+          placing={placingMarket}
+          onNameChange={onMarketNameChange}
+          onPlaceToggle={onMarketPlaceToggle}
+          onRemove={onMarketRemove}
+          onPlan={onMarketPlan}
+          message={marketPlanMessage}
+        />
         <RouteBuilderPanel
           open={routeBuilderOpen}
           onToggleOpen={() => setRouteBuilderOpen((v) => !v)}

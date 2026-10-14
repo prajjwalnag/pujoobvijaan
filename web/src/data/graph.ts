@@ -129,3 +129,43 @@ export function nearestPandalsToPoint(
     .sort((a, b) => a.distanceKm - b.distanceKm)
     .slice(0, k);
 }
+
+// Powers the map's "plan route from a market" tool: pick the closest big /
+// medium pandals to a user-placed point, then order them as a walk that
+// starts at that point (greedy nearest-neighbour — a real-distance
+// heuristic, not a true optimal TSP solve). Individually geocoded pandals
+// are ranked ahead of placeholder-coordinate ones at any distance, since
+// "near" is only meaningful for the former.
+export function planRouteNearPoint(
+  point: { lat: number; lng: number },
+  { radiusKm, maxStops }: { radiusKm: number; maxStops: number }
+): Pandal[] {
+  const candidates = pandals
+    .filter((p) => p.crowdLevel === "high" || p.crowdLevel === "medium")
+    .map((p) => ({ pandal: p, distanceKm: haversineKm(point, p.coordinates) }))
+    .filter((c) => c.distanceKm <= radiusKm)
+    .sort(
+      (a, b) =>
+        Number(!!b.pandal.geocoded) - Number(!!a.pandal.geocoded) || a.distanceKm - b.distanceKm
+    )
+    .slice(0, maxStops)
+    .map((c) => c.pandal);
+
+  const ordered: Pandal[] = [];
+  let from = point;
+  while (candidates.length) {
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    candidates.forEach((p, i) => {
+      const d = haversineKm(from, p.coordinates);
+      if (d < bestDist) {
+        bestDist = d;
+        bestIdx = i;
+      }
+    });
+    const next = candidates.splice(bestIdx, 1)[0];
+    ordered.push(next);
+    from = next.coordinates;
+  }
+  return ordered;
+}

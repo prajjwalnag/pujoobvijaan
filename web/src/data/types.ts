@@ -118,3 +118,10 @@ export interface ParkingSpace {
   /** Area or landmark nearby for easy identification */
   nearbyLandmark?: string;
 }
+
+/** A shopping market the user drops on the map to anchor a route around. */
+export interface MarketPin {
+  name: string;
+  lat: number;
+  lng: number;
+}

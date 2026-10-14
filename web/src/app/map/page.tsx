@@ -9,8 +9,8 @@ import { publicToilets } from "@/data/toilets";
 import { parkingSpaces } from "@/data/parking";
 import { usePoints } from "@/components/PointsProvider";
 import { useMyItineraries } from "@/components/useMyItineraries";
-import { haversineKm, nearestPandalsToPoint } from "@/data/graph";
-import type { Pandal, Itinerary, CrowdLevel } from "@/data/types";
+import { haversineKm, nearestPandalsToPoint, planRouteNearPoint } from "@/data/graph";
+import type { Pandal, Itinerary, CrowdLevel, MarketPin } from "@/data/types";
 
 const MapView = dynamic(() => import("@/components/MapView").then((m) => m.MapView), {
   ssr: false,
@@ -92,6 +92,10 @@ export default function MapPage() {
   const { checkedIn, refreshPoints } = usePoints();
   const { addItinerary } = useMyItineraries();
   const [routeStops, setRouteStops] = useState<Pandal[]>([]);
+  const [market, setMarket] = useState<MarketPin | null>(null);
+  const [placingMarket, setPlacingMarket] = useState(false);
+  const [routeOrigin, setRouteOrigin] = useState<MarketPin | null>(null);
+  const [marketPlanMessage, setMarketPlanMessage] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
@@ -159,6 +163,37 @@ export default function MapPage() {
     setRouteStops((prev) => prev.filter((p) => p.id !== id));
   }
 
+  function clearRoute() {
+    setRouteStops([]);
+    setRouteOrigin(null);
+    setMarketPlanMessage(null);
+  }
+
+  function placeMarket(pos: { lat: number; lng: number }) {
+    setMarket((prev) => ({ name: prev?.name ?? "My market", ...pos }));
+    setPlacingMarket(false);
+  }
+
+  function removeMarket() {
+    setMarket(null);
+    setPlacingMarket(false);
+    if (routeOrigin) clearRoute();
+  }
+
+  function planFromMarket(opts: { radiusKm: number; maxStops: number }) {
+    if (!market) return;
+    const stops = planRouteNearPoint(market, opts);
+    if (stops.length === 0) {
+      setMarketPlanMessage(
+        `No big or medium pujas within ${opts.radiusKm} km of ${market.name}. Try a wider radius.`
+      );
+      return;
+    }
+    setRouteStops(stops);
+    setRouteOrigin(market);
+    setMarketPlanMessage(`Planned ${stops.length} stops starting from ${market.name}.`);
+  }
+
   function moveRouteStop(index: number, dir: -1 | 1) {
     setRouteStops((prev) => {
       const next = [...prev];
@@ -183,7 +218,7 @@ export default function MapPage() {
     };
     await addItinerary(itinerary);
     await refreshPoints();
-    setRouteStops([]);
+    clearRoute();
   }
 
   const visible = categories.pandals ? pandals.filter((p) => sizeFilters[p.crowdLevel]) : [];
@@ -229,7 +264,14 @@ export default function MapPage() {
           onRouteRemove={removeFromRoute}
           onRouteMove={moveRouteStop}
           onRouteOptimize={optimizeRoute}
-          onRouteClear={() => setRouteStops([])}
+          onRouteClear={clearRoute}
+          market={market}
+          placingMarket={placingMarket}
+          onMarketNameChange={(name) => setMarket((m) => (m ? { ...m, name } : m))}
+          onMarketPlaceToggle={() => setPlacingMarket((v) => !v)}
+          onMarketRemove={removeMarket}
+          onMarketPlan={planFromMarket}
+          marketPlanMessage={marketPlanMessage}
           onRouteSave={saveRoute}
           onLocate={locateMe}
           locating={locating}
@@ -257,6 +299,10 @@ export default function MapPage() {
             showParking={categories.parking}
             parkingList={parkingSpaces}
             routeStops={routeStops}
+            routeOrigin={routeOrigin}
+            market={market}
+            placingMarket={placingMarket}
+            onPlaceMarket={placeMarket}
             onAddToRoute={addToRoute}
             userLocation={userLocation}
             suggestedPandals={suggested}

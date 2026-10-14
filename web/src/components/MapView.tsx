@@ -1,12 +1,12 @@
 "use client";
 
 import { Fragment, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { LocateFixed, Star, Droplet, ParkingCircle } from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
-import type { Pandal, PublicToilet, ParkingSpace } from "@/data/types";
+import type { Pandal, PublicToilet, ParkingSpace, MarketPin } from "@/data/types";
 import { areas } from "@/data/areas";
 import { haversineKm } from "@/data/graph";
 import { MapAdBanner } from "./MapAdBanner";
@@ -146,6 +146,50 @@ function routeMarkerIcon(index: number) {
   return L.divIcon({ html, className: "", iconSize: [24, 24], iconAnchor: [12, 12] });
 }
 
+function marketIcon() {
+  const html = renderToStaticMarkup(
+    <div
+      style={{
+        width: 30,
+        height: 30,
+        borderRadius: "50%",
+        background: "#7B3FA0",
+        border: "2.5px solid white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 15,
+        boxShadow: "0 2px 6px rgba(0,0,0,0.45)",
+      }}
+    >
+      🛍️
+    </div>
+  );
+  return L.divIcon({ html, className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -15] });
+}
+
+function MarketPlacer({
+  active,
+  onPlace,
+}: {
+  active: boolean;
+  onPlace: (pos: { lat: number; lng: number }) => void;
+}) {
+  const map = useMap();
+  useEffect(() => {
+    map.getContainer().style.cursor = active ? "crosshair" : "";
+    return () => {
+      map.getContainer().style.cursor = "";
+    };
+  }, [map, active]);
+  useMapEvents({
+    click(e) {
+      if (active) onPlace({ lat: e.latlng.lat, lng: e.latlng.lng });
+    },
+  });
+  return null;
+}
+
 function toiletIcon() {
   const html = renderToStaticMarkup(
     <div
@@ -201,6 +245,10 @@ export function MapView({
   showParking = false,
   parkingList = [],
   routeStops = [],
+  routeOrigin = null,
+  market = null,
+  placingMarket = false,
+  onPlaceMarket,
   onAddToRoute,
   userLocation = null,
   suggestedPandals = [],
@@ -217,6 +265,10 @@ export function MapView({
   showParking?: boolean;
   parkingList?: ParkingSpace[];
   routeStops?: Pandal[];
+  routeOrigin?: MarketPin | null;
+  market?: MarketPin | null;
+  placingMarket?: boolean;
+  onPlaceMarket?: (pos: { lat: number; lng: number }) => void;
   onAddToRoute?: (pandal: Pandal) => void;
   userLocation?: { lat: number; lng: number } | null;
   suggestedPandals?: Pandal[];
@@ -277,6 +329,26 @@ export function MapView({
       {showRailway && <RailwayLayer />}
       {showMetro && <MetroLayer />}
       <FlyToLocation location={userLocation} />
+      {onPlaceMarket && <MarketPlacer active={placingMarket} onPlace={onPlaceMarket} />}
+      {market && (
+        <Marker
+          position={[market.lat, market.lng]}
+          icon={marketIcon()}
+          zIndexOffset={1800}
+          draggable={!!onPlaceMarket}
+          eventHandlers={{
+            dragend: (e) => {
+              const ll = (e.target as L.Marker).getLatLng();
+              onPlaceMarket?.({ lat: ll.lat, lng: ll.lng });
+            },
+          }}
+        >
+          <Popup>
+            <p className="font-bold">🛍️ {market.name}</p>
+            <p className="text-xs text-gray-600">Drag to move. Plan a route from the sidebar.</p>
+          </Popup>
+        </Marker>
+      )}
       {userLocation && (
         <Marker
           position={[userLocation.lat, userLocation.lng]}
@@ -320,9 +392,12 @@ export function MapView({
           );
         })}
 
-      {routeStops.length > 1 && (
+      {(routeStops.length > 1 || (routeOrigin && routeStops.length > 0)) && (
         <Polyline
-          positions={routeStops.map((p) => [p.coordinates.lat, p.coordinates.lng])}
+          positions={[
+            ...(routeOrigin ? [[routeOrigin.lat, routeOrigin.lng]] : []),
+            ...routeStops.map((p) => [p.coordinates.lat, p.coordinates.lng]),
+          ] as [number, number][]}
           pathOptions={{ color: "#D4A017", weight: 4, opacity: 0.9, dashArray: "8,6" }}
         />
       )}
